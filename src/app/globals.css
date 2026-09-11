@@ -1,0 +1,1045 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   EBM brand system
+   Derived from the logo asset itself (ebm-white-yellow-logo.png):
+   gold #F5B614 + white, on a dark backing. The logo is white-on-transparent,
+   so any surface it sits on must be dark.
+
+   Contrast note: #F5B614 on white is 1.84:1 and fails WCAG for text.
+   Gold is therefore an accent on DARK surfaces only; --color-gold-ink is the
+   text-safe variant for light surfaces (7.0:1 on white).
+
+   LAYERING: everything below sits in @layer base / @layer components.
+   Unlayered CSS beats *all* layered CSS regardless of specificity, so an
+   unlayered `img { height: auto }` would silently defeat every `h-9` utility.
+   ========================================================================== */
+
+@theme {
+  /* Brand */
+  --color-gold: #f5b614;
+  --color-gold-bright: #ffc933;
+  --color-gold-ink: #6f4e00; /* text-safe gold on light surfaces */
+
+  /* ---- Surfaces: the brand BLUE, not near-black -----------------------
+     The logo was designed for the old site's royal-blue header, and the old
+     CSS :root declared #0B3A5B "Deep Corporate Blue" + #1968BC "Primary Blue".
+     The first pass used a #050b12 near-black that read as generic dark mode;
+     this family keeps every surface unmistakably blue while staying dark
+     enough for the white-on-transparent logo and for WCAG AA text.
+
+     Token names are kept (navy-*) so every component re-themes from here.
+
+     Contrast on each surface (white / gold #F5B614):
+       navy-950 #071d33  → 16.8:1 / 8.8:1
+       navy-900 #0b2d4d  → 13.5:1 / 7.3:1
+       navy-850 #0b3a5b  → 11.9:1 / 6.5:1   (brand deep blue)
+       navy-800 #0f4a75  →  9.5:1 / 5.2:1   ← darkest surface allowed under gold TEXT
+       navy-700 #1560a0  →  6.7:1 / 3.6:1   white text only
+       navy-600 #1968bc  →  5.5:1 / 3.0:1   white text only (brand primary blue)
+       navy-500 #2a7fd6  →  4.6:1 / —       decorative: glows, borders, hover */
+  --color-navy-950: #071d33;
+  --color-navy-900: #0b2d4d;
+  --color-navy-850: #0b3a5b;
+  --color-navy-800: #0f4a75;
+  --color-navy-700: #1560a0;
+  --color-navy-600: #1968bc;
+  --color-navy-500: #2a7fd6;
+
+  /* Light surfaces carry the brand too: headings in the deep blue (11.9:1 on
+     white), body in a blue-grey, shell from the old :root --secondary-color. */
+  --color-ink: #0b3a5b;
+  --color-muted: #4f6272;
+  --color-line: #d9e3ee;
+  --color-shell: #f3f7fa;
+
+  /* Typography — Onest is the brand face, self-hosted via next/font */
+  --font-sans: var(--font-onest), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-card: 14px;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Spacing scale -------------------------------------------------
+     One vertical rhythm for the whole site. Before this, section padding
+     drifted between 48px, 104px and 128px depending on the page, and
+     section headers used ad-hoc mt-4/mt-5/mt-7 margins. Everything now
+     derives from these four values. */
+  --space-section: clamp(3.5rem, 2.2rem + 4vw, 6rem);
+  --space-section-tight: clamp(2.5rem, 1.8rem + 2.4vw, 3.75rem);
+  --space-block: clamp(2rem, 1.5rem + 1.8vw, 3rem); /* header → content */
+  --space-stack: 1.25rem; /* between elements inside a text block */
+  /* Prose rhythm is deliberately separate from section rhythm: a heading
+     inside flowing article text needs a tighter, denser gap than a heading
+     that introduces a whole page section. */
+  --space-prose-h: clamp(2rem, 1.6rem + 1.4vw, 2.75rem);
+  --space-prose-p: 1rem;
+
+  /* The container is a share of the viewport (92vw), never narrower than the
+     1240px laptop layout, capped at 1680px on very wide screens.
+     A previous clamp(1240px, 80vw, …) looked right at 1920px but did nothing
+     at the far more common ~1536px CSS viewport (a 1920 monitor at 125% OS
+     scaling), because 80vw there is 1229px and the 1240px floor won. */
+  --wrap-max: max(1240px, min(1680px, 92vw));
+  --wrap-gutter: clamp(1.25rem, 0.6rem + 2.6vw, 3rem);
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* The root size grows gently with the viewport, so every rem-based value
+       — type, section padding, card padding, button height — scales together
+       on large monitors. Without this, a 1920px screen got the same 16px type
+       and 112px gaps as a 1440px one and the content read as small and lost.
+       16px → 1024px, ~17.2px → 1440px, ~18px → 1920px. */
+    font-size: clamp(16px, 14.4px + 0.19vw, 18px);
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-navy-950);
+    color: #e8eef5;
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    /* NOTE: deliberately no `overflow-x: hidden` here. On body it propagates to
+       the viewport and, combined with the sticky header, produced a compositor
+       bug where the whole page stopped repainting after any scroll. Horizontal
+       overflow is contained at the component that causes it (the marquee). */
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Visible, branded focus ring — the old site had none. */
+  :focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Components
+   -------------------------------------------------------------------------- */
+
+@layer components {
+  /* Skip link — absent from the old site entirely. */
+  .skip-link {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    translate: -50% -120%;
+    z-index: 200;
+    background: var(--color-gold);
+    color: #1a1200;
+    font-weight: 700;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0 0 10px 10px;
+    transition: translate 0.18s var(--ease-out-soft);
+  }
+  .skip-link:focus {
+    translate: -50% 0;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--wrap-max);
+    margin-inline: auto;
+    padding-inline: var(--wrap-gutter);
+  }
+
+  /* NOTE: no `.bleed { width: 100vw }` helper here on purpose. 100vw includes
+     the scrollbar, so it overflows by the scrollbar width on any page tall
+     enough to scroll. Full-width strips are instead placed outside `.wrap`,
+     which achieves the same thing without the overflow.  */
+
+  /* One rhythm for every section header: eyebrow → heading → lede. */
+  .section-head {
+    max-width: 44rem;
+  }
+  .section-head > * + * {
+    margin-top: var(--space-stack);
+  }
+  .section-head > .eyebrow + * {
+    margin-top: 0.9rem;
+  }
+  /* The gap between a section header and the content it introduces. */
+  .section-body {
+    margin-top: var(--space-block);
+  }
+
+  /* Flowing body copy: articles and policy pages. Owns its own vertical
+     rhythm so pages stop hand-rolling mt-11 / mt-12 on every heading. */
+  .prose > * + * {
+    margin-top: var(--space-prose-p);
+  }
+  .prose > * + h2,
+  .prose > * + h3 {
+    margin-top: var(--space-prose-h);
+  }
+  .prose > h2 + *,
+  .prose > h3 + * {
+    margin-top: 0.9rem;
+  }
+  .prose > * + .callout {
+    margin-top: var(--space-block);
+  }
+
+  /* A grid of cards. The list items stretch so every card in a row shares the
+     same top and bottom edge regardless of how much copy it holds. */
+  .card-grid > li {
+    display: flex;
+  }
+  .card-grid > li > * {
+    width: 100%;
+    /* Fill the stretched row, not just the content height, so every card in a
+       row ends on the same line even when one holds an extra paragraph. */
+    height: 100%;
+  }
+
+  /* Fluid display type that never clips — the old hero clipped mid-word at
+     every width because it used a fixed line-height inside an overflow-hidden
+     SplitText wrapper. */
+  .display {
+    font-size: clamp(2rem, 1.15rem + 3.4vw, 4.4rem);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  .h2 {
+    font-size: clamp(1.6rem, 1.1rem + 1.9vw, 2.8rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    text-wrap: balance;
+    /* Measure lives here so pages stop repeating max-w-2xl on every heading. */
+    max-width: 22ch;
+  }
+  /* Longer headings that need the full column can opt out. */
+  .h2-wide {
+    max-width: 34ch;
+  }
+
+  .lede {
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  .rule-gold {
+    display: block;
+    width: 2.75rem;
+    height: 3px;
+    flex: none;
+    background: var(--color-gold);
+    border-radius: 2px;
+  }
+
+  .section {
+    padding-block: var(--space-section);
+  }
+  .section-tight {
+    padding-block: var(--space-section-tight);
+  }
+
+  /* Card padding lives here so every card matches. Pages previously mixed
+     p-6 / p-7 / p-8, which is why card interiors looked inconsistent. */
+  .card {
+    padding: clamp(1.5rem, 1.2rem + 0.9vw, 1.9rem);
+    background: color-mix(in srgb, var(--color-navy-900) 88%, white 12%);
+    border: 1px solid color-mix(in srgb, white 9%, transparent);
+    border-radius: var(--radius-card);
+    transition:
+      border-color 0.22s var(--ease-out-soft),
+      transform 0.22s var(--ease-out-soft),
+      background 0.22s var(--ease-out-soft);
+  }
+
+  .card-lg {
+    padding: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+  }
+
+  @media (hover: hover) {
+    .card-link:hover {
+      border-color: color-mix(in srgb, var(--color-gold) 55%, transparent);
+      transform: translateY(-3px);
+    }
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    font-weight: 650;
+    font-size: 0.95rem;
+    line-height: 1;
+    padding: 0.95rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    transition:
+      background 0.2s var(--ease-out-soft),
+      color 0.2s var(--ease-out-soft),
+      border-color 0.2s var(--ease-out-soft);
+    /* 44px min target — the old site's nav links were 28px tall. */
+    min-height: 44px;
+  }
+
+  .btn-gold {
+    background: var(--color-gold);
+    color: #1a1200;
+  }
+  @media (hover: hover) {
+    .btn-gold:hover {
+      background: var(--color-gold-bright);
+    }
+  }
+
+  .btn-ghost {
+    border-color: color-mix(in srgb, white 26%, transparent);
+    color: #fff;
+  }
+  @media (hover: hover) {
+    .btn-ghost:hover {
+      border-color: var(--color-gold);
+      color: var(--color-gold);
+    }
+  }
+
+  .btn-dark {
+    background: var(--color-navy-800);
+    color: #fff;
+  }
+  @media (hover: hover) {
+    .btn-dark:hover {
+      background: var(--color-navy-700);
+    }
+  }
+
+  /* Light section on the dark shell */
+  .on-light {
+    background: #fff;
+    color: var(--color-ink);
+  }
+  .on-light .lede {
+    color: var(--color-muted);
+  }
+  .on-light .eyebrow {
+    color: var(--color-gold-ink);
+  }
+  .on-light .rule-gold {
+    background: var(--color-gold-ink);
+  }
+  .on-light .card {
+    background: var(--color-shell);
+    border-color: var(--color-line);
+  }
+
+  /* A ghost button inherits white text and a white border, so on the light
+     surface it was invisible. Restate it in ink; gold-ink keeps the hover at
+     an accessible ratio on white (gold #F5B614 on white is only 1.8:1). */
+  .on-light .btn-ghost {
+    border-color: var(--color-line);
+    color: var(--color-ink);
+  }
+  @media (hover: hover) {
+    .on-light .btn-ghost:hover {
+      border-color: var(--color-gold-ink);
+      color: var(--color-gold-ink);
+    }
+  }
+
+  /* Partner logo wall. Several source logos are SVGs with no intrinsic size,
+     so the height is pinned here rather than trusted to the asset. */
+  .logo-mark {
+    height: 2rem;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    flex: none;
+  }
+  @media (min-width: 768px) {
+    .logo-mark {
+      height: 2.4rem;
+    }
+  }
+
+  /* A light chip behind every mark, so opaque JPEG logos and transparent PNGs
+     read the same way on a dark ground. */
+  .logo-chip {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 9.5rem;
+    height: 4.25rem;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    border-radius: 10px;
+  }
+  @media (min-width: 768px) {
+    .logo-chip {
+      width: 11rem;
+      height: 4.75rem;
+    }
+  }
+
+  /* Full-bleed so logos never appear sliced by the container edge, with a
+     soft fade at both ends instead of a hard cut. */
+  .marquee-wrap {
+    overflow: hidden;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 5rem,
+      #000 calc(100% - 5rem),
+      transparent
+    );
+  }
+
+  .marquee {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    width: max-content;
+    padding-block: 0.25rem;
+    animation: marquee 60s linear infinite;
+  }
+  @media (hover: hover) {
+    .marquee-wrap:hover .marquee {
+      animation-play-state: paused;
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     Events catalogue: card with artwork, filter bar, year headers
+     ------------------------------------------------------------------ */
+
+  /* An event card carries a full-bleed 16:9 image, so unlike `.card` it holds
+     no padding of its own — the padding moves to `.card-event-body`. Same
+     surface, border, radius and hover as `.card` so the two read as one family. */
+  .card-event {
+    background: color-mix(in srgb, var(--color-navy-900) 88%, white 12%);
+    border: 1px solid color-mix(in srgb, white 9%, transparent);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    transition:
+      border-color 0.22s var(--ease-out-soft),
+      transform 0.22s var(--ease-out-soft),
+      background 0.22s var(--ease-out-soft);
+  }
+
+  .card-event-media {
+    position: relative;
+    /* Fixed ratio on every card is what makes a row of cards end level. The
+       previous design let card heights range 391–414px within one row. */
+    aspect-ratio: 16 / 9;
+    background: var(--color-navy-950);
+    /* The divider lives on the body's top edge, not here: a border on this box
+       is added OUTSIDE the aspect ratio, which made every card 1px taller than
+       16:9 (measured 1.769 against 1.778). */
+  }
+
+  /* Posters are artwork, not photography: contain-style letterboxing would
+     leave gaps, so they crop. The 800×450 source is already 16:9. */
+  .card-event-media img {
+    display: block;
+  }
+
+  .card-event-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: color-mix(in srgb, white 22%, transparent);
+    background:
+      radial-gradient(24rem 12rem at 50% 0%, color-mix(in srgb, var(--color-gold) 12%, transparent), transparent 70%),
+      var(--color-navy-950);
+  }
+
+  .card-event-pill {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    /* The pill sits on artwork we do not control, so it carries its own
+       backing rather than relying on the image behind it being dark. */
+    backdrop-filter: blur(6px);
+  }
+
+  .card-event-body {
+    padding: clamp(1.1rem, 0.9rem + 0.6vw, 1.4rem);
+    border-top: 1px solid color-mix(in srgb, white 9%, transparent);
+  }
+
+  /* ---- filter bar ---- */
+
+  .filter-label {
+    margin-right: 0.15rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: color-mix(in srgb, white 65%, transparent);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    /* 44px minimum target: these are the primary controls on the page and are
+       used on phones one-handed. */
+    min-height: 2.75rem;
+    padding-inline: 0.9rem;
+    border: 1px solid color-mix(in srgb, white 15%, transparent);
+    border-radius: 999px;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: color-mix(in srgb, white 78%, transparent);
+    background: transparent;
+    cursor: pointer;
+    transition:
+      border-color 0.18s var(--ease-out-soft),
+      color 0.18s var(--ease-out-soft),
+      background 0.18s var(--ease-out-soft);
+  }
+
+  @media (hover: hover) {
+    .chip:hover {
+      border-color: var(--color-gold);
+      color: var(--color-gold);
+    }
+  }
+
+  /* Selection is carried by background + border + weight, not colour alone,
+     so it survives greyscale and does not depend on hue perception. */
+  .chip[aria-pressed='true'] {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: #1a1200;
+    font-weight: 700;
+  }
+
+  .chip-count {
+    font-size: 0.76rem;
+    font-variant-numeric: tabular-nums;
+    color: inherit;
+    opacity: 0.75;
+  }
+
+  /* Status is a segmented single-choice control, so its chips sit flush. */
+  .chip-seg {
+    min-width: 4.25rem;
+    justify-content: center;
+    padding-inline: 0.75rem;
+  }
+
+  .field-search {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid color-mix(in srgb, white 15%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-navy-900) 70%, black 30%);
+    color: white;
+    font-size: 0.92rem;
+  }
+  .field-search::placeholder {
+    color: color-mix(in srgb, white 55%, transparent);
+  }
+  .field-search:focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 2px;
+    border-color: transparent;
+  }
+
+  /* Matches .field-search so the two controls read as one set. The chevron is
+     an inline data URI — external CSS assets are not part of this build, and a
+     background-image costs nothing at paint time. */
+  /* The filter bar is a control strip, not a content section, so it carries
+     the tightest padding on the site. Its own rule rather than .section-tight
+     so that shared token keeps meaning what it says everywhere else. */
+  .filter-bar > .wrap {
+    padding-block: clamp(1.5rem, 1.15rem + 1.1vw, 2rem);
+  }
+
+  /* A section that belongs to the control directly above it: full gap below,
+     a much smaller one above. A full .section gap there left the filter bar
+     looking detached from the results it filters. */
+  .section-attached {
+    padding-top: clamp(1.75rem, 1.3rem + 1.3vw, 2.5rem);
+    padding-bottom: var(--space-section);
+  }
+
+  /* Pricing/tier cards. The featured one used to carry a permanent ring, which
+     made it look selected rather than recommended — the badge already says
+     which one it is. The ring is now a hover affordance, and it belongs to all
+     three equally. .card already transitions border-color. */
+  @media (hover: hover) {
+    .card-tier:hover {
+      border-color: color-mix(in srgb, var(--color-gold-ink) 45%, transparent);
+    }
+  }
+
+  /* Stage backdrop for event heroes, from EBM's own event banner: light raking
+     down from a point above the header, a hot gold wash along the floor, and a
+     faint dot lattice.
+
+     The first pass was so restrained it read as a rendering fault — the beams
+     were 0.06 alpha on flat navy and simply did not show. They carry real
+     weight now; the text stays legible because the wash under it is a tight
+     ellipse rather than a flat veil, so the gold breathes around the copy
+     instead of being flattened by it.
+
+     Gradients only. No image and no blur filter: this is the LCP area of an
+     event page, so an image here would be another request on the critical path,
+     and these layers cost nothing — the compositor paints them with the
+     background.
+
+     Positive z-index only. A negative one inside a stacking context paints
+     behind the section's own background and the layer disappears. */
+  .hero-stage {
+    background-image:
+      radial-gradient(circle at center, rgba(255, 255, 255, 0.06) 1px, transparent 1.2px),
+      /* Fades the hot floor back into the section below. Without it the gold
+         met the next band at a hard line. */
+      linear-gradient(180deg, transparent 76%, rgba(7, 29, 51, 0.55) 90%, #071d33 100%),
+      /* hot floor */
+      radial-gradient(80rem 30rem at 50% 112%, rgba(245, 182, 20, 0.55), transparent 72%),
+      /* the point the beams fall from */
+      radial-gradient(26rem 14rem at 50% -6%, rgba(245, 182, 20, 0.34), transparent 70%),
+      radial-gradient(58rem 32rem at 50% -10%, rgba(25, 104, 188, 0.5), transparent 68%),
+      /* beams */
+      repeating-conic-gradient(
+        from 206deg at 50% -12%,
+        rgba(245, 182, 20, 0.17) 0deg 2.6deg,
+        transparent 2.6deg 9.5deg
+      ),
+      linear-gradient(180deg, #06192c 0%, #0b3050 58%, #071d33 100%);
+    background-size:
+      28px 28px,
+      auto,
+      auto,
+      auto,
+      auto,
+      auto,
+      auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-stage {
+      background-image:
+        radial-gradient(80rem 30rem at 50% 112%, rgba(245, 182, 20, 0.4), transparent 72%),
+        linear-gradient(180deg, #06192c 0%, #0b3050 58%, #071d33 100%);
+    }
+  }
+
+  .field-select {
+    min-height: 2.75rem;
+    padding: 0.55rem 2.3rem 0.55rem 0.95rem;
+    border: 1px solid color-mix(in srgb, white 15%, transparent);
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--color-navy-900) 70%, black 30%);
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23ffffff' stroke-opacity='0.6' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.95rem center;
+    background-size: 0.7rem;
+    color: white;
+    font-size: 0.88rem;
+    font-weight: 500;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.18s var(--ease-out-soft);
+  }
+  /* An active filter has to be visible without opening the menu. */
+  .field-select[data-active='true'] {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+  @media (hover: hover) {
+    .field-select:hover {
+      border-color: color-mix(in srgb, white 35%, transparent);
+    }
+  }
+  .field-select:focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 2px;
+    border-color: transparent;
+  }
+  /* The menu itself is OS-drawn; only the option list colour is ours to set. */
+  .field-select option {
+    background: var(--color-navy-900);
+    color: white;
+  }
+
+  .link-quiet {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  /* ---- year headers in the past-editions archive ---- */
+
+  .year-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .year-head-label {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-gold);
+  }
+
+  .year-head-rule {
+    flex: 1;
+    height: 1px;
+    background: color-mix(in srgb, white 12%, transparent);
+  }
+
+  .year-head-count {
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    color: color-mix(in srgb, white 65%, transparent);
+  }
+
+  /* ------------------------------------------------------------------
+     City tour rail — the multi-city timeline on an event page
+     ------------------------------------------------------------------
+
+     MOBILE-FIRST, and deliberately so. The desktop shape is a horizontal
+     timeline; on a phone that becomes a vertical stack, because a
+     horizontally scrolling strip there is a trap — it fights the page's own
+     vertical scroll and hides nodes off-screen with no affordance that they
+     exist. The breakpoint is the same 768px Tailwind's `md:` uses, so the
+     component and its stylesheet agree about where the layout changes.
+
+     Spacing between nodes is set per-node from `--tour-gap`, computed at
+     build by railGaps() in src/lib/tour.ts. It is proportional to the real
+     number of days between legs, which is the whole point of the component:
+     a fortnight apart must look tighter than four months apart.
+
+     The gap becomes PADDING, not margin, so a single line drawn across the
+     node's full height covers the gap as well — no second element and no
+     guessing at the neighbour's height. */
+
+  .tour-track {
+    /* Distance between dot centres is this plus --tour-gap. Declared once so
+       the node width and the connector length cannot drift apart. */
+    --tour-card-w: 11rem;
+    --tour-dot: 0.85rem;
+    --tour-line: color-mix(in srgb, white 18%, transparent);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tour-node {
+    position: relative;
+    padding-top: calc(var(--tour-gap, 0px) * 0.45);
+    padding-left: 1.85rem;
+  }
+
+  /* One continuous rule down the node, including the gap above it. */
+  .tour-node::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--tour-dot) / 2 - 1px);
+    width: 2px;
+    background: var(--tour-line);
+  }
+  /* The line starts at the first dot and stops at the last, rather than
+     running off both ends of the tour. */
+  .tour-node:first-child::before {
+    top: calc(var(--tour-gap, 0px) * 0.45 + var(--tour-dot) / 2);
+  }
+  .tour-node:last-child::before {
+    bottom: auto;
+    height: calc(var(--tour-gap, 0px) * 0.45 + var(--tour-dot) / 2);
+  }
+
+  .tour-dot {
+    position: absolute;
+    top: calc(var(--tour-gap, 0px) * 0.45 + 0.15rem);
+    left: 0;
+    width: var(--tour-dot);
+    height: var(--tour-dot);
+    border-radius: 999px;
+    background: var(--color-gold);
+    /* Sits on the connector, so it carries the page background as a ring to
+       punch the line out from under it. */
+    box-shadow: 0 0 0 4px var(--color-navy-900);
+  }
+
+  .tour-card {
+    padding: 0.9rem 1rem 1rem;
+    border: 1px solid color-mix(in srgb, white 12%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--color-navy-950) 55%, transparent);
+  }
+
+  .tour-city {
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+
+  .tour-date {
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-gold);
+  }
+
+  .tour-venue {
+    margin-top: 0.2rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: color-mix(in srgb, white 62%, transparent);
+  }
+
+  .tour-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin-top: 0.7rem;
+  }
+  /* A confirmed leg with no map link has nothing to put here; without this the
+     0.7rem above it would hang off the bottom of the card. */
+  .tour-meta:empty {
+    display: none;
+  }
+
+  .tour-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.5rem;
+    border: 1px dashed color-mix(in srgb, var(--color-gold) 55%, transparent);
+    border-radius: 999px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  .tour-map {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, white 40%, transparent);
+  }
+  @media (hover: hover) {
+    .tour-map:hover {
+      color: var(--color-gold);
+      text-decoration-color: var(--color-gold);
+    }
+  }
+
+  /* ---- the three leg states ----
+     An unscheduled leg is drawn as an outline: dashed card, hollow dot,
+     stepped-back text. The difference from a confirmed leg has to survive
+     greyscale, so it is carried by border STYLE and fill, not by colour. */
+  .tour-node[data-status='tba'] .tour-card {
+    border-style: dashed;
+    border-color: color-mix(in srgb, white 22%, transparent);
+    background: transparent;
+  }
+  .tour-node[data-status='tba'] .tour-dot {
+    background: var(--color-navy-900);
+    border: 2px solid color-mix(in srgb, var(--color-gold) 65%, transparent);
+  }
+  .tour-node[data-status='tba'] .tour-city {
+    color: color-mix(in srgb, white 78%, transparent);
+  }
+  .tour-node[data-status='tba'] .tour-date {
+    color: color-mix(in srgb, var(--color-gold) 72%, transparent);
+  }
+
+  /* A date without a venue is real and dated, so the card stays solid; only
+     the venue line reads as pending. */
+  .tour-node[data-status='date_only'] .tour-venue {
+    font-style: italic;
+    color: color-mix(in srgb, white 52%, transparent);
+  }
+
+  /* ---- desktop: the horizontal timeline ---- */
+  @media (min-width: 768px) {
+    .tour-track {
+      flex-direction: row;
+      align-items: flex-start;
+      /* Contained here, never on <body>. A long tour must not make the whole
+         page scroll sideways — see the .bleed note higher up this file. */
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x proximity;
+      padding-bottom: 1rem;
+    }
+
+    .tour-node {
+      flex: none;
+      width: var(--tour-card-w);
+      margin-left: var(--tour-gap, 0px);
+      padding-top: 2rem;
+      padding-left: 0;
+      scroll-snap-align: start;
+    }
+
+    /* Horizontal connector, drawn from the PREVIOUS dot to this one. Its
+       length is the gap plus one card width, which is exactly the distance
+       between the two dot centres. */
+    .tour-node::before {
+      top: calc(0.15rem + var(--tour-dot) / 2 - 1px);
+      bottom: auto;
+      left: calc(-1 * var(--tour-gap, 0px) - var(--tour-card-w) + var(--tour-dot) / 2);
+      width: calc(var(--tour-gap, 0px) + var(--tour-card-w));
+      height: 2px;
+    }
+    /* Nothing precedes the first node, so it has no incoming connector. */
+    .tour-node:first-child::before {
+      content: none;
+    }
+    .tour-node:last-child::before {
+      height: 2px;
+    }
+
+    .tour-dot {
+      top: 0.15rem;
+      left: 0;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Utilities & motion
+   -------------------------------------------------------------------------- */
+
+@layer utilities {
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Reveal-on-scroll — CSS only, no JS library.
+   Scoped behind @supports so unsupporting browsers simply show the content. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 20%;
+    }
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

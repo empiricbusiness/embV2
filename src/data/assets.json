@@ -1,0 +1,274 @@
+{
+  "partners": [
+    {
+      "name": "adp",
+      "src": "/images/partners/adp.webp",
+      "w": 264,
+      "h": 120
+    },
+    {
+      "name": "ameyo-by-exotel",
+      "src": "/images/partners/ameyo-by-exotel.svg",
+      "w": 320,
+      "h": 120
+    },
+    {
+      "name": "apple",
+      "src": "/images/partners/apple.webp",
+      "w": 214,
+      "h": 120
+    },
+    {
+      "name": "automationedge",
+      "src": "/images/partners/automationedge.webp",
+      "w": 320,
+      "h": 39
+    },
+    {
+      "name": "axcess-io",
+      "src": "/images/partners/axcess-io.webp",
+      "w": 150,
+      "h": 59
+    },
+    {
+      "name": "botm",
+      "src": "/images/partners/botm.webp",
+      "w": 307,
+      "h": 120
+    },
+    {
+      "name": "cisco",
+      "src": "/images/partners/cisco.webp",
+      "w": 226,
+      "h": 120
+    },
+    {
+      "name": "credlix-big",
+      "src": "/images/partners/credlix-big.webp",
+      "w": 302,
+      "h": 120
+    },
+    {
+      "name": "ctrls",
+      "src": "/images/partners/ctrls.webp",
+      "w": 230,
+      "h": 120
+    },
+    {
+      "name": "dell-technologies-logo-png-seeklogo-381480",
+      "src": "/images/partners/dell-technologies-logo-png-seeklogo-381480.webp",
+      "w": 296,
+      "h": 45
+    },
+    {
+      "name": "edas",
+      "src": "/images/partners/edas.webp",
+      "w": 320,
+      "h": 104
+    },
+    {
+      "name": "epicor",
+      "src": "/images/partners/epicor.svg",
+      "w": 320,
+      "h": 120
+    },
+    {
+      "name": "facttwin-new-logo-27-3-2024-12345",
+      "src": "/images/partners/facttwin-new-logo-27-3-2024-12345.webp",
+      "w": 320,
+      "h": 116
+    },
+    {
+      "name": "futwork",
+      "src": "/images/partners/futwork.webp",
+      "w": 320,
+      "h": 58
+    },
+    {
+      "name": "glib",
+      "src": "/images/partners/glib.webp",
+      "w": 320,
+      "h": 100
+    },
+    {
+      "name": "hodu",
+      "src": "/images/partners/hodu.webp",
+      "w": 320,
+      "h": 103
+    },
+    {
+      "name": "infobip",
+      "src": "/images/partners/infobip.webp",
+      "w": 320,
+      "h": 95
+    },
+    {
+      "name": "workato",
+      "src": "/images/partners/workato.webp",
+      "w": 320,
+      "h": 51
+    },
+    {
+      "name": "infor",
+      "src": "/images/partners/infor.webp",
+      "w": 213,
+      "h": 120
+    },
+    {
+      "name": "mitsubhishi",
+      "src": "/images/partners/mitsubhishi.webp",
+      "w": 320,
+      "h": 96
+    },
+    {
+      "name": "maxicus",
+      "src": "/images/partners/maxicus.webp",
+      "w": 196,
+      "h": 46
+    },
+    {
+      "name": "pinnacle-logo-high",
+      "src": "/images/partners/pinnacle-logo-high.webp",
+      "w": 209,
+      "h": 120
+    },
+    {
+      "name": "xoxoday-logo",
+      "src": "/images/partners/xoxoday-logo.svg",
+      "w": 320,
+      "h": 120
+    },
+    {
+      "name": "ihirm",
+      "src": "/images/partners/ihirm.webp",
+      "w": 99,
+      "h": 120
+    },
+    {
+      "name": "bharatcxo",
+      "src": "/images/partners/bharatcxo.webp",
+      "w": 137,
+      "h": 120
+    },
+    {
+      "name": "zoom-logo",
+      "src": "/images/partners/zoom-logo.webp",
+      "w": 320,
+      "h": 107
+    },
+    {
+      "name": "yodaplus",
+      "src": "/images/partners/yodaplus.webp",
+      "w": 320,
+      "h": 76
+    },
+    {
+      "name": "brainayan",
+      "src": "/images/partners/brainayan.webp",
+      "w": 245,
+      "h": 120
+    },
+    {
+      "name": "redington-logo-01",
+      "src": "/images/partners/redington-logo-01.webp",
+      "w": 320,
+      "h": 116
+    },
+    {
+      "name": "manageengine-logo-black",
+      "src": "/images/partners/manageengine-logo-black.webp",
+      "w": 320,
+      "h": 56
+    },
+    {
+      "name": "jumpcloud",
+      "src": "/images/partners/jumpcloud.webp",
+      "w": 295,
+      "h": 120
+    },
+    {
+      "name": "axestrack-software-500x500",
+      "src": "/images/partners/axestrack-software-500x500.webp",
+      "w": 320,
+      "h": 81
+    },
+    {
+      "name": "commscope",
+      "src": "/images/partners/commscope.webp",
+      "w": 320,
+      "h": 44
+    },
+    {
+      "name": "springverify-logo-primary",
+      "src": "/images/partners/springverify-logo-primary.webp",
+      "w": 253,
+      "h": 120
+    },
+    {
+      "name": "zexprwire",
+      "src": "/images/partners/zexprwire.webp",
+      "w": 181,
+      "h": 75
+    },
+    {
+      "name": "industryoutlook",
+      "src": "/images/partners/industryoutlook.webp",
+      "w": 320,
+      "h": 98
+    },
+    {
+      "name": "zaggle-new",
+      "src": "/images/partners/zaggle-new.webp",
+      "w": 295,
+      "h": 120
+    }
+  ],
+  "brand": {
+    "brand/ebm-logo": {
+      "src": "/images/brand/ebm-logo.png",
+      "w": 560,
+      "h": 86
+    },
+    "brand/favicon": {
+      "src": "/images/brand/favicon.png",
+      "w": 48,
+      "h": 48
+    },
+    "about-1": {
+      "src": "/images/about-1.webp",
+      "w": 1000,
+      "h": 690
+    },
+    "about-2": {
+      "src": "/images/about-2.webp",
+      "w": 1000,
+      "h": 461
+    },
+    "contact": {
+      "src": "/images/contact.webp",
+      "w": 608,
+      "h": 838
+    }
+  },
+  "hero": [
+    {
+      "name": "hero-ciso",
+      "src": "/images/hero/hero-ciso.webp",
+      "w": 1600,
+      "h": 853
+    },
+    {
+      "name": "hero-hrtech",
+      "src": "/images/hero/hero-hrtech.webp",
+      "w": 1600,
+      "h": 1067
+    },
+    {
+      "name": "hero-conference",
+      "src": "/images/hero/hero-conference-1920.webp",
+      "w": 1920,
+      "h": 1080,
+      "srcset": "/images/hero/hero-conference-800.webp 800w, /images/hero/hero-conference-960.webp 960w, /images/hero/hero-conference-1440.webp 1440w, /images/hero/hero-conference-1920.webp 1920w"
+    }
+  ]
+}

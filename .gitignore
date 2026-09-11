@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+
+.vercel
+
+# Client media drop — raw photos/video staged for ingestion, never committed
+_incoming/
+
+.env*

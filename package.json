@@ -1,0 +1,30 @@
+{
+  "name": "ebm-2026",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3100",
+    "build": "next build",
+    "preview": "npx --yes serve out -l 3200",
+    "check:seo": "node scripts/verify.mjs",
+    "check:weight": "node scripts/weigh.mjs",
+    "assets:rebuild": "node scripts/build-assets.mjs",
+    "lint": "next lint",
+    "check:spacing": "node scripts/audit-spacing.mjs",
+    "test": "node --import ./scripts/alias-hook.mjs --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "next": "15.5.25",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.1.13",
+    "@types/node": "24.5.2",
+    "@types/react": "19.1.13",
+    "@types/react-dom": "19.1.9",
+    "sharp": "0.34.3",
+    "tailwindcss": "4.1.13",
+    "typescript": "5.9.2"
+  }
+}
