@@ -236,7 +236,7 @@ MX records alone — both would take company email down.
 
 ### Redirects to configure at the host
 
-The old URLs must not 404. On Vercel they go in `vercel.json` under `redirects`. At minimum:
+The old URLs must not 404. These are configured in `vercel.json` under `redirects`:
 
 | Old | New |
 |---|---|

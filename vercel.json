@@ -20,5 +20,27 @@
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
       ]
     }
+  ],
+  "redirects": [
+    { "source": "/index.html", "destination": "/" },
+    { "source": "/index-2.html", "destination": "/" },
+    { "source": "/home.html", "destination": "/" },
+    { "source": "/about.html", "destination": "/about/" },
+    { "source": "/contact.html", "destination": "/contact/" },
+    { "source": "/conference.html", "destination": "/services/conferences-and-awards/" },
+    { "source": "/bespoke.html", "destination": "/services/bespoke-events/" },
+    { "source": "/webinar.html", "destination": "/services/webinars/" },
+    { "source": "/partners.html", "destination": "/sponsorship/" },
+    { "source": "/blog.html", "destination": "/blog/" },
+    { "source": "/blog-1.html", "destination": "/blog/" },
+    { "source": "/blog-2.html", "destination": "/blog/" },
+    { "source": "/blog-single.html", "destination": "/blog/" },
+    { "source": "/image-gallery.html", "destination": "/gallery/" },
+    { "source": "/events.html", "destination": "/events/" },
+    { "source": "/schedule.html", "destination": "/events/" },
+    { "source": "/schedule-single.html", "destination": "/events/" },
+    { "source": "/speaker.html", "destination": "/events/" },
+    { "source": "/speaker-single.html", "destination": "/events/" },
+    { "source": "/testimonials.html", "destination": "/events/" }
   ]
 }
