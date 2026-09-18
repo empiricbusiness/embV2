@@ -25,10 +25,14 @@ export default function Header() {
     // gold bars in the logo's "E". Costs nothing to render.
     <header className="sticky top-0 z-50 border-t-[3px] border-t-gold border-b border-b-white/10 bg-navy-950">
       <div className="wrap flex h-[84px] items-center justify-between gap-4">
-        <Link href="/" aria-label={`${SITE.name} — home`} className="shrink-0">
+        <Link href="/" aria-label={`${SITE.name} — home`} className="min-w-0 lg:shrink-0">
           {/* The logo carries three lines of type (tagline, wordmark, strapline),
-              so it needs real height to stay legible. */}
-          <Logo className="h-11 w-auto md:h-14" priority />
+              so it needs real height to stay legible. At full size it is 287px
+              wide, which below ~390px pushed the menu button into the gutter or
+              off-screen: min-w-0 lets the link give way, and object-contain
+              scales the artwork down inside the same 44px box. From lg up the
+              desktop nav sets the row, so the logo stays rigid there. */}
+          <Logo className="h-11 w-auto object-contain object-left md:h-14" priority />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">

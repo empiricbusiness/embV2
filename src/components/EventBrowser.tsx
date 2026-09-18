@@ -140,13 +140,13 @@ export default function EventBrowser({
               ))}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex min-w-0 max-w-full items-center gap-2">
               <label htmlFor="sector-filter" className="filter-label">
                 Sector
               </label>
               <select
                 id="sector-filter"
-                className="field-select"
+                className="field-select min-w-0"
                 value={sector ?? ''}
                 data-active={sector ? 'true' : undefined}
                 onChange={(e) => setSector(e.target.value || null)}
@@ -160,13 +160,13 @@ export default function EventBrowser({
               </select>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex min-w-0 max-w-full items-center gap-2">
               <label htmlFor="format-filter" className="filter-label">
                 Format
               </label>
               <select
                 id="format-filter"
-                className="field-select"
+                className="field-select min-w-0"
                 value={format ?? ''}
                 data-active={format ? 'true' : undefined}
                 onChange={(e) => setFormat(e.target.value || null)}

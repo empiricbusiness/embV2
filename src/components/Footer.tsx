@@ -19,7 +19,7 @@ export default function Footer() {
             <p className="mt-4 text-sm font-semibold text-gold">{SITE.strapline}</p>
 
             {SITE.social.length > 0 && (
-              <div className="mt-6 flex gap-3">
+              <div className="mt-6 flex flex-wrap gap-3 lg:flex-nowrap">
                 {SITE.social.map((s) => (
                   <a
                     key={s.name}

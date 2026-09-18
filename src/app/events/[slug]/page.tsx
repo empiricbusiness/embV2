@@ -634,7 +634,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                     <p className="mt-1 text-[0.9rem] text-white/60">{c.title}</p>
                     <a
                       href={`mailto:${c.email}`}
-                      className="mt-4 block text-[0.95rem] font-semibold text-white hover:text-gold"
+                      className="mt-4 block text-[0.95rem] font-semibold text-white wrap-anywhere hover:text-gold"
                     >
                       {c.email}
                     </a>
