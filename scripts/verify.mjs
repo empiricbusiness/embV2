@@ -6,7 +6,8 @@ function walk(dir, out = []) {
     const p = path.join(dir, f)
     const s = fs.statSync(p)
     if (s.isDirectory()) walk(p, out)
-    else if (f.endsWith('.html')) out.push(p)
+    // google<hex>.html is the Search Console verification file, not a page
+    else if (f.endsWith('.html') && !/^google[0-9a-f]+\.html$/.test(f)) out.push(p)
   }
   return out
 }

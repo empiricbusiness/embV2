@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Onest } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 import { SITE } from '@/data/site'
 import { organizationLd, websiteLd } from '@/lib/seo'
@@ -58,6 +59,13 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 }
 
+/**
+ * Google Analytics 4, property "EBM website". afterInteractive keeps gtag off the
+ * critical rendering path. Enhanced measurement (switched on in GA) records
+ * client-side route changes, so no per-navigation code is needed here.
+ */
+const GA_ID = 'G-3P9S92J6H7'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-IN" className={onest.variable}>
@@ -70,6 +78,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+        <Script id="ga4" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}');`}
+        </Script>
       </body>
     </html>
   )
