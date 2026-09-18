@@ -2,20 +2,18 @@
 
 import { useEffect, useState } from 'react'
 import { SITE } from '@/data/site'
+import { FORM_ENDPOINT } from '@/lib/forms'
 
 /**
  * Static export means there is no server action available, so the form posts to
- * an external form endpoint.
- *
- * TODO(client): set NEXT_PUBLIC_FORM_ENDPOINT to your form handler
- * (Formspree / Web3Forms / your own CRM webhook). Until it is set, the form
- * falls back to opening the user's mail client with the content pre-filled, so
- * no enquiry is ever silently lost.
+ * the Google Sheet endpoint in lib/forms, landing in its "Contact" tab. If that
+ * URL is ever blanked, the form falls back to opening the user's mail client
+ * with the content pre-filled, so no enquiry is silently lost.
  *
  * The old site's forms had no <label> associations at all — every field here is
  * properly labelled and describes its own errors.
  */
-const ENDPOINT = process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? ''
+const ENDPOINT = FORM_ENDPOINT
 
 const INTENTS = [
   { value: 'attend', label: 'Attend an event' },
@@ -97,8 +95,11 @@ export default function ContactForm({ defaultIntent = 'attend' }: { defaultInten
         body: data,
         headers: { Accept: 'application/json' },
       })
-      setStatus(res.ok ? 'sent' : 'error')
-      if (res.ok) form.reset()
+      // The script answers 200 even when it fails, with { ok: false } in the body.
+      const body = await res.json().catch(() => null)
+      const ok = res.ok && body?.ok !== false
+      setStatus(ok ? 'sent' : 'error')
+      if (ok) form.reset()
     } catch {
       setStatus('error')
     }
@@ -126,6 +127,7 @@ export default function ContactForm({ defaultIntent = 'attend' }: { defaultInten
         <label htmlFor="company_website">Do not fill this in</label>
         <input id="company_website" name="company_website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
+      <input type="hidden" name="form" value="Contact" />
 
       {/* Context carried from the page the visitor came from. Submitted with
           the enquiry so it can be routed and answered without asking them to

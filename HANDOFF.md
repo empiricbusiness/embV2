@@ -139,9 +139,10 @@ have published.
 
 ### Non-blocking
 
-14. **Form endpoint.** Set `NEXT_PUBLIC_FORM_ENDPOINT` (Formspree / Web3Forms / your CRM webhook).
-    Until then the contact form falls back to opening the user's mail client pre-filled, so no
-    enquiry is lost.
+14. ~~Form endpoint~~ — **done (18 Sep 2026).** Site forms post to a Google Apps Script web app
+    that writes each submission to the "EBM Website Forms" Google Sheet on
+    tech@empiricbusinessmedia.com, one tab per form. Script: `scripts/google-sheets-forms.gs`;
+    endpoint URL: `src/lib/forms.ts`.
 15. **Social profiles.** Only LinkedIn is live. Send Facebook / Instagram / X / YouTube URLs, or we
     stay LinkedIn-only.
 16. ~~Consolidate the two LinkedIn company pages~~ — **resolved, nothing to do.** Checked 7 Sep 2026:
