@@ -21,6 +21,9 @@
       ]
     }
   ],
+  "rewrites": [
+    { "source": "/google69285137b574d2c5.html", "destination": "/google69285137b574d2c5/" }
+  ],
   "redirects": [
     { "source": "/index.html", "destination": "/" },
     { "source": "/index-2.html", "destination": "/" },

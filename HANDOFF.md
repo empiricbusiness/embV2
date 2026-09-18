@@ -257,7 +257,8 @@ event pages link out to them until they're migrated.
 ### Search Console
 
 `public/google69285137b574d2c5.html` verifies `https://www.empiricbusinessmedia.com/` in Google
-Search Console. Google re-checks it from time to time, so do not delete or rename it.
+Search Console. Google re-checks it from time to time, so do not delete or rename it. Vercel serves `.html` files from `public/` without the
+extension, so the rewrite in `vercel.json` restores the exact URL Google checks — keep that too.
 
 ---
 
