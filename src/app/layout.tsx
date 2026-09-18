@@ -28,7 +28,7 @@ const onest = Onest({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: 'Empiric Business Media - EBM | B2B Conferences, Summits & Awards',
+    default: 'Empiric Business Media - EBM | B2B Conferences & Summits',
     // Short suffix on purpose: Google truncates around 60-65 characters, and
     // "| Empiric Business Media" alone eats 25 of them.
     template: '%s | EBM',
