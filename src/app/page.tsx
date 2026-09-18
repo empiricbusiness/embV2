@@ -10,7 +10,9 @@ import JsonLd from '@/components/JsonLd'
 import assets from '@/data/assets.json'
 
 export const metadata = pageMeta({
-  title: 'B2B Conferences, Summits & Awards in India',
+  // Brand first, as on the old site, so the tab and brand searches show the name.
+  // The layout's '%s | EBM' template does not apply to the root page.
+  title: 'Empiric Business Media - EBM | B2B Conferences, Summits & Awards',
   description:
     'EBM produces B2B conferences, summits and awards in India for CISOs, CHROs and manufacturing leaders. Sponsor, speak or attend an upcoming edition.',
   path: '/',
