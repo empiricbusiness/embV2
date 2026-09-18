@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { SITE, SERVICES, SECTORS } from '@/data/site'
 import { upcomingEvents } from '@/lib/seo'
 import Logo from './Logo'
+import { CookieSettingsButton } from './ConsentBanner'
 
 const YEAR = 2026
 
@@ -165,6 +166,7 @@ export default function Footer() {
             <Link href="/contact/" className="hover:text-gold max-lg:inline-flex max-lg:min-h-11 max-lg:items-center">
               Contact
             </Link>
+            <CookieSettingsButton className="cursor-pointer hover:text-gold max-lg:inline-flex max-lg:min-h-11 max-lg:items-center" />
           </nav>
         </div>
       </div>

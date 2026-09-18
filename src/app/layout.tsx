@@ -7,6 +7,8 @@ import { organizationLd, websiteLd } from '@/lib/seo'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import JsonLd from '@/components/JsonLd'
+import ConsentBanner from '@/components/ConsentBanner'
+import { CONSENT_KEY } from '@/lib/consent'
 
 /**
  * Self-hosted at build time by next/font — no render-blocking request to
@@ -63,6 +65,10 @@ export const viewport: Viewport = {
  * Google Analytics 4, property "EBM website". afterInteractive keeps gtag off the
  * critical rendering path. Enhanced measurement (switched on in GA) records
  * client-side route changes, so no per-navigation code is needed here.
+ *
+ * Consent Mode v2: storage starts denied, and a stored "granted" is replayed
+ * before `config` on every page, so GA sets no cookie until the visitor accepts
+ * in <ConsentBanner>. Without consent GA sends only cookieless pings.
  */
 const GA_ID = 'G-3P9S92J6H7'
 
@@ -78,9 +84,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        <ConsentBanner />
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="ga4" strategy="afterInteractive">
-          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}');`}
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}` +
+            `gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});` +
+            `try{if(localStorage.getItem('${CONSENT_KEY}')==='granted')gtag('consent','update',{analytics_storage:'granted'})}catch(e){}` +
+            `gtag('js',new Date());gtag('config','${GA_ID}');`}
         </Script>
       </body>
     </html>
