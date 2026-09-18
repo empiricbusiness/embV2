@@ -97,7 +97,7 @@ export default function CityToursByVertical({ stops }: { stops: TourStop[] }) {
                         {formatLegVenue(leg)}
                       </p>
 
-                      <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+                      <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 empty:hidden">
                         {leg.provisional && <span className="tour-tag">Provisional</span>}
                         {leg.mapUrl && (
                           <a

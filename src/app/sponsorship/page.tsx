@@ -211,7 +211,7 @@ export default function SponsorshipPage() {
                         >
                           <span
                             aria-hidden
-                            className={`mt-0.5 shrink-0 font-bold ${
+                            className={`mt-0.5 w-4 shrink-0 text-center font-bold ${
                               included ? 'text-gold-ink' : 'text-muted'
                             }`}
                           >
@@ -266,7 +266,7 @@ export default function SponsorshipPage() {
                   <p className="mt-2.5 text-[0.88rem] leading-relaxed text-white/60">{s.blurb}</p>
                   <Link
                     href={`/events/?sector=${s.slug}`}
-                    className="mt-4 inline-flex text-[0.88rem] font-semibold text-white/80 hover:text-gold"
+                    className="-mb-3 mt-1 inline-flex py-3 text-[0.88rem] font-semibold text-white/80 hover:text-gold"
                   >
                     See editions <span aria-hidden className="ml-1.5">→</span>
                   </Link>
@@ -334,7 +334,7 @@ export default function SponsorshipPage() {
           <div className="divide-y divide-white/10 border-y border-white/10">
             {FAQS.map((f) => (
               <details key={f.q} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-[1.02rem] font-semibold text-white marker:hidden">
+                <summary className="-my-5 flex cursor-pointer list-none items-start justify-between gap-4 text-[1.02rem] font-semibold text-white marker:hidden">
                   {f.q}
                   <span
                     aria-hidden

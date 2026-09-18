@@ -69,13 +69,13 @@ export default function Countdown({
       >
         {label}
       </p>
-      <ul className={loud ? 'mt-4 flex justify-center gap-3' : 'mt-3 flex gap-2.5'}>
+      <ul className={loud ? 'mt-4 grid grid-cols-4 gap-2 sm:flex sm:justify-center sm:gap-3' : 'mt-3 flex gap-2.5'}>
         {cells.map(([v, l]) => (
           <li
             key={l}
             className={
               loud
-                ? 'min-w-[78px] rounded-xl border border-gold/45 bg-gold/[0.12] px-3 py-2.5 text-center'
+                ? 'min-w-0 rounded-xl border border-gold/45 bg-gold/[0.12] px-1 py-2.5 text-center sm:min-w-[78px] sm:px-3'
                 : 'min-w-[64px] rounded-xl border border-white/15 bg-white/[0.06] px-3 py-2 text-center backdrop-blur-sm'
             }
           >

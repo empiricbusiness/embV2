@@ -217,7 +217,7 @@ export default function HomePage() {
         </div>
 
         <div className="section-body border-t border-white/10 pt-10">
-          <p className="mb-7 text-center text-[0.76rem] font-bold uppercase tracking-[0.18em] text-white/65">
+          <p className="wrap mb-7 text-center text-balance text-[0.76rem] font-bold uppercase tracking-[0.18em] text-white/65">
             Brands that have partnered with EBM
           </p>
           <PartnerWall limit={18} />
@@ -508,7 +508,7 @@ export default function HomePage() {
           <div className="divide-y divide-white/10 border-y border-white/10">
             {FAQS.map((f) => (
               <details key={f.q} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-[1.02rem] font-semibold text-white marker:hidden">
+                <summary className="-my-5 flex cursor-pointer list-none items-start justify-between gap-4 text-[1.02rem] font-semibold text-white marker:hidden">
                   {f.q}
                   <span
                     aria-hidden

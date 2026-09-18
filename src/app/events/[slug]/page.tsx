@@ -194,7 +194,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           {/* Main */}
           <div>
 
-            <div className="prose section-body">
+            <div className="prose section-body max-lg:mt-0">
               <h2 className="h2 text-white">About this edition</h2>
               {content ? (
                 /* The edition's own copy, verbatim. Generated prose is a
@@ -271,7 +271,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               <div className="section-body divide-y divide-white/10 border-y border-white/10">
                 {content.pillars.map((p) => (
                   <details key={p.title} className="group py-5">
-                    <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-[1.02rem] font-semibold text-white marker:hidden">
+                    <summary className="-my-5 flex cursor-pointer list-none items-start justify-between gap-4 text-[1.02rem] font-semibold text-white marker:hidden">
                       {p.title}
                       <span
                         aria-hidden

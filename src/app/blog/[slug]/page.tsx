@@ -70,10 +70,10 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                 |
               </span>
               <span>{post.readingMinutes} min read</span>
-              <span aria-hidden className="text-white/20">
+              <span aria-hidden className="text-white/20 max-sm:hidden">
                 |
               </span>
-              <span className="text-white/70">{post.author}</span>
+              <span className="text-white/70 max-sm:basis-full">{post.author}</span>
             </div>
 
             {/* .prose owns the heading/paragraph/list rhythm for the article

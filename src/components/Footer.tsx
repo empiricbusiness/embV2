@@ -41,12 +41,12 @@ export default function Footer() {
             <h2 id="f-services" className="text-sm font-bold uppercase tracking-[0.14em] text-white">
               Services
             </h2>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-5 space-y-3 max-md:mt-3 max-md:space-y-0">
               {SERVICES.map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={`/services/${s.slug}/`}
-                    className="text-[0.95rem] text-white/65 transition-colors hover:text-gold"
+                    className="text-[0.95rem] text-white/65 transition-colors hover:text-gold max-md:inline-flex max-md:min-h-11 max-md:items-center"
                   >
                     {s.title}
                   </Link>
@@ -60,12 +60,12 @@ export default function Footer() {
             <h2 id="f-sectors" className="text-sm font-bold uppercase tracking-[0.14em] text-white">
               Sectors
             </h2>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-5 space-y-3 max-md:mt-3 max-md:space-y-0">
               {SECTORS.map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={`/events/?sector=${s.slug}`}
-                    className="text-[0.95rem] text-white/65 transition-colors hover:text-gold"
+                    className="text-[0.95rem] text-white/65 transition-colors hover:text-gold max-md:inline-flex max-md:min-h-11 max-md:items-center"
                   >
                     {s.name}
                   </Link>
@@ -75,19 +75,19 @@ export default function Footer() {
             <h2 className="mt-8 text-sm font-bold uppercase tracking-[0.14em] text-white">
               Company
             </h2>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-5 space-y-3 max-md:mt-3 max-md:space-y-0">
               <li>
-                <Link href="/about/" className="text-[0.95rem] text-white/65 hover:text-gold">
+                <Link href="/about/" className="text-[0.95rem] text-white/65 hover:text-gold max-md:inline-flex max-md:min-h-11 max-md:items-center">
                   About EBM
                 </Link>
               </li>
               <li>
-                <Link href="/sponsorship/" className="text-[0.95rem] text-white/65 hover:text-gold">
+                <Link href="/sponsorship/" className="text-[0.95rem] text-white/65 hover:text-gold max-md:inline-flex max-md:min-h-11 max-md:items-center">
                   Sponsorship
                 </Link>
               </li>
               <li>
-                <Link href="/blog/" className="text-[0.95rem] text-white/65 hover:text-gold">
+                <Link href="/blog/" className="text-[0.95rem] text-white/65 hover:text-gold max-md:inline-flex max-md:min-h-11 max-md:items-center">
                   Insights
                 </Link>
               </li>
@@ -103,12 +103,12 @@ export default function Footer() {
                 {SITE.address.locality}, {SITE.address.region} {SITE.address.postalCode},{' '}
                 {SITE.address.countryName}
               </p>
-              <ul className="mt-5 space-y-2.5">
+              <ul className="mt-5 space-y-2.5 max-md:mt-3 max-md:space-y-0">
                 {SITE.phones.map((p) => (
                   <li key={p.href}>
                     <a
                       href={p.href}
-                      className="text-[0.95rem] font-medium text-white/85 transition-colors hover:text-gold"
+                      className="text-[0.95rem] font-medium text-white/85 transition-colors hover:text-gold max-md:inline-flex max-md:min-h-11 max-md:items-center"
                     >
                       {p.value}
                     </a>
@@ -118,7 +118,7 @@ export default function Footer() {
                 <li>
                   <a
                     href={`mailto:${SITE.emails.general}`}
-                    className="text-[0.95rem] font-medium text-white/85 transition-colors hover:text-gold"
+                    className="text-[0.95rem] font-medium text-white/85 transition-colors hover:text-gold max-md:inline-flex max-md:min-h-11 max-md:items-center"
                   >
                     {SITE.emails.general}
                   </a>
@@ -152,17 +152,17 @@ export default function Footer() {
           <p>
             © {YEAR} {SITE.legalName} All rights reserved.
           </p>
-          <nav aria-label="Legal" className="flex flex-wrap gap-x-6 gap-y-2">
-            <Link href="/privacy-policy/" className="hover:text-gold">
+          <nav aria-label="Legal" className="flex flex-wrap gap-x-6 gap-y-2 max-lg:gap-y-0">
+            <Link href="/privacy-policy/" className="hover:text-gold max-lg:inline-flex max-lg:min-h-11 max-lg:items-center">
               Privacy Policy
             </Link>
-            <Link href="/terms/" className="hover:text-gold">
+            <Link href="/terms/" className="hover:text-gold max-lg:inline-flex max-lg:min-h-11 max-lg:items-center">
               Terms of Use
             </Link>
-            <Link href="/refund-policy/" className="hover:text-gold">
+            <Link href="/refund-policy/" className="hover:text-gold max-lg:inline-flex max-lg:min-h-11 max-lg:items-center">
               Refund &amp; Cancellation
             </Link>
-            <Link href="/contact/" className="hover:text-gold">
+            <Link href="/contact/" className="hover:text-gold max-lg:inline-flex max-lg:min-h-11 max-lg:items-center">
               Contact
             </Link>
           </nav>

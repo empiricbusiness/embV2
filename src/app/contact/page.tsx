@@ -107,14 +107,14 @@ export default function ContactPage() {
             {SITE.social.length > 0 && (
               <div className="card">
                 <h2 className="text-[1.1rem] font-bold text-white">Follow</h2>
-                <ul className="mt-4 space-y-2">
+                <ul className="mt-4 space-y-2 max-md:space-y-0">
                   {SITE.social.map((s) => (
                     <li key={s.name}>
                       <a
                         href={s.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[0.95rem] font-medium text-white/80 hover:text-gold"
+                        className="text-[0.95rem] font-medium text-white/80 hover:text-gold max-md:inline-flex max-md:min-h-11 max-md:min-w-11 max-md:items-center"
                       >
                         {s.name}
                         <span className="sr-only"> (opens in a new tab)</span>

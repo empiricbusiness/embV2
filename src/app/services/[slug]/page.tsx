@@ -114,14 +114,14 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
       {/* FAQ */}
       <section className="section border-t border-white/10 bg-navy-900">
-        <div className="wrap grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="wrap grid gap-(--space-block) lg:grid-cols-[0.8fr_1.2fr] lg:gap-12">
           <div>
             <h2 className="h2 text-white">Questions</h2>
           </div>
           <div className="divide-y divide-white/10 border-y border-white/10">
             {c.faqs.map((f) => (
               <details key={f.q} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-[1.02rem] font-semibold text-white marker:hidden">
+                <summary className="-my-5 flex cursor-pointer list-none items-start justify-between gap-4 text-[1.02rem] font-semibold text-white marker:hidden">
                   {f.q}
                   <span
                     aria-hidden

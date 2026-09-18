@@ -79,7 +79,7 @@ export default function EventsPage() {
               See sponsorship options
             </Link>
             {next && (
-              <Link href={`/events/${next.slug}/`} className="btn btn-ghost">
+              <Link href={`/events/${next.slug}/`} className="btn btn-ghost max-md:whitespace-normal">
                 Next up: {next.seoName ?? next.name}
               </Link>
             )}
