@@ -254,6 +254,11 @@ The old URLs must not 404. These are configured in `vercel.json` under `redirect
 The `/ciso/`, `/hrtech/` and the two summit subdomains are **untouched and still live** — the new
 event pages link out to them until they're migrated.
 
+### Search Console
+
+`public/google69285137b574d2c5.html` verifies `https://www.empiricbusinessmedia.com/` in Google
+Search Console. Google re-checks it from time to time, so do not delete or rename it.
+
 ---
 
 ## 5. Next phase — the microsites
