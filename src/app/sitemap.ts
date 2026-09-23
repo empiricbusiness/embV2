@@ -1,6 +1,5 @@
 import type { MetadataRoute } from 'next'
 import { SITE, SERVICES, EVENTS, POSTS } from '@/data/site'
-import { tourCities } from '@/lib/tour'
 
 export const dynamic = 'force-static'
 
@@ -16,7 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${BASE}/`, lastModified: now, changeFrequency: 'weekly', priority: 1 },
     { url: `${BASE}/events/`, lastModified: now, changeFrequency: 'weekly', priority: 0.95 },
-    { url: `${BASE}/tour/`, lastModified: now, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${BASE}/sponsorship/`, lastModified: now, changeFrequency: 'monthly', priority: 0.95 },
     { url: `${BASE}/services/`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${BASE}/about/`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
@@ -42,14 +40,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: e.status === 'upcoming' ? 0.9 : 0.5,
   }))
 
-  /* City pages are derived from the tours, so this list cannot name a URL
-     that generateStaticParams did not build. */
-  const cities: MetadataRoute.Sitemap = tourCities().map((c) => ({
-    url: `${BASE}/tour/${c.slug}/`,
-    lastModified: now,
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  }))
+  /* The /tour/ pages are hidden while they are unfinished, so they are left
+     out of the sitemap. Restore this block when they go back in the nav. */
 
   const posts: MetadataRoute.Sitemap = POSTS.map((p) => ({
     url: `${BASE}/blog/${p.slug}/`,
@@ -58,5 +50,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
-  return [...staticPages, ...services, ...events, ...cities, ...posts]
+  return [...staticPages, ...services, ...events, ...posts]
 }

@@ -1064,7 +1064,6 @@ export const NAV = [
   { label: 'About', href: '/about/' },
   { label: 'Services', href: '/services/' },
   { label: 'Events', href: '/events/' },
-  { label: 'On tour', href: '/tour/' },
   { label: 'Sponsorship', href: '/sponsorship/' },
   { label: 'Gallery', href: '/gallery/' },
   { label: 'Blog', href: '/blog/' },

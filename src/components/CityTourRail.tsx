@@ -1,5 +1,4 @@
 import type { CSSProperties } from 'react'
-import Link from 'next/link'
 import type { EventRecord } from '@/data/site'
 import {
   deriveLegStatus,
@@ -114,12 +113,6 @@ export default function CityTourRail({ event }: { event: EventRecord }) {
           </ol>
         </div>
 
-        <p className="mt-8 text-sm text-white/55">
-          Looking for a particular city?{' '}
-          <Link href="/tour/" className="link-quiet">
-            Browse every city on tour
-          </Link>
-        </p>
       </div>
     </section>
   )

@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 
   // Title budget: the `| EBM` template costs 6 of the gate's 65 characters and
   // every ampersand costs 5 in the measured HTML, so this line carries none.
-  return pageMeta({
+  const meta = pageMeta({
     title: `B2B Conferences and Summits in ${match.city}`,
     description: `${stops.length} EBM ${stops.length === 1 ? 'edition' : 'editions'} across ${verticals} ${
       verticals === 1 ? 'sector' : 'sectors'
@@ -50,6 +50,8 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
       `corporate conference organisers ${match.city}`,
     ],
   })
+  // Hidden while the tour pages are unfinished — see src/app/tour/page.tsx.
+  return { ...meta, robots: { index: false, follow: false } }
 }
 
 export default async function CityTourPage({ params }: { params: Promise<{ city: string }> }) {

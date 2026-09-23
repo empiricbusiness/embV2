@@ -14,7 +14,7 @@ type HeroImg = { src: string; w: number; h: number }
  * disappears when the last one is removed.
  */
 
-export const metadata = pageMeta({
+const tourMeta = pageMeta({
   title: 'B2B Events by City in India',
   description:
     'Every Indian city on an EBM tour, with the editions coming to each. Find a conference, summit or awards evening near you and register, speak or sponsor.',
@@ -26,6 +26,11 @@ export const metadata = pageMeta({
     'conference organisers India',
   ],
 })
+
+/* Hidden while these pages are unfinished: not in the nav, not in the sitemap and
+   not indexed. They still answer, so any link already shared keeps working.
+   Drop the robots line to bring them back. */
+export const metadata = { ...tourMeta, robots: { index: false, follow: false } }
 
 export default function TourIndexPage() {
   const cities = tourCities()
