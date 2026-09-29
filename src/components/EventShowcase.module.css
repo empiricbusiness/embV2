@@ -1,0 +1,1980 @@
+/*
+ * EventShowcase — the redesigned event page (5th Edition FinTax Summit & Awards).
+ * A CSS module, so none of this reaches any other page's look.
+ *
+ * Palette: the site's own navy scale (#071d33 navy-950 … #2a7fd6 navy-500) and
+ * gold #f5b614, plus the event's cream #F3F6D0 for its logo and primary buttons.
+ *
+ * Theme: finance, tax and audit. The whole page sits on one fixed "audit paper"
+ * backdrop — a fine ledger grid with gold column rules and crosshair registration
+ * marks — so sections read as one document rather than coloured slabs. The hero
+ * adds a moving perspective grid, a rising bar chart and a growth line.
+ */
+
+.root {
+  --ft-navy: #002844;
+  --ft-cream: #f3f6d0;
+  --ft-bg: #061a2f;
+  --ft-bg-2: #0a2542;
+  --ft-gold: #f5b614;
+  --ft-gold-rgb: 245, 182, 20;
+  --ft-blue-rgb: 25, 104, 188;
+  --ft-sky-rgb: 42, 127, 214;
+  --ft-line: rgba(255, 255, 255, 0.1);
+  --ft-card: linear-gradient(160deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02));
+
+  position: relative;
+  isolation: isolate;
+  /* Clip the fixed backdrop to this element, so it never shows behind the site
+     header or footer. */
+  clip-path: inset(0);
+  background: var(--ft-bg);
+  color: #fff;
+}
+
+/* Tokens for UI portalled to <body> (the partner panel). */
+.portal {
+  --ft-navy: #002844;
+  --ft-cream: #f3f6d0;
+  --ft-bg: #061a2f;
+  --ft-bg-2: #0a2542;
+  --ft-gold: #f5b614;
+  --ft-gold-rgb: 245, 182, 20;
+  --ft-blue-rgb: 25, 104, 188;
+  --ft-sky-rgb: 42, 127, 214;
+  --ft-line: rgba(255, 255, 255, 0.1);
+  --ft-card: linear-gradient(160deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02));
+  color: #fff;
+}
+
+/* The page-wide backdrop: fixed, so it stays put while the content scrolls
+   over it, like a sheet of ledger paper under glass. */
+.root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cpath d='M0 .5H160M0 40.5H160M0 80.5H160M0 120.5H160M.5 0V160M40.5 0V160M80.5 0V160M120.5 0V160' stroke='%23fff' stroke-opacity='.035'/%3E%3Cpath d='M.5 0V160' stroke='%23f5b614' stroke-opacity='.07'/%3E%3Cpath d='M75 80.5h11M80.5 75v11' stroke='%23f5b614' stroke-opacity='.22'/%3E%3C/svg%3E"),
+    radial-gradient(56rem 36rem at 0% 0%, rgba(var(--ft-gold-rgb), 0.08), transparent 60%),
+    radial-gradient(50rem 40rem at 100% 35%, rgba(var(--ft-blue-rgb), 0.2), transparent 65%),
+    radial-gradient(60rem 40rem at 40% 105%, rgba(var(--ft-sky-rgb), 0.14), transparent 65%),
+    linear-gradient(180deg, var(--ft-bg) 0%, var(--ft-bg-2) 55%, var(--ft-bg) 100%);
+}
+
+/* Grain: fractal noise from an inline SVG filter at 3.5%. */
+.root::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.display {
+  font-family: var(--font-bebas), var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.cream {
+  color: var(--ft-cream);
+}
+
+.gold {
+  color: var(--ft-gold);
+}
+
+/* ================================================================== hero */
+.hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.sceneGlowGold {
+  position: absolute;
+  top: 12%;
+  left: -14%;
+  width: min(60rem, 90vw);
+  aspect-ratio: 1.5;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgba(var(--ft-gold-rgb), 0.12), rgba(var(--ft-gold-rgb), 0.04) 55%, transparent);
+  filter: blur(40px);
+}
+
+.sceneGlowBlue {
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: min(56rem, 80vw);
+  aspect-ratio: 1.2;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgba(var(--ft-sky-rgb), 0.38), rgba(var(--ft-blue-rgb), 0.12) 55%, transparent);
+  filter: blur(30px);
+}
+
+/* A perspective grid floor, running toward the viewer: the ledger, in motion. */
+.floor {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  bottom: 0;
+  height: 46%;
+  perspective: 420px;
+  perspective-origin: 50% 0%;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 40%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 0%, #000 40%, transparent 100%);
+}
+
+.floorGrid {
+  position: absolute;
+  inset: 0 0 -60%;
+  transform: rotateX(64deg);
+  transform-origin: 50% 0%;
+  background-image:
+    linear-gradient(rgba(var(--ft-gold-rgb), 0.28) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(var(--ft-gold-rgb), 0.2) 1.5px, transparent 1.5px);
+  background-size: 64px 64px;
+  animation: ft-floor 5s linear infinite;
+}
+
+@keyframes ft-floor {
+  to {
+    background-position: 0 64px;
+  }
+}
+
+.horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 46%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(var(--ft-gold-rgb), 0.55), transparent);
+  box-shadow: 0 0 30px 6px rgba(var(--ft-gold-rgb), 0.18);
+}
+
+/* The rising chart, standing on the horizon behind the glance card. */
+.bars {
+  position: absolute;
+  right: -6%;
+  bottom: 44%;
+  width: min(36rem, 40vw);
+  height: auto;
+  overflow: visible;
+}
+
+.bar {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: ft-grow 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes ft-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+.trend {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: ft-draw 2.4s 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes ft-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ft-pulse 2.2s 2.6s ease-out infinite;
+}
+
+@keyframes ft-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+/* Topic chips floating over the chart. */
+.heroChips {
+  position: absolute;
+  inset: 0;
+}
+
+.heroChip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem 0.45rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(6, 26, 47, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 12px 30px -16px rgba(0, 0, 0, 0.8);
+  animation: ft-float 7s ease-in-out infinite;
+}
+
+.heroChip::after {
+  content: attr(data-label);
+}
+
+.heroChip span {
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: var(--ft-gold);
+  color: var(--ft-navy);
+}
+
+@keyframes ft-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Gold sparks drifting up from the floor. */
+.spark {
+  position: absolute;
+  bottom: 8%;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--ft-gold);
+  box-shadow: 0 0 10px 2px rgba(var(--ft-gold-rgb), 0.6);
+  opacity: 0;
+  animation: ft-rise 9s linear infinite;
+}
+
+@keyframes ft-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-60vh);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  .bars {
+    right: -8%;
+    width: 80vw;
+    opacity: 0.35;
+  }
+  .heroChip:nth-child(n + 4) {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .heroChips {
+    display: none;
+  }
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid var(--ft-line);
+  border-radius: 999px;
+  padding: 0.4rem 0.95rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ft-cream);
+  background: rgba(6, 26, 47, 0.6);
+}
+
+.kicker::before {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--ft-gold);
+  box-shadow: 0 0 0 4px rgba(var(--ft-gold-rgb), 0.2);
+}
+
+/* The H1's text line, under the logo. */
+.h1Tag {
+  display: block;
+  margin-top: 1.1rem;
+  font-size: clamp(0.8rem, 0.72rem + 0.3vw, 0.95rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ft-cream);
+}
+
+.fact {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.factIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.8rem;
+  background: var(--ft-cream);
+  color: var(--ft-navy);
+}
+
+.btnCream {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  background: var(--ft-cream);
+  color: var(--ft-navy);
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 10px 30px -12px rgba(243, 246, 208, 0.55);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.btnCream:hover {
+  transform: translateY(-2px);
+  background: #fff;
+}
+
+.btnLine {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(243, 246, 208, 0.55);
+  color: var(--ft-cream);
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btnLine:hover {
+  background: rgba(243, 246, 208, 0.1);
+  border-color: var(--ft-cream);
+}
+
+.glance {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 1.5rem;
+  /* A navy floor under the frost keeps the small labels above 4.5:1 even
+     where the chart behind the card is brightest. */
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
+    rgba(7, 29, 51, 0.55);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-shadow:
+    0 40px 100px -40px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+/* The shared Countdown lays its four cells out as a non-wrapping flex row with
+   64px minimums, which is wider than a 390px phone allows inside this card.
+   Here they become four equal columns that can shrink. */
+.glance {
+  min-width: 0;
+}
+
+.glance [role='timer'] ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.glance [role='timer'] li {
+  min-width: 0;
+  padding-inline: 0.25rem;
+}
+
+.stat {
+  border-top: 1px solid var(--ft-line);
+  padding-top: 0.9rem;
+}
+
+.avatars {
+  display: flex;
+}
+
+.avatars > * + * {
+  margin-left: -0.7rem;
+}
+
+.avatar {
+  border-radius: 999px;
+  border: 2px solid var(--ft-cream);
+  background: var(--ft-navy);
+  object-fit: cover;
+}
+
+/* ========================================================= partner strip */
+.band {
+  position: relative;
+  border-block: 1px solid var(--ft-line);
+  background: rgba(6, 26, 47, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.bandLabel {
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.bandLogo {
+  display: grid;
+  place-items: center;
+  height: 3.6rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 0.8rem;
+  background: #fff;
+}
+
+.bandLogoDark {
+  padding-inline: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* The EBM lockup is wide and short: size it by width, not by height. */
+.bandLogo.bandLogoDark img {
+  width: 13.5rem;
+  max-width: 13.5rem;
+  height: auto;
+}
+
+.bandLogo img {
+  height: 2.3rem;
+  width: auto;
+  max-width: 10rem;
+  object-fit: contain;
+}
+
+/* ============================================================= sections */
+.section {
+  position: relative;
+  padding-block: var(--space-section);
+}
+
+/* A gold hairline that fades out at both ends marks each new chapter. */
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(var(--ft-gold-rgb), 0.35), transparent);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.3rem 1.4rem 0.3rem 0.3rem;
+  border: 1px solid var(--ft-line);
+  border-radius: 999px;
+  background: rgba(6, 26, 47, 0.5);
+}
+
+.pillIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 999px;
+  background: var(--ft-cream);
+  color: var(--ft-navy);
+}
+
+.pillText {
+  font-size: clamp(0.95rem, 0.85rem + 0.35vw, 1.15rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ft-cream);
+}
+
+.headline {
+  margin-top: 1.1rem;
+  font-size: clamp(2.3rem, 1.5rem + 3vw, 4.2rem);
+  line-height: 0.95;
+}
+
+.glass {
+  border: 1px solid var(--ft-line);
+  border-radius: 1.5rem;
+  background: var(--ft-card);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+/* ================================================================ about */
+.bento {
+  display: grid;
+  gap: 1.1rem;
+}
+
+@media (min-width: 768px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .bento {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .bLead {
+    grid-column: span 4;
+  }
+  .bTheme {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .bFact {
+    grid-column: span 2;
+  }
+  .bStats {
+    grid-column: span 4;
+  }
+}
+
+.bCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.6rem;
+  overflow: hidden;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.bCard:hover {
+  border-color: rgba(var(--ft-gold-rgb), 0.35);
+  transform: translateY(-3px);
+}
+
+.bLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ft-gold);
+}
+
+.bIcon {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.8rem;
+  background: rgba(var(--ft-gold-rgb), 0.14);
+  color: var(--ft-gold);
+}
+
+/* The theme card: a gold-edged panel with the theme set large. */
+.bTheme {
+  justify-content: space-between;
+  border-color: rgba(var(--ft-gold-rgb), 0.4);
+  background:
+    radial-gradient(28rem 20rem at 100% 0%, rgba(var(--ft-gold-rgb), 0.2), transparent 70%),
+    linear-gradient(160deg, rgba(10, 37, 66, 0.9), rgba(6, 26, 47, 0.9));
+}
+
+.bTheme::after {
+  content: '';
+  position: absolute;
+  right: -3rem;
+  bottom: -3rem;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--ft-gold-rgb), 0.25);
+  box-shadow:
+    0 0 0 18px rgba(var(--ft-gold-rgb), 0.05),
+    0 0 0 36px rgba(var(--ft-gold-rgb), 0.03);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.tag {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--ft-gold-rgb), 0.35);
+  color: var(--ft-cream);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.bStats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+  padding: 0.8rem;
+}
+
+@media (min-width: 640px) {
+  .bStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.bStats:hover {
+  transform: none;
+}
+
+/* Each number is a link into its section. */
+.bStat {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.1rem 1.1rem 1.1rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(6, 26, 47, 0.45);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.bStat:hover,
+.bStat:focus-visible {
+  border-color: rgba(var(--ft-gold-rgb), 0.5);
+  background: rgba(var(--ft-gold-rgb), 0.07);
+  transform: translateY(-2px);
+}
+
+.bStatIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 0.8rem;
+  background: rgba(var(--ft-gold-rgb), 0.14);
+  color: var(--ft-gold);
+}
+
+.bStatGo {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--ft-gold);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.bStat:hover .bStatGo,
+.bStat:focus-visible .bStatGo {
+  opacity: 1;
+  transform: none;
+}
+
+/* =============================================================== attend */
+.tablist {
+  display: inline-flex;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--ft-line);
+  background: rgba(6, 26, 47, 0.6);
+}
+
+.tabBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.15rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.75);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+/* On a narrow phone the two tabs share the row instead of pushing past it. */
+@media (max-width: 479px) {
+  .tablist {
+    display: flex;
+    width: 100%;
+  }
+  .tabBtn {
+    flex: 1;
+    justify-content: center;
+    padding-inline: 0.6rem;
+  }
+}
+
+.tabBtn[aria-selected='true'] {
+  background: var(--ft-cream);
+  color: var(--ft-navy);
+}
+
+.tabBtn:not([aria-selected='true']):hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: rgba(var(--ft-gold-rgb), 0.18);
+  color: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.tileGrid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .tileGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .tileGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  height: 100%;
+  padding: 1.15rem 1.1rem 1.2rem;
+  border-radius: 1.1rem;
+  border: 1px solid var(--ft-line);
+  background: var(--ft-card);
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+/* A gold spotlight that follows the pointer (--mx / --my, set on move). */
+.tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(14rem circle at var(--mx, 50%) var(--my, 0%), rgba(var(--ft-gold-rgb), 0.16), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* A gold rule that draws across the foot of the tile on hover. */
+.tile::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--ft-gold), rgba(var(--ft-gold-rgb), 0));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.tile:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--ft-gold-rgb), 0.45);
+}
+
+.tile:hover::before {
+  opacity: 1;
+}
+
+.tile:hover::after {
+  transform: scaleX(1);
+}
+
+.tileIcon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(var(--ft-gold-rgb), 0.45);
+  background: rgba(var(--ft-gold-rgb), 0.1);
+  color: var(--ft-gold);
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.tile:hover .tileIcon {
+  background: var(--ft-gold);
+  color: var(--ft-navy);
+  transform: rotate(-6deg) scale(1.06);
+}
+
+.tileNum {
+  position: absolute;
+  top: 0.9rem;
+  right: 1rem;
+  font-family: var(--font-bebas), var(--font-sans);
+  font-size: 1.6rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.14);
+  transition: color 0.25s ease;
+}
+
+.tile:hover .tileNum {
+  color: rgba(var(--ft-gold-rgb), 0.6);
+}
+
+.tileText {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.tabPanel {
+  animation: ft-fade 0.35s ease both;
+}
+
+@keyframes ft-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* =========================================================== why attend */
+.why {
+  position: relative;
+  padding: 1.6rem 1.4rem 1.5rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--ft-line);
+  background: var(--ft-card);
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.why:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--ft-gold-rgb), 0.45);
+}
+
+.whyNum {
+  font-family: var(--font-bebas), var(--font-sans);
+  font-size: 3.4rem;
+  line-height: 0.85;
+  color: var(--ft-cream);
+}
+
+/* =============================================================== agenda */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid var(--ft-line);
+  background: rgba(6, 26, 47, 0.55);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.fchip:hover {
+  border-color: rgba(var(--ft-gold-rgb), 0.5);
+  color: #fff;
+}
+
+.fchip[aria-pressed='true'] {
+  background: var(--ft-gold);
+  border-color: var(--ft-gold);
+  color: var(--ft-navy);
+}
+
+.timeline {
+  --t-time: 5.6rem;
+  /* Horizontal centre of the spine, and vertical centre of a row's dot. */
+  --t-x: calc(var(--t-time) + 0.7rem + 0.95rem);
+  --t-dot-y: 1.6rem;
+  --t-gap: 0.9rem;
+  position: relative;
+  display: grid;
+  gap: var(--t-gap);
+}
+
+@media (min-width: 768px) {
+  .timeline {
+    --t-time: 7.2rem;
+  }
+}
+
+/* The spine. */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: calc(var(--t-x) - 1px);
+  width: 2px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(var(--ft-sky-rgb), 0.35) 50%, rgba(255, 255, 255, 0.18));
+}
+
+/* Each row's stretch of spine, from its dot to the next row's dot. It fills
+   gold for every row before the hovered or pinned one. */
+.tItem::before,
+.tDivider::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: calc(var(--t-x) - 1.5px);
+  top: var(--t-dot-y);
+  bottom: calc(-1 * (var(--t-gap) + var(--t-dot-y)));
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--ft-gold), #ffd45c);
+  box-shadow: 0 0 12px rgba(var(--ft-gold-rgb), 0.55);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.25s ease;
+}
+
+.tDivider::before {
+  top: calc(-1 * var(--t-gap) + var(--t-dot-y));
+}
+
+.passed::before {
+  transform: scaleY(1);
+}
+
+.tDivider {
+  position: relative;
+  padding-left: calc(var(--t-x) + 1.65rem);
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ft-gold);
+}
+
+.tItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--t-time) 1.9rem minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.7rem;
+  cursor: pointer;
+}
+
+.tWhen {
+  padding-top: 1.05rem;
+  text-align: right;
+}
+
+.tTime {
+  display: block;
+  font-family: var(--font-bebas), var(--font-sans);
+  font-size: 1.45rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+
+@media (min-width: 768px) {
+  .tTime {
+    font-size: 1.75rem;
+  }
+}
+
+.tLen {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.tDot {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin: 1.125rem auto 0;
+  width: 0.95rem;
+  height: 0.95rem;
+  padding: 0;
+  border-radius: 999px;
+  border: 2px solid var(--ft-gold);
+  background: var(--ft-bg);
+  box-shadow: 0 0 0 4px rgba(var(--ft-gold-rgb), 0.12);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tDot:focus-visible {
+  outline: 2px solid var(--ft-cream);
+  outline-offset: 3px;
+}
+
+/* Rows already passed: solid gold dots. The current row: a larger, glowing
+   dot with a ring pulse, a gold time and a gold-edged card. */
+.passed .tDot {
+  background: var(--ft-gold);
+  border-color: var(--ft-gold);
+}
+
+.current .tDot {
+  background: var(--ft-gold);
+  border-color: #fff;
+  transform: scale(1.45);
+  box-shadow:
+    0 0 0 5px rgba(var(--ft-gold-rgb), 0.25),
+    0 0 18px 4px rgba(var(--ft-gold-rgb), 0.55);
+  animation: ft-ring 1.6s ease-out infinite;
+}
+
+@keyframes ft-ring {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(var(--ft-gold-rgb), 0.5),
+      0 0 18px 4px rgba(var(--ft-gold-rgb), 0.55);
+  }
+  100% {
+    box-shadow:
+      0 0 0 12px rgba(var(--ft-gold-rgb), 0),
+      0 0 18px 4px rgba(var(--ft-gold-rgb), 0.55);
+  }
+}
+
+.current .tTime {
+  color: var(--ft-gold);
+}
+
+.current .tLen {
+  color: var(--ft-cream);
+}
+
+.current .tCard {
+  border-color: rgba(var(--ft-gold-rgb), 0.7);
+  box-shadow: 0 18px 40px -26px rgba(var(--ft-gold-rgb), 0.55);
+  transform: translateX(4px);
+}
+
+.tCard {
+  position: relative;
+  padding: 1rem 1.2rem;
+  border-radius: 1.1rem;
+  border: 1px solid var(--ft-line);
+  background: var(--ft-card);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.tCard:hover {
+  border-color: rgba(var(--ft-gold-rgb), 0.35);
+}
+
+.tKind {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.45rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(var(--ft-sky-rgb), 0.22);
+  color: #d5e7fb;
+}
+
+.tTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+}
+
+/* Session types. Talks are raised; logistics recede. */
+.t_keynote .tCard,
+.t_awards .tCard {
+  border-color: rgba(var(--ft-gold-rgb), 0.5);
+  background:
+    radial-gradient(24rem 10rem at 100% 0%, rgba(var(--ft-gold-rgb), 0.16), transparent 70%),
+    var(--ft-card);
+}
+
+.t_keynote .tKind,
+.t_awards .tKind {
+  background: var(--ft-gold);
+  color: var(--ft-navy);
+}
+
+.t_keynote .tDot,
+.t_awards .tDot {
+  background: var(--ft-gold);
+}
+
+.t_panel .tCard {
+  border-color: rgba(var(--ft-sky-rgb), 0.45);
+}
+
+.t_panel .tDot {
+  border-color: #6aa9ea;
+}
+
+.t_partner .tCard,
+.t_break .tCard {
+  padding-block: 0.8rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.t_partner .tTitle,
+.t_break .tTitle {
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.t_break .tTitle {
+  color: var(--ft-cream);
+}
+
+.t_partner .tDot,
+.t_break .tDot {
+  width: 0.65rem;
+  height: 0.65rem;
+  margin-top: 1.275rem;
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: none;
+}
+
+.t_partner.passed .tDot,
+.t_break.passed .tDot {
+  border-color: var(--ft-gold);
+}
+
+.t_partner .tWhen,
+.t_break .tWhen {
+  padding-top: 0.85rem;
+}
+
+.t_partner .tTime,
+.t_break .tTime {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.t_partner.current .tTime,
+.t_break.current .tTime {
+  color: var(--ft-gold);
+}
+
+.tToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.85rem;
+  padding: 0.45rem 0.9rem 0.45rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(6, 26, 47, 0.5);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: left;
+  transition: border-color 0.2s ease;
+}
+
+.tToggle:hover {
+  border-color: rgba(var(--ft-gold-rgb), 0.5);
+}
+
+.tToggleText {
+  flex: 1;
+  min-width: 0;
+}
+
+.tToggle svg {
+  margin-left: auto;
+  flex: none;
+  transition: transform 0.3s ease;
+}
+
+.tToggle[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+
+.stack {
+  display: flex;
+  flex: none;
+}
+
+.stack > * + * {
+  margin-left: -0.55rem;
+}
+
+.stack img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 2px solid var(--ft-bg);
+  object-fit: cover;
+}
+
+/* Phones: one column. The time sits above its card, the spine runs down the
+   left edge, and the panel button can wrap. */
+@media (max-width: 479px) {
+  .timeline {
+    --t-x: 0.7rem;
+    --t-dot-y: 0.675rem;
+  }
+  .tDivider {
+    padding-left: 2rem;
+  }
+  .tItem {
+    grid-template-columns: 1.4rem minmax(0, 1fr);
+    column-gap: 0.6rem;
+  }
+  .tWhen,
+  .t_partner .tWhen,
+  .t_break .tWhen {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding-top: 0;
+    text-align: left;
+  }
+  .tTime {
+    font-size: 1.25rem;
+  }
+  .t_partner .tTime,
+  .t_break .tTime {
+    font-size: 1.1rem;
+  }
+  .tLen {
+    margin-top: 0;
+  }
+  .tDot,
+  .t_partner .tDot,
+  .t_break .tDot {
+    grid-column: 1;
+    grid-row: 1;
+    margin-top: 0.2rem;
+  }
+  .t_partner .tDot,
+  .t_break .tDot {
+    margin-top: 0.35rem;
+  }
+  .tCard {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 0.4rem;
+  }
+  .current .tCard {
+    transform: none;
+  }
+  .stack img:nth-child(n + 4) {
+    display: none;
+  }
+}
+
+/* Collapsible panel line-up: grid-rows animates to the content's height. */
+.tPanel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.tPanel[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+
+.tPanelInner {
+  min-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: visibility 0.35s;
+}
+
+.tPanel[data-open='true'] .tPanelInner {
+  visibility: visible;
+}
+
+.people {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .people {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem;
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.person img {
+  flex: none;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 999px;
+  border: 2px solid rgba(243, 246, 208, 0.7);
+  object-fit: cover;
+}
+
+.personRole {
+  display: block;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ft-gold);
+}
+
+/* ============================================================= speakers */
+.spGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.1rem;
+}
+
+/* Height follows the content; a row's cards stretch to match each other. */
+.spCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc((100% - 1.1rem) / 2);
+  padding: 1.4rem 0.9rem 1.2rem;
+  border-radius: 1.3rem;
+  border: 1px solid var(--ft-line);
+  background:
+    radial-gradient(16rem 9rem at 50% 0%, rgba(var(--ft-sky-rgb), 0.22), transparent 70%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02)),
+    rgba(6, 26, 47, 0.6);
+  text-align: center;
+  overflow: hidden;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+@media (min-width: 768px) {
+  .spCard {
+    width: calc((100% - 2 * 1.1rem) / 3);
+  }
+}
+
+@media (min-width: 1024px) {
+  .spCard {
+    width: calc((100% - 3 * 1.1rem) / 4);
+  }
+}
+
+.spCard:hover {
+  border-color: rgba(var(--ft-gold-rgb), 0.5);
+  transform: translateY(-4px);
+}
+
+/* A slowly turning gold ring around each portrait. */
+.spPhoto {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 6.6rem;
+  height: 6.6rem;
+  border-radius: 999px;
+  flex: none;
+}
+
+.spPhoto::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: conic-gradient(from 0deg, var(--ft-gold), rgba(var(--ft-gold-rgb), 0.1), var(--ft-cream), rgba(var(--ft-gold-rgb), 0.1), var(--ft-gold));
+  animation: ft-spin 8s linear infinite;
+}
+
+@keyframes ft-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spPhoto img {
+  position: relative;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 999px;
+  border: 3px solid var(--ft-bg);
+  object-fit: cover;
+}
+
+.spRole {
+  margin-top: 0.8rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--ft-gold-rgb), 0.45);
+  color: var(--ft-cream);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* The session panel slides up over the card on hover, or when opened with
+   the corner button. 2D only, so the portrait stays sharp. */
+.spReveal {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 1.2rem 1rem;
+  border-radius: inherit;
+  background:
+    radial-gradient(16rem 10rem at 50% 100%, rgba(var(--ft-gold-rgb), 0.22), transparent 70%),
+    linear-gradient(165deg, #0c2a4a, #061a2f);
+  transform: translateY(101%);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .spCard:hover .spReveal {
+    transform: none;
+  }
+}
+
+.spCard[data-open='true'] .spReveal {
+  transform: none;
+}
+
+.spFlip {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(6, 26, 47, 0.7);
+  color: var(--ft-cream);
+  transition: border-color 0.2s ease;
+}
+
+.spFlip:hover,
+.spFlip:focus-visible {
+  border-color: var(--ft-gold);
+}
+
+/* On pointer devices hover already shows the session; keep the button for
+   keyboard users only. */
+@media (hover: hover) {
+  .spFlip {
+    opacity: 0;
+  }
+  .spFlip:focus-visible,
+  .spCard:hover .spFlip {
+    opacity: 1;
+  }
+}
+
+.spLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ft-gold);
+}
+
+/* =============================================================== awards */
+.awards {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.awards::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(44rem 26rem at 50% 0%, rgba(var(--ft-gold-rgb), 0.16), transparent 70%),
+    radial-gradient(30rem 20rem at 10% 90%, rgba(var(--ft-gold-rgb), 0.06), transparent 70%);
+}
+
+.awardTile {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  height: 100%;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.9rem;
+  border: 1px solid var(--ft-line);
+  background: rgba(6, 26, 47, 0.6);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.awardTile:hover {
+  border-color: rgba(var(--ft-gold-rgb), 0.55);
+  transform: translateY(-2px);
+}
+
+.groupHead {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ft-cream);
+}
+
+.groupHead::after {
+  content: '';
+  flex: 1;
+  min-width: 2rem;
+  height: 1px;
+  background: var(--ft-line);
+}
+
+/* ============================================================= partners */
+.pCard {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 100%;
+  border-radius: 1.4rem;
+  border: 1px solid var(--ft-line);
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02)),
+    rgba(6, 26, 47, 0.55);
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+@media (min-width: 640px) {
+  .pCard {
+    grid-template-columns: 11rem minmax(0, 1fr);
+  }
+}
+
+.pCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.pGold {
+  border-color: rgba(var(--ft-gold-rgb), 0.55);
+  box-shadow:
+    0 0 0 1px rgba(var(--ft-gold-rgb), 0.15),
+    0 30px 60px -40px rgba(var(--ft-gold-rgb), 0.5);
+}
+
+.pLogo {
+  display: grid;
+  place-items: center;
+  min-height: 7rem;
+  padding: 1.25rem;
+  background: #fff;
+}
+
+.pLogo img {
+  max-height: 3.4rem;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.tier {
+  display: inline-block;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.tierGold {
+  background: linear-gradient(135deg, #f7d774, #d9a520);
+  color: #3a2800;
+}
+
+.tierSilver {
+  background: linear-gradient(135deg, #eef1f4, #b9c3cc);
+  color: #24323d;
+}
+
+.tierTech {
+  background: rgba(var(--ft-sky-rgb), 0.28);
+  color: #d5e7fb;
+}
+
+.tierExhibit {
+  background: var(--ft-cream);
+  color: var(--ft-navy);
+}
+
+/* The card shows the start of the partner's copy; all of it is in the HTML. */
+.pPreview {
+  position: relative;
+  max-height: 4.6em;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.75);
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+  mask-image: linear-gradient(180deg, #000 55%, transparent);
+}
+
+.pPreview p + p {
+  margin-top: 0.6em;
+}
+
+.pMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ft-gold);
+}
+
+.pActive {
+  border-color: rgba(var(--ft-gold-rgb), 0.7);
+}
+
+/* The profile panel, centred on screen and grown out of the card. */
+.pOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 5.5rem 1rem 1.5rem;
+  background: rgba(3, 12, 24, 0.45);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  pointer-events: none;
+  animation: ft-dim 0.22s ease both;
+}
+
+/* Opened by click or tap: the backdrop closes it. */
+.pOverlayClick {
+  pointer-events: auto;
+}
+
+@keyframes ft-dim {
+  from {
+    opacity: 0;
+  }
+}
+
+.pPanel {
+  position: relative;
+  width: min(42rem, 100%);
+  max-height: min(84vh, 46rem);
+  overflow: auto;
+  pointer-events: auto;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(var(--ft-gold-rgb), 0.45);
+  background:
+    radial-gradient(30rem 16rem at 100% 0%, rgba(var(--ft-gold-rgb), 0.14), transparent 70%),
+    linear-gradient(165deg, #0c2a4a, #061a2f);
+  box-shadow: 0 40px 120px -30px rgba(0, 0, 0, 0.85);
+  animation: ft-pop 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes ft-pop {
+  from {
+    opacity: 0;
+    transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.45);
+  }
+}
+
+.pClosing {
+  animation: ft-dim 0.22s ease reverse both;
+}
+
+.pClosing .pPanel {
+  animation: ft-pop 0.22s ease-in reverse both;
+}
+
+.pClose {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  display: grid;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(6, 26, 47, 0.7);
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.pClose:hover,
+.pClose:focus-visible {
+  border-color: var(--ft-gold);
+}
+
+.pPanelHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem 3.5rem 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--ft-line);
+}
+
+.pPanelLogo {
+  display: grid;
+  place-items: center;
+  width: 10rem;
+  height: 5rem;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.pPanelLogo img {
+  max-height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.pPanelBody {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.25rem 1.5rem 1.6rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ============================================================== sponsor */
+.point {
+  display: flex;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--ft-line);
+}
+
+.point:first-child {
+  border-top: 1px solid var(--ft-line);
+}
+
+.pointNum {
+  font-family: var(--font-bebas), var(--font-sans);
+  font-size: 1.9rem;
+  line-height: 1;
+  color: var(--ft-gold);
+  min-width: 2.2rem;
+}
+
+/* ================================================================= faq */
+.faqItem summary {
+  list-style: none;
+}
+
+.faqItem summary::-webkit-details-marker {
+  display: none;
+}
+
+/* ================================================================= cta */
+.cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 2rem;
+  border: 1px solid rgba(var(--ft-gold-rgb), 0.35);
+  background:
+    radial-gradient(40rem 20rem at 50% 120%, rgba(var(--ft-gold-rgb), 0.22), transparent 70%),
+    radial-gradient(30rem 18rem at 100% 0%, rgba(var(--ft-sky-rgb), 0.3), transparent 70%),
+    rgba(6, 26, 47, 0.85);
+}
+
+/* ============================================================ motion */
+@media (prefers-reduced-motion: reduce) {
+  .floorGrid,
+  .bar,
+  .trend,
+  .pulse,
+  .heroChip,
+  .spark,
+  .spPhoto::before,
+  .tabPanel,
+  .current .tDot,
+  .pOverlay,
+  .pPanel,
+  .pClosing,
+  .pClosing .pPanel {
+    animation: none;
+  }
+  .trend {
+    stroke-dashoffset: 0;
+  }
+  .spark {
+    display: none;
+  }
+  .tPanel,
+  .bCard,
+  .bStat,
+  .tile,
+  .tile::after,
+  .tileIcon,
+  .why,
+  .pCard,
+  .spCard,
+  .spReveal,
+  .tCard,
+  .tItem::before,
+  .tDivider::before,
+  .awardTile,
+  .btnCream {
+    transition: none;
+  }
+}

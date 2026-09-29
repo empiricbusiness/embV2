@@ -44,6 +44,12 @@
     { "source": "/schedule-single.html", "destination": "/events/" },
     { "source": "/speaker.html", "destination": "/events/" },
     { "source": "/speaker-single.html", "destination": "/events/" },
-    { "source": "/testimonials.html", "destination": "/events/" }
+    { "source": "/testimonials.html", "destination": "/events/" },
+    { "source": "/events/enterprise-ai-security-cyber-resilience-summit-2026/", "destination": "/events/?sector=ciso-cybersecurity", "permanent": false },
+    { "source": "/events/enterprise-ai-security-cyber-resilience-summit-2026", "destination": "/events/?sector=ciso-cybersecurity", "permanent": false },
+    { "source": "/events/next-gen-hr-tech-summit-awards-2026/", "destination": "/events/?sector=hr-technology", "permanent": false },
+    { "source": "/events/next-gen-hr-tech-summit-awards-2026", "destination": "/events/?sector=hr-technology", "permanent": false },
+    { "source": "/events/manufacturing-metamorphosis-of-business-2026-8th-edition/", "destination": "/events/?sector=manufacturing", "permanent": false },
+    { "source": "/events/manufacturing-metamorphosis-of-business-2026-8th-edition", "destination": "/events/?sector=manufacturing", "permanent": false }
   ]
 }

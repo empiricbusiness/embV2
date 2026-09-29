@@ -23,7 +23,18 @@ export const byDateAsc = (a: EventRecord, b: EventRecord) => sortKey(a).localeCo
 /** Most recent first. */
 export const byDateDesc = (a: EventRecord, b: EventRecord) => sortKey(b).localeCompare(sortKey(a))
 
-export const upcoming = () => EVENTS.filter((e) => e.status === 'upcoming').sort(byDateAsc)
+/**
+ * The order every upcoming list uses: featured editions first, then dated
+ * editions soonest first, then editions with no fixed date. Undated ones used
+ * to sort to 1 January of their year, which put a "November 2026" event ahead
+ * of every dated one.
+ */
+export function orderUpcoming<T extends Pick<EventRecord, 'featured' | 'date'>>(list: T[]): T[] {
+  const rank = (e: T) => (e.featured ? 0 : e.date ? 1 : 2)
+  return [...list].sort((a, b) => rank(a) - rank(b) || (a.date ?? '').localeCompare(b.date ?? ''))
+}
+
+export const upcoming = () => orderUpcoming(EVENTS.filter((e) => e.status === 'upcoming'))
 export const past = () => EVENTS.filter((e) => e.status === 'past').sort(byDateDesc)
 
 /** Past editions grouped into year buckets, newest year first. */

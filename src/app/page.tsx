@@ -4,6 +4,7 @@ import { SITE, SERVICES, SECTORS, PROOF, POSTS } from '@/data/site'
 import { pageMeta, upcomingEvents, pastEvents, eventLd, itemListLd, faqLd } from '@/lib/seo'
 import { sectorsInUse, sectorsActive, listSentence, sectorCountWord } from '@/lib/events'
 import EventCard from '@/components/EventCard'
+import FeaturedEventCard from '@/components/FeaturedEventCard'
 import PartnerWall from '@/components/PartnerWall'
 import Countdown from '@/components/Countdown'
 import JsonLd from '@/components/JsonLd'
@@ -108,7 +109,7 @@ export default function HomePage() {
             height={heroImg.h}
             fetchPriority="high"
             decoding="async"
-            className="absolute inset-0 z-0 h-full w-full object-cover object-center opacity-55"
+            className="absolute inset-0 z-0 h-full w-full object-cover object-center opacity-55 lg:origin-bottom lg:scale-[1.35]"
           />
         </picture>
         {/* The wash runs left-to-right on wide screens, where the copy sits in
@@ -138,13 +139,17 @@ export default function HomePage() {
           className="absolute -bottom-32 -left-24 z-0 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(closest-side,rgba(25,104,188,0.45),transparent)]"
         />
 
-        <div className="wrap section relative z-10">
+        {/* At 1280px and up: copy on the left, the next event on the right, the whole
+            hero one screen tall. The right column used to be empty photo
+            (the venue ceiling) beside a 4-line, 69px headline, and the
+            event panel sat below the fold. Narrower screens keep the stacked layout. */}
+        <div className="wrap section relative z-10 xl:grid xl:min-h-[calc(100svh-5.5rem)] xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)] xl:content-center xl:items-center xl:gap-14 xl:py-14">
           <div className="section-head max-w-3xl">
             <p className="eyebrow">
               <span className="rule-gold" aria-hidden />
               {SITE.pullQuote}
             </p>
-            <h1 className="display text-white">
+            <h1 className="display text-white xl:text-[clamp(2.6rem,1.2rem+2vw,3.6rem)] xl:leading-[1.06]">
               B2B conferences, summits and awards that put you in the room with{' '}
               <span className="text-gold">decision-makers</span>.
             </h1>
@@ -165,7 +170,7 @@ export default function HomePage() {
 
           {/* Next event panel */}
           {hero && (
-            <div className="section-body max-w-2xl rounded-2xl border border-white/15 bg-navy-950/70 p-6 backdrop-blur-sm md:p-7">
+            <div className="section-body max-w-2xl rounded-2xl border border-white/15 bg-navy-950/70 p-6 backdrop-blur-sm md:p-7 xl:mt-0 xl:max-w-none xl:border-gold/30 xl:bg-navy-950/80 xl:p-8 xl:shadow-[0_40px_90px_-50px_rgba(0,0,0,0.9)]">
               <p className="eyebrow">Next event</p>
               <h2 className="mt-3 text-[1.35rem] font-bold leading-snug text-white md:text-[1.55rem]">
                 <Link href={`/events/${hero.slug}/`} className="hover:text-gold">
@@ -175,7 +180,7 @@ export default function HomePage() {
               {hero.theme && <p className="mt-2.5 text-[0.95rem] text-white/65">{hero.theme}</p>}
               <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-[0.95rem] font-medium text-white/85">
                 <time dateTime={hero.date ?? undefined}>{hero.dateLabel}</time>
-                <span aria-hidden className="text-white/25">
+                <span aria-hidden className="text-white/25 xl:hidden">
                   |
                 </span>
                 <span>{hero.city}, India</span>
@@ -188,10 +193,10 @@ export default function HomePage() {
               )}
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href={`/events/${hero.slug}/`} className="btn btn-gold">
+                <Link href={`/events/${hero.slug}/`} className="btn btn-gold xl:flex-1 xl:justify-center xl:px-5">
                   Event details
                 </Link>
-                <Link href="/contact/?intent=register" className="btn btn-ghost">
+                <Link href={`/contact/?intent=register&event=${hero.slug}`} className="btn btn-ghost xl:flex-1 xl:justify-center xl:px-5">
                   Register interest
                 </Link>
               </div>
@@ -332,10 +337,6 @@ export default function HomePage() {
                 Upcoming events
               </p>
               <h2 className="h2 text-white">Be part of our next industry event</h2>
-              <p className="lede text-white/65">
-                {upcoming.length} confirmed {upcoming.length === 1 ? 'edition' : 'editions'} across
-                cybersecurity, HR technology and manufacturing.
-              </p>
             </div>
             <Link href="/events/" className="btn btn-ghost">
               All events
@@ -343,11 +344,17 @@ export default function HomePage() {
           </div>
 
           <ul className="section-body grid gap-5 md:grid-cols-2 lg:grid-cols-3 card-grid">
-            {upcoming.map((e) => (
-              <li key={e.slug}>
-                <EventCard event={e} />
-              </li>
-            ))}
+            {upcoming.map((e) =>
+              e.featured ? (
+                <li key={e.slug} className="md:col-span-2 lg:col-span-3">
+                  <FeaturedEventCard event={e} />
+                </li>
+              ) : (
+                <li key={e.slug}>
+                  <EventCard event={e} />
+                </li>
+              ),
+            )}
           </ul>
         </div>
       </section>

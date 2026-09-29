@@ -348,6 +348,21 @@ export type EventRecord = {
    */
   pricingPublished?: boolean
   /**
+   * Put this edition first wherever upcoming events are listed: the home
+   * page's "Next event" panel, the footer's "Next up", the events page's
+   * "Next up" button and every upcoming grid. Ordering only — it hides
+   * nothing. See `orderUpcoming` in src/lib/events.ts.
+   */
+  featured?: boolean
+  /**
+   * Postponed, with no new date yet. The record stays here so the edition can
+   * come back by deleting this one line, but it is left out of `EVENTS` — so it
+   * appears on no page, list, count or sitemap, and its page is not built. Its
+   * URL 307-redirects (temporary) to its sector in vercel.json. No
+   * "postponed" or "cancelled" label is shown anywhere.
+   */
+  postponed?: boolean
+  /**
    * City legs of this edition's tour, if it runs as one. Optional by design:
    * an event with no `legs` renders exactly as it does today, so adding a
    * tour to one edition cannot change any other. Order is irrelevant — the
@@ -389,10 +404,11 @@ export type EventRecord = {
  *
  * DELIBERATELY NOT INCLUDED — see EXCLUDED_EVENTS below.
  */
-export const EVENTS: EventRecord[] = [
+export const ALL_EVENTS: EventRecord[] = [
   /* ---------------- upcoming ---------------- */
   {
     slug: 'enterprise-ai-security-cyber-resilience-summit-2026',
+    postponed: true, // 29 Sep 2026: postponed, no new date yet
     edition: '2nd Edition',
     name: 'Enterprise AI Security & Cyber Resilience Summit',
     seoName: 'Enterprise AI Security Summit',
@@ -415,6 +431,7 @@ export const EVENTS: EventRecord[] = [
   },
   {
     slug: 'next-gen-hr-tech-summit-awards-2026',
+    postponed: true, // 29 Sep 2026: postponed, no new date yet
     edition: '3rd Edition',
     name: 'Next-Gen HR Tech Summit & Awards',
     seoName: 'Next-Gen HR Tech Summit',
@@ -480,7 +497,32 @@ export const EVENTS: EventRecord[] = [
     ],
   },
   {
+    slug: 'fintax-summit-awards-2026',
+    edition: '5th Edition',
+    name: 'FinTax Summit & Awards',
+    seoName: 'FinTax Summit',
+    seoTitle: 'FinTax Summit 2026, Mumbai — Tax, Risk & Compliance',
+    fullName: '5th Edition FinTax Summit & Awards 2026',
+    theme: 'Driving the Future of Tax, Risk & Compliance: Building Faster, Smarter & Audit-Ready Finance',
+    date: '2026-10-22',
+    dateLabel: 'Thursday, 22 October 2026',
+    year: 2026,
+    // The brochure prints "08:30 PM - 05:30 PM". Its own agenda opens at
+    // 09:00 AM and the 4th Edition ran 08:30 AM to 05:30 PM, so AM is meant.
+    timeLabel: '08:30 AM – 05:30 PM',
+    city: 'Mumbai',
+    venue: null,
+    sector: 'cfo-finance',
+    format: 'conference',
+    status: 'upcoming',
+    featured: true,
+    image: 'poster/fintax-2026',
+    // No registerUrl: the brochure's tnfsummit subdomain went down with the
+    // domain move, so registration runs through the site's own contact form.
+  },
+  {
     slug: 'manufacturing-metamorphosis-of-business-2026-8th-edition',
+    postponed: true, // 29 Sep 2026: postponed, no new date yet
     edition: '8th Edition',
     name: 'Manufacturing 5.0 — Metamorphosis of Business',
     seoName: 'Manufacturing 5.0 Summit',
@@ -931,6 +973,14 @@ export const EVENTS: EventRecord[] = [
     image: 'poster/CFO-2022.jpg',
   },
 ]
+
+/**
+ * The editions the site publishes: every record except postponed ones. Pages,
+ * lists, counts, the sitemap and structured data all read this. ALL_EVENTS is
+ * for the rare caller that must still see a postponed record (the hidden tour
+ * pages, which are built from the HR Tech tour's legs).
+ */
+export const EVENTS: EventRecord[] = ALL_EVENTS.filter((e) => !e.postponed)
 
 /**
  * Rejected during verification — recorded so nobody "rediscovers" them and

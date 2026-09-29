@@ -32,10 +32,14 @@ export default function EventBrowser({
   events,
   sectors,
   formats,
+  featured,
 }: {
   events: BrowserEvent[]
   sectors: Chip[]
   formats: Chip[]
+  /** Server-rendered cards for featured editions, keyed by slug. They replace
+      the standard card and follow the same filters. */
+  featured?: Record<string, React.ReactNode>
 }) {
   const [sector, setSector] = useState<string | null>(null)
   const [format, setFormat] = useState<string | null>(null)
@@ -205,11 +209,17 @@ export default function EventBrowser({
             <div className="wrap">
               <h2 className="h2 text-white">Open for registration</h2>
               <ul className="card-grid section-body grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                {shownUpcoming.map((e, i) => (
-                  <li key={e.slug}>
-                    <EventCard event={e} priority={i < 3} />
-                  </li>
-                ))}
+                {shownUpcoming.map((e, i) =>
+                  featured?.[e.slug] ? (
+                    <li key={e.slug} className="md:col-span-2 lg:col-span-3">
+                      {featured[e.slug]}
+                    </li>
+                  ) : (
+                    <li key={e.slug}>
+                      <EventCard event={e} priority={i < 3} />
+                    </li>
+                  ),
+                )}
               </ul>
             </div>
           </section>

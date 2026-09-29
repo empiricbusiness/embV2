@@ -293,5 +293,10 @@
     "src": "/images/events/hero-conference.webp",
     "w": 800,
     "h": 450
+  },
+  "poster/fintax-2026": {
+    "src": "/images/events/poster-fintax-2026.webp",
+    "w": 800,
+    "h": 450
   }
 }

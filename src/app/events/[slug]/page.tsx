@@ -1,12 +1,14 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { EVENTS, SECTORS, SITE, PRICING } from '@/data/site'
 import { EVENT_CONTENT } from '@/data/event-content'
-import { pageMeta, eventLd } from '@/lib/seo'
+import { pageMeta, eventLd, faqLd } from '@/lib/seo'
 import PageHero from '@/components/PageHero'
 import EventCard from '@/components/EventCard'
 import Countdown from '@/components/Countdown'
 import CityTourRail from '@/components/CityTourRail'
+import EventShowcase from '@/components/EventShowcase'
 import JsonLd from '@/components/JsonLd'
 import assets from '@/data/assets.json'
 
@@ -36,6 +38,13 @@ const FORMAT = [
   ['Exhibition floor', 'Solution partners on the main circulation route.'],
 ]
 
+/** "13:05" -> "01:05 PM". Agenda times are stored as 24-hour IST. */
+function clock(t: string) {
+  const [h, m] = t.split(':').map(Number)
+  const h12 = ((h + 11) % 12) + 1
+  return `${String(h12).padStart(2, '0')}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`
+}
+
 export function generateStaticParams() {
   return EVENTS.map((e) => ({ slug: e.slug }))
 }
@@ -45,6 +54,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const e = EVENTS.find((x) => x.slug === slug)
   if (!e) return {}
   const sector = SECTORS.find((s) => s.slug === e.sector)
+  const seo = EVENT_CONTENT[e.slug]?.seo
 
   // Titles are AUTHORED per event, not generated. Four Manufacturing editions
   // share a name and a year, and seven editions have no evidenced city, so a
@@ -54,15 +64,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const where = e.city ? ` in ${e.city}` : ''
   const desc =
-    e.status === 'upcoming'
+    seo?.description ??
+    (e.status === 'upcoming'
       ? `${e.name} — ${e.edition}. ${e.dateLabel}${where}. Register, apply to speak, or sponsor this edition.`
-      : `${e.name} — ${e.edition} — took place ${e.dateLabel}${where}. See the edition and what EBM delivers next.`
+      : `${e.name} — ${e.edition} — took place ${e.dateLabel}${where}. See the edition and what EBM delivers next.`)
 
   return pageMeta({
     title,
     description: desc,
     path: `/events/${e.slug}/`,
+    image: seo?.image,
     keywords: [
+      ...(seo?.keywords ?? []),
       e.fullName,
       `${sector?.name} conference India`,
       `${sector?.keyword ?? ''}`,
@@ -99,14 +112,33 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
      some editions have it; every section below is omitted when it does not. */
   const content = EVENT_CONTENT[event.slug]
 
+  /* An edition that ships its own brochure artwork gets the brochure-led
+     layout. Every other edition keeps the standard template below. */
+  if (content?.showcase) {
+    return (
+      <>
+        <JsonLd data={eventLd(event)} />
+        {content.faq && <JsonLd data={faqLd(content.faq)} />}
+        <EventShowcase
+          event={event}
+          content={{ ...content, showcase: content.showcase }}
+          sectorName={sector?.name ?? ''}
+          related={related}
+          relatedLabel={relatedLabel}
+        />
+      </>
+    )
+  }
+
 
   return (
     <>
       <JsonLd data={eventLd(event)} />
+      {content?.faq && <JsonLd data={faqLd(content.faq)} />}
 
       <PageHero
         eyebrow={`${event.edition} · ${sector?.name ?? ''}`}
-        title={event.name}
+        title={content?.h1 ?? event.name}
         lede={event.theme}
         image={heroImg}
         stage
@@ -247,10 +279,29 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                   function, their direct reports, and the solution partners they evaluate.
                 </p>
               )}
+              {content?.industries && (
+                <>
+                  <h3 className="text-[1.05rem] font-bold text-white">
+                    {content.industries.heading}
+                  </h3>
+                  <ul className="flex flex-wrap gap-2">
+                    {content.industries.items.map((r) => (
+                      <li
+                        key={r}
+                        className="rounded-full border border-white/15 px-3.5 py-1.5 text-[0.88rem] text-white/80"
+                      >
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
 
               <h2 className="h2 text-white">Agenda</h2>
               <p className="lede text-white/70">
-                {content?.focus
+                {content?.agenda
+                  ? `Running order for ${event.dateLabel}. All times are IST.`
+                  : content?.focus
                   ? 'The themes below are published for this edition; the session-by-session running order follows once speakers are confirmed.'
                   : isUpcoming
                     ? 'The full session-by-session agenda for this edition is being finalised. Register your interest and we will send it as soon as speakers are confirmed.'
@@ -260,6 +311,40 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                   No agenda exists anywhere on the current estate — the word "agenda" appears
                   exactly once across all 131 crawled pages. */}
             </div>
+
+            {content?.agenda && (
+              /* Same ruled-list pattern as the pillars and the FAQ. Breaks are
+                 quieter than sessions so the talks stand out on a scan. */
+              <ol className="mt-6 divide-y divide-white/10 border-y border-white/10">
+                {content.agenda.items.map((a) => (
+                  <li
+                    key={a.time + a.title}
+                    className="grid grid-cols-[5.25rem_1fr] gap-4 py-4 sm:grid-cols-[6.5rem_1fr] sm:gap-6"
+                  >
+                    <time
+                      dateTime={`${event.date}T${a.time}+05:30`}
+                      className={`pt-0.5 text-[0.9rem] font-bold tabular-nums ${a.pause ? 'text-white/55' : 'text-gold'}`}
+                    >
+                      {clock(a.time)}
+                    </time>
+                    <div>
+                      {a.kind && (
+                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.14em] text-white/60">
+                          {a.kind}
+                        </p>
+                      )}
+                      <p
+                        className={`text-[1rem] leading-snug ${a.kind ? 'mt-1' : ''} ${
+                          a.pause ? 'text-white/65' : 'font-semibold text-white'
+                        }`}
+                      >
+                        {a.title}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            )}
 
             {content?.pillars && (
               /* Three ~90-word statements. Side by side they made a 640px wall
@@ -289,7 +374,9 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
             )}
 
             {/* Until the real agenda exists, describe the format honestly —
-                these are the elements every EBM edition actually runs. */}
+                these are the elements every EBM edition actually runs. Once an
+                edition publishes its running order, that replaces it. */}
+            {!content?.agenda && (
             <div className="section-body">
               <h2 className="h2 text-white">What the day includes</h2>
               <ul className="card-grid section-body grid gap-4 sm:grid-cols-2">
@@ -303,6 +390,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 ))}
               </ul>
             </div>
+            )}
 
             {isUpcoming && (
               <div className="section-body flex flex-wrap gap-3">
@@ -528,26 +616,50 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               {/* The live page heads this list "Our previous speakers" while its
                   sub-line says "joining our event". We publish the heading it
                   actually uses rather than upgrade the claim. */}
-              <p className="lede text-white/60">{content.speakers.lede}</p>
+              {content.speakers.lede && (
+                <p className="lede text-white/60">{content.speakers.lede}</p>
+              )}
             </div>
-            <ul className="card-grid section-body grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ul
+              className={`card-grid section-body grid gap-4 sm:grid-cols-2 ${
+                /* Portrait cards are compact enough to pair up on a phone. */
+                content.speakers.people.some((p) => p.photo) ? 'max-sm:grid-cols-2' : ''
+              } ${
+                /* Three across when that fills every row and four does not
+                   (21 speakers), so the last row never holds a lone card. */
+                content.speakers.people.length % 4 !== 0 && content.speakers.people.length % 3 === 0
+                  ? 'lg:grid-cols-3'
+                  : 'lg:grid-cols-4'
+              }`}
+            >
               {content.speakers.people.map((p) => (
                 <li key={p.name + p.company}>
                   <article className="card h-full">
-                    {/* No portraits: the estate publishes none for this edition,
-                        and a placeholder face would be an invention. */}
-                    <p
-                      aria-hidden
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/40 text-[0.95rem] font-bold text-gold"
-                    >
-                      {p.name
-                        .replace(/\(.*?\)/g, '')
-                        .split(/\s+/)
-                        .filter(Boolean)
-                        .slice(0, 2)
-                        .map((w) => w[0])
-                        .join('')}
-                    </p>
+                    {p.photo ? (
+                      <Image
+                        src={p.photo}
+                        alt={p.name}
+                        width={108}
+                        height={108}
+                        loading="lazy"
+                        className="h-16 w-16 rounded-full object-cover ring-2 ring-gold/40"
+                      />
+                    ) : (
+                      /* No portrait published for this person, and a
+                         placeholder face would be an invention. */
+                      <p
+                        aria-hidden
+                        className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/40 text-[0.95rem] font-bold text-gold"
+                      >
+                        {p.name
+                          .replace(/\(.*?\)/g, '')
+                          .split(/\s+/)
+                          .filter(Boolean)
+                          .slice(0, 2)
+                          .map((w) => w[0])
+                          .join('')}
+                      </p>
+                    )}
                     <h3 className="mt-4 text-[1rem] font-bold leading-snug text-white">{p.name}</h3>
                     <p className="mt-1.5 text-[0.85rem] leading-snug text-gold">{p.title}</p>
                     <p className="mt-1 text-[0.85rem] leading-snug text-white/60">{p.company}</p>
@@ -568,6 +680,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 {content.awards.groups.reduce((n, g) => n + g.categories.length, 0)} categories
               </p>
               <h2 className="h2">{content.awards.name}</h2>
+              {content.awards.note && <p className="lede">{content.awards.note}</p>}
               {/* Winners are not rendered: every category on the live page reads
                   "Winner: TBA", so there is nothing to publish. */}
             </div>
@@ -590,6 +703,59 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
         </section>
       )}
 
+      {content?.partners && (
+        <section className="section border-t border-white/10 bg-navy-900">
+          <div className="wrap">
+            <div className="section-head">
+              <p className="eyebrow">
+                <span className="rule-gold" aria-hidden />
+                Partners
+              </p>
+              <h2 className="h2 text-white">Partners of the {event.edition.toLowerCase()}</h2>
+            </div>
+            <ul className="card-grid section-body grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {content.partners.map((p) => (
+                <li key={p.name}>
+                  <article className="card flex h-full flex-col">
+                    <span className="logo-chip">
+                      <Image
+                        src={p.logo.src}
+                        alt={`${p.name} logo`}
+                        width={p.logo.w}
+                        height={p.logo.h}
+                        loading="lazy"
+                        className="logo-mark"
+                      />
+                    </span>
+                    <p className="mt-5 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-gold">
+                      {p.tier}
+                    </p>
+                    <h3 className="mt-2 text-[1.1rem] font-bold text-white">{p.name}</h3>
+                    {p.about.map((t) => (
+                      <p key={t.slice(0, 40)} className="mt-2.5 text-[0.88rem] leading-relaxed text-white/65">
+                        {t}
+                      </p>
+                    ))}
+                    {p.url && (
+                      /* A paid partnership, so the link says so to search engines. */
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="sponsored noopener noreferrer"
+                        className="mt-auto pt-4 text-[0.85rem] font-semibold text-gold underline underline-offset-4"
+                      >
+                        {new URL(p.url).hostname.replace(/^www\./, '')}
+                        <span className="sr-only"> (opens in a new tab)</span>
+                      </a>
+                    )}
+                  </article>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {content?.whySponsor && (
         <section className="section">
           <div className="wrap">
@@ -600,12 +766,22 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               </p>
               <h2 className="h2 text-white">Put your brand in front of this room.</h2>
             </div>
-            <ul className="card-grid section-body grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <ul
+              className={`card-grid section-body grid gap-5 sm:grid-cols-2 ${
+                content.whySponsor.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'
+              }`}
+            >
               {content.whySponsor.map((i) => (
-                <li key={i.title}>
+                <li key={i.title ?? i.body}>
                   <article className="card h-full">
-                    <h3 className="text-[1.02rem] font-bold text-white">{i.title}</h3>
-                    <p className="mt-2.5 text-[0.9rem] leading-relaxed text-white/65">{i.body}</p>
+                    {i.title ? (
+                      <>
+                        <h3 className="text-[1.02rem] font-bold text-white">{i.title}</h3>
+                        <p className="mt-2.5 text-[0.9rem] leading-relaxed text-white/65">{i.body}</p>
+                      </>
+                    ) : (
+                      <p className="text-[0.95rem] leading-relaxed text-white/80">{i.body}</p>
+                    )}
                   </article>
                 </li>
               ))}
@@ -654,6 +830,40 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 </li>
               ))}
             </ul>
+          </div>
+        </section>
+      )}
+
+      {content?.faq && (
+        <section className="section border-t border-white/10">
+          <div className="wrap grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+            <div className="section-head">
+              <p className="eyebrow">
+                <span className="rule-gold" aria-hidden />
+                FAQ
+              </p>
+              <h2 className="h2 text-white">
+                {event.seoName ?? event.name} {event.year}: common questions
+              </h2>
+            </div>
+            <div className="divide-y divide-white/10 border-y border-white/10">
+              {content.faq.map((f) => (
+                <details key={f.q} className="group py-5">
+                  <summary className="-my-5 flex cursor-pointer list-none items-start justify-between gap-4 text-[1.02rem] font-semibold text-white marker:hidden">
+                    {f.q}
+                    <span
+                      aria-hidden
+                      className="mt-0.5 shrink-0 text-gold transition-transform group-open:rotate-45"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-3 max-w-prose text-[0.95rem] leading-relaxed text-white/65">
+                    {f.a}
+                  </p>
+                </details>
+              ))}
+            </div>
           </div>
         </section>
       )}

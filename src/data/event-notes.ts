@@ -46,6 +46,19 @@ export const EVENT_NOTES: Record<string, EventNote> = {
         'No delegate price has ever been published for this event, so none is shown. Supply the ladder and set pricingPublished.',
       ],
   },
+  'fintax-summit-awards-2026': {
+    source:
+        'Event brochure "5th Edition FinTax Summit & Awards 2026" (CorelDRAW). First version 16 Sep 2026 (9 pages); updated version 25 Sep 2026 (10 pages) supplied by EBM on 29 Sep 2026 — it replaced the 21 invited speakers with 14 confirmed ones, added panel moderators and panellists to the agenda, and added Masters India as Tax Technology Partner. Card and share images are crops of the cover; speaker photos and partner logos come from its pages.',
+    conflicts: [
+        'Time printed as "08:30 PM - 05:30 PM" (still, in the 25 Sep version). Published as 08:30 AM: the agenda opens at 09:00 AM and the 4th Edition ran 08:30 AM to 05:30 PM.',
+        'Agenda prints Partner Presentation 3 and the Networking Break both at 11:20 AM. The break is probably 11:40. Published as printed.',
+        'Agenda lists the Awards Ceremony (15:55) above Panel Discussion 4 (15:10). Published in time order.',
+        '"Data & Regulatory Reporting Leader of the Year" is printed twice. Published once (18 individual categories).',
+        'Viral Vora is printed twice on the speakers page, as "Head of Tax Technology & Transformation, Evonik Group – India Region" and as "Tax Technology and Transformation - Senior Expert, Evonik Group", with two different photos. Published once, with the second title and photo, which match his panel role in the agenda.',
+        'No venue is named. The brochure URL tnfsummit.empiricbusinessmedia.com is down since the domain moved, so it is not linked.',
+        'Lineage not stated in the brochure: this is very likely the successor of the 4th Edition Smart Future of Tax and Finance Summit & Awards (15 Nov 2024, same logo mark, same tnfsummit subdomain). Confirm before the page says so.',
+      ],
+  },
   'manufacturing-metamorphosis-of-business-2026-8th-edition': {
     source:
         'Poster (8th Edition, November 2026, Bangalore, EBM logo) + manufacturingsummit subdomain (crawl).',

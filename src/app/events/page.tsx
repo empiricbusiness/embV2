@@ -4,6 +4,7 @@ import { pageMeta, eventLd, itemListLd } from '@/lib/seo'
 import { sectorsInUse, formatsInUse, searchIndex, toCardEvent, upcoming, past } from '@/lib/events'
 import PageHero from '@/components/PageHero'
 import EventBrowser, { type BrowserEvent } from '@/components/EventBrowser'
+import FeaturedEventCard from '@/components/FeaturedEventCard'
 import JsonLd from '@/components/JsonLd'
 
 export const metadata = pageMeta({
@@ -35,7 +36,7 @@ export default function EventsPage() {
   // toCardEvent is not cosmetic: client-component props are serialised into the
   // HTML, so spreading the whole record published every internal `source` and
   // `conflicts` note to visitors. Only the projection crosses the boundary.
-  const events: BrowserEvent[] = EVENTS.map((e) => ({
+  const events: BrowserEvent[] = [...upcoming(), ...EVENTS.filter((e) => e.status !== 'upcoming')].map((e) => ({
     ...toCardEvent(e),
     haystack: searchIndex(e),
   }))
@@ -48,7 +49,7 @@ export default function EventsPage() {
       <PageHero
         eyebrow="Events"
         title="Every EBM edition, in one place."
-        lede={`${EVENTS.length} editions across ${sectors.length} industry verticals and ${cities.length} host cities, from ${earliest} to today. ${upcoming().length} are open for registration; the ${past().length} that have run stay published.`}
+        lede={`${EVENTS.length} editions across ${sectors.length} industry verticals and ${cities.length} host cities, from ${earliest} to today. ${upcoming().length} ${upcoming().length === 1 ? 'is' : 'are'} open for registration; the ${past().length} that have run stay published.`}
         trail={[{ name: 'Events', path: '/events/' }]}
       />
 
@@ -65,7 +66,16 @@ export default function EventsPage() {
         )}
       />
 
-      <EventBrowser events={events} sectors={sectors} formats={formats} />
+      <EventBrowser
+        events={events}
+        sectors={sectors}
+        formats={formats}
+        featured={Object.fromEntries(
+          upcoming()
+            .filter((e) => e.featured)
+            .map((e) => [e.slug, <FeaturedEventCard key={e.slug} event={e} />]),
+        )}
+      />
 
       <section className="section on-light">
         <div className="wrap max-w-3xl text-center">

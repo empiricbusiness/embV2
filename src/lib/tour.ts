@@ -1,4 +1,4 @@
-import { EVENTS, SECTORS, type EventLeg, type EventRecord, type Sector } from '@/data/site'
+import { ALL_EVENTS, SECTORS, type EventLeg, type EventRecord, type Sector } from '@/data/site'
 
 /**
  * Multi-city tour helpers.
@@ -167,7 +167,9 @@ export function railGaps(sorted: readonly EventLeg[]): number[] {
 export type TourStop = { event: EventRecord; leg: EventLeg }
 
 /** Every event that actually tours. */
-export const touringEvents = (): EventRecord[] => EVENTS.filter((e) => (e.legs?.length ?? 0) > 0)
+// ALL_EVENTS, not EVENTS: the only tour is the (postponed) HR Tech 3rd Edition,
+// and the hidden /tour/ pages must still build. They are noindex and unlinked.
+export const touringEvents = (): EventRecord[] => ALL_EVENTS.filter((e) => (e.legs?.length ?? 0) > 0)
 
 /** Every (event, leg) pair across the whole catalogue. */
 export function allStops(): TourStop[] {
