@@ -25,6 +25,8 @@
     { "source": "/google69285137b574d2c5.html", "destination": "/google69285137b574d2c5/" }
   ],
   "redirects": [
+    { "source": "/bespoke", "destination": "/services/bespoke-events/", "permanent": false },
+    { "source": "/bespoke/", "destination": "/services/bespoke-events/", "permanent": false },
     { "source": "/index.html", "destination": "/" },
     { "source": "/index-2.html", "destination": "/" },
     { "source": "/home.html", "destination": "/" },
