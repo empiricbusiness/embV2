@@ -431,20 +431,28 @@ export const ALL_EVENTS: EventRecord[] = [
   },
   {
     slug: 'next-gen-hr-tech-summit-awards-2026',
-    postponed: true, // 29 Sep 2026: postponed, no new date yet
+    // Postponed on 29 Sep 2026, then rescheduled: the 3rd Edition brochure EBM
+    // supplied on 17 Nov 2026 prints Thursday 26 November 2026, Mumbai. The
+    // brochure is this edition's own artwork and is the source for the date,
+    // theme, agenda, speakers, awards and partners published here.
     edition: '3rd Edition',
     name: 'Next-Gen HR Tech Summit & Awards',
     seoName: 'Next-Gen HR Tech Summit',
     seoTitle: 'Next-Gen HR Tech Summit & Awards 2026 — Mumbai',
     fullName: '3rd Edition Next-Gen HR Tech Summit & Awards 2026',
-    date: '2026-09-30',
-    dateLabel: 'Wednesday, 30 September 2026',
+    theme: 'Driving Business Growth Through Next-Gen HR Technology',
+    date: '2026-11-26',
+    dateLabel: 'Thursday, 26 November 2026',
     year: 2026,
+    // The cover prints 08:30 AM - 05:30 PM; the agenda inside runs 09:00 to
+    // 16:10. The cover's window is published, as on the 5th Edition FinTax page.
+    timeLabel: '08:30 AM – 05:30 PM',
     city: 'Mumbai',
     venue: null,
     sector: 'hr-technology',
     format: 'conference',
     status: 'upcoming',
+    featured: true,
     image: 'hero/hrtech',
     externalUrl: 'https://www.empiricbusinessmedia.com/hrtech/',
     registerUrl: 'https://www.empiricbusinessmedia.com/hrtech/register.html',
@@ -466,7 +474,7 @@ export const ALL_EVENTS: EventRecord[] = [
      * TODO(client): confirm the 2027 city list, dates and venues.
      */
     legs: [
-      { city: 'Mumbai', slug: 'mumbai', date: '2026-09-30', venue: null },
+      { city: 'Mumbai', slug: 'mumbai', date: '2026-11-26', venue: null },
       {
         city: 'Bengaluru',
         slug: 'bengaluru',
@@ -497,30 +505,6 @@ export const ALL_EVENTS: EventRecord[] = [
     ],
   },
   {
-    slug: 'fintax-summit-awards-2026',
-    edition: '5th Edition',
-    name: 'FinTax Summit & Awards',
-    seoName: 'FinTax Summit',
-    seoTitle: 'FinTax Summit 2026, Mumbai — Tax, Risk & Compliance',
-    fullName: '5th Edition FinTax Summit & Awards 2026',
-    theme: 'Driving the Future of Tax, Risk & Compliance: Building Faster, Smarter & Audit-Ready Finance',
-    date: '2026-10-22',
-    dateLabel: 'Thursday, 22 October 2026',
-    year: 2026,
-    // The brochure prints "08:30 PM - 05:30 PM". Its own agenda opens at
-    // 09:00 AM and the 4th Edition ran 08:30 AM to 05:30 PM, so AM is meant.
-    timeLabel: '08:30 AM – 05:30 PM',
-    city: 'Mumbai',
-    venue: null,
-    sector: 'cfo-finance',
-    format: 'conference',
-    status: 'upcoming',
-    featured: true,
-    image: 'poster/fintax-2026',
-    // No registerUrl: the brochure's tnfsummit subdomain went down with the
-    // domain move, so registration runs through the site's own contact form.
-  },
-  {
     slug: 'manufacturing-metamorphosis-of-business-2026-8th-edition',
     postponed: true, // 29 Sep 2026: postponed, no new date yet
     edition: '8th Edition',
@@ -544,6 +528,29 @@ export const ALL_EVENTS: EventRecord[] = [
   },
 
   /* ---------------- past — 2026 ---------------- */
+  {
+    slug: 'fintax-summit-awards-2026',
+    edition: '5th Edition',
+    name: 'FinTax Summit & Awards',
+    seoName: 'FinTax Summit',
+    seoTitle: 'FinTax Summit 2026, Mumbai — Tax, Risk & Compliance',
+    fullName: '5th Edition FinTax Summit & Awards 2026',
+    theme: 'Driving the Future of Tax, Risk & Compliance: Building Faster, Smarter & Audit-Ready Finance',
+    date: '2026-10-22',
+    dateLabel: 'Thursday, 22 October 2026',
+    year: 2026,
+    // The brochure prints "08:30 PM - 05:30 PM". Its own agenda opens at
+    // 09:00 AM and the 4th Edition ran 08:30 AM to 05:30 PM, so AM is meant.
+    timeLabel: '08:30 AM – 05:30 PM',
+    city: 'Mumbai',
+    venue: null,
+    sector: 'cfo-finance',
+    format: 'conference',
+    status: 'past',
+    image: 'poster/fintax-2026',
+    // No registerUrl: the brochure's tnfsummit subdomain went down with the
+    // domain move.
+  },
   {
     slug: 'manufacturing-metamorphosis-of-business-2026-7th-edition',
     edition: '7th Edition',

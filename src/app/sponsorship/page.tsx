@@ -37,7 +37,7 @@ const FAQS = [
   },
   {
     q: 'Who attends EBM events?',
-    a: `Senior decision-makers across ${SECTOR_COUNT} verticals — ${SECTOR_LIST} — with editions currently open in ${ACTIVE_LIST}. Delegate acquisition is invitation-led and vetted against an agreed seniority profile.`,
+    a: `Senior decision-makers across ${SECTOR_COUNT} verticals — ${SECTOR_LIST}${ACTIVE_LIST ? ` — with editions currently open in ${ACTIVE_LIST}` : ''}. Delegate acquisition is invitation-led and vetted against an agreed seniority profile.`,
   },
   {
     q: 'Can we sponsor a whole series rather than one edition?',

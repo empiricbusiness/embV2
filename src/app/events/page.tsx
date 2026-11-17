@@ -49,7 +49,7 @@ export default function EventsPage() {
       <PageHero
         eyebrow="Events"
         title="Every EBM edition, in one place."
-        lede={`${EVENTS.length} editions across ${sectors.length} industry verticals and ${cities.length} host cities, from ${earliest} to today. ${upcoming().length} ${upcoming().length === 1 ? 'is' : 'are'} open for registration; the ${past().length} that have run stay published.`}
+        lede={`${EVENTS.length} editions across ${sectors.length} industry verticals and ${cities.length} host cities, from ${earliest} to today. ${upcoming().length === 0 ? 'None are open for registration right now' : `${upcoming().length} ${upcoming().length === 1 ? 'is' : 'are'} open for registration`}; the ${past().length} that have run stay published.`}
         trail={[{ name: 'Events', path: '/events/' }]}
       />
 

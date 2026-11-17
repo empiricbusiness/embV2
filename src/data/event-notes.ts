@@ -39,10 +39,20 @@ export const EVENT_NOTES: Record<string, EventNote> = {
       ],
   },
   'next-gen-hr-tech-summit-awards-2026': {
-    source: 'Live /hrtech/ microsite (crawl 2026-09-02).',
+    source:
+        'Event brochure "3rd Edition Next-Gen HR Tech Summit & Excellence Awards 2026" (15 pages), supplied by EBM on 17 Nov 2026 — the source for the date, theme, agenda, confirmed speakers, award categories and partners. The mission/vision/goal, key focus points and EBM contacts still come from the live /hrtech/ microsite (crawl 2026-09-02). Logo, award badge, share image, speaker photos and partner logos are extracted from the brochure pages.',
     conflicts: [
-        'City conflict: the hero says Mumbai; the contact page says Hyatt Regency, Chennai.',
-        'The live page currently shows the CISO summit headline and counts down to the CISO date (18 Sep), not 30 Sep.',
+        'RESCHEDULED: postponed on 29 Sep 2026 from 30 Sep; the brochure prints Thursday 26 November 2026. The Mumbai tour leg carries the new date.',
+        'The cover prints 08:30 AM - 05:30 PM, but the agenda inside opens at 09:00 AM and closes at 16:10. The cover window is published, as on the FinTax page.',
+        'Agenda prints two slots at 09:15 AM — the welcome address and the opening keynote. Published as printed.',
+        'Agenda runs Partner Presentation 1, 2, 4 and 5. There is no Partner Presentation 3. Published as printed; confirm whether one is missing or the numbering is wrong.',
+        'Ramco Payce is a Gold partner and the brochure reserves its write-up block — tier banner, logo and the heading "COMPANY WRITE-UP" — then leaves the body blank. Published with the logo and tier only. TODO(client): send the write-up.',
+        'Award name conflict: the live microsite calls them the "Excellence in HR Awards 2026"; the brochure ceremony line says "HR Excellence & Innovation Awards Ceremony 2026". The brochure name is published. The 44 categories are identical in both.',
+        'Three people are named in the agenda but are not on the brochure speaker page: Tulanahinaa Maity (opening keynote), Gulrez Alam (partner session) and Jagdeep Chauhan (panel 3). All three are published without a photograph, since that page is the only photo source.',
+        'The speaker page prints "Ameet Kakar THAKUR"; the agenda prints "Ameet Kakar Thakur". Published with the agenda spelling.',
+        'No venue is named in the brochure. Published as "Venue to be announced".',
+        'City conflict, still open from the crawl: the hero says Mumbai; the contact page says Hyatt Regency, Chennai. The brochure says Mumbai, India.',
+        'The live /hrtech/ page showed the CISO summit headline and counted down to the CISO date at the time of the crawl.',
         'No delegate price has ever been published for this event, so none is shown. Supply the ladder and set pricingPublished.',
       ],
   },

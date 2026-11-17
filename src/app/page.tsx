@@ -44,7 +44,7 @@ const FAQS = [
   },
   {
     q: 'Which industries does EBM run events for?',
-    a: `${SECTOR_COUNT.charAt(0).toUpperCase() + SECTOR_COUNT.slice(1)} verticals across the archive: ${SECTOR_LIST}. Editions are currently open in ${ACTIVE_LIST}; the rest have delivered editions with none scheduled at present. Our flagship franchises are the Enterprise AI Security & Cyber Resilience Summit, the Next-Gen HR Tech Summit & Awards, and Manufacturing 5.0 — Metamorphosis of Business.`,
+    a: `${SECTOR_COUNT.charAt(0).toUpperCase() + SECTOR_COUNT.slice(1)} verticals across the archive: ${SECTOR_LIST}. ${ACTIVE_LIST ? `Editions are currently open in ${ACTIVE_LIST}; the rest have delivered editions with none scheduled at present.` : 'Every vertical has delivered editions; dates for the next ones are being confirmed.'} Our flagship franchises are the Enterprise AI Security & Cyber Resilience Summit, the Next-Gen HR Tech Summit & Awards, and Manufacturing 5.0 — Metamorphosis of Business.`,
   },
   {
     q: 'How can my company sponsor an EBM event?',
@@ -328,36 +328,41 @@ export default function HomePage() {
       {/* ---------------------------------------------------------------- */}
       {/* Upcoming events                                                  */}
       {/* ---------------------------------------------------------------- */}
-      <section className="section border-t border-white/10 bg-navy-900">
-        <div className="wrap">
-          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
-            <div className="section-head">
-              <p className="eyebrow">
-                <span className="rule-gold" aria-hidden />
-                Upcoming events
-              </p>
-              <h2 className="h2 text-white">Be part of our next industry event</h2>
+      {/* Hidden when nothing is open, rather than printing a heading over an
+          empty grid. This can legitimately be empty: every remaining upcoming
+          record is postponed, and EVENTS filters postponed editions out. */}
+      {upcoming.length > 0 && (
+        <section className="section border-t border-white/10 bg-navy-900">
+          <div className="wrap">
+            <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
+              <div className="section-head">
+                <p className="eyebrow">
+                  <span className="rule-gold" aria-hidden />
+                  Upcoming events
+                </p>
+                <h2 className="h2 text-white">Be part of our next industry event</h2>
+              </div>
+              <Link href="/events/" className="btn btn-ghost">
+                All events
+              </Link>
             </div>
-            <Link href="/events/" className="btn btn-ghost">
-              All events
-            </Link>
-          </div>
 
-          <ul className="section-body grid gap-5 md:grid-cols-2 lg:grid-cols-3 card-grid">
-            {upcoming.map((e) =>
-              e.featured ? (
-                <li key={e.slug} className="md:col-span-2 lg:col-span-3">
-                  <FeaturedEventCard event={e} />
-                </li>
-              ) : (
-                <li key={e.slug}>
-                  <EventCard event={e} />
-                </li>
-              ),
-            )}
-          </ul>
-        </div>
-      </section>
+            <ul className="section-body grid gap-5 md:grid-cols-2 lg:grid-cols-3 card-grid">
+              {upcoming.map((e) =>
+                e.featured ? (
+                  <li key={e.slug} className="md:col-span-2 lg:col-span-3">
+                    <FeaturedEventCard event={e} />
+                  </li>
+                ) : (
+                  <li key={e.slug}>
+                    <EventCard event={e} />
+                  </li>
+                ),
+              )}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* ---------------------------------------------------------------- */}
       {/* Sectors                                                          */}

@@ -113,8 +113,12 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const content = EVENT_CONTENT[event.slug]
 
   /* An edition that ships its own brochure artwork gets the brochure-led
-     layout. Every other edition keeps the standard template below. */
-  if (content?.showcase) {
+     layout while it is still ahead. Once it has run it joins the archive and is
+     presented like every other past edition, on the standard template below —
+     which renders the same record (about, agenda, speakers, awards, partners,
+     contacts, FAQ), so the switch loses nothing and happens on its own when
+     `status` becomes 'past'. */
+  if (content?.showcase && isUpcoming) {
     return (
       <>
         <JsonLd data={eventLd(event)} />

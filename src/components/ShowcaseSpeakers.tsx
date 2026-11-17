@@ -7,7 +7,7 @@ import Icon from './ShowcaseIcon'
 import s from './EventShowcase.module.css'
 
 export type SpeakerRole = {
-  role: 'Moderator' | 'Panellist'
+  role: 'Speaker' | 'Moderator' | 'Panellist'
   /** "Panel 3" */
   panel: string
   session: string
