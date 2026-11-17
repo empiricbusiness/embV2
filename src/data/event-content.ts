@@ -551,8 +551,17 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
         tier: 'Media partner',
         name: 'BharatCXO',
         logo: { src: '/images/events/hrtech-2026/partners/bharatcxo.webp', w: 320, h: 115 },
-        /* Media partners are not given a write-up in the brochure. */
-        about: [],
+        url: 'https://www.bharatcxo.com/',
+        /* Media partners are not given a write-up in the brochure, so like
+           Ramco Payce above this copy does NOT come from it. It is drawn from
+           BharatCXO's own site, bharatcxo.com, and every figure below is one
+           they publish about themselves. Nothing is added. See event-notes.ts. */
+        about: [
+          'BharatCXO is a multi-channel media platform and community-driven organisation built for the Indian CXO ecosystem, serving CIOs, CISOs, CFOs, CHROs, CTOs, COOs, CEOs and founders. Based in Mumbai with a global audience, it works at the intersection of media, branding and professional networking, under the line “From Boardroom to Brand”.',
+          'Its work runs across four pillars. Publishing, through the flagship digital and print magazine CXO Samvaad. Events and conclaves, including leadership summits, the Ratan 100 Club and industry awards. Personal branding, managing PR and brand image for chief executives, CIOs, CTOs and startup founders. And interviews and podcasts, through series such as Hum Tum Aur AI, CyberRakshak and CXO Samvaad.',
+          'The podcast slate runs past 250 episodes — over 150 of Hum Tum Aur AI on artificial intelligence, and over 100 of CyberRakshak on cybersecurity. The community numbers more than 50,000 active subscribers drawn from enterprises including Wipro, HDFC Bank, Godrej Industries and Tata Communications. Over the past year its content drew more than 3 million organic impressions, 103,000+ reactions and 12,000+ comments, with no paid promotion.',
+          'BharatCXO has served as official media partner for 14+ premier industry events across India, among them CISO India Connect, the Bharat Insurance Summit & Awards, CIO Convergence and the HR+L&D Innovation Summit & Awards.',
+        ],
       },
     ],
 
