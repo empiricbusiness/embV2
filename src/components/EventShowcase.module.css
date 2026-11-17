@@ -506,6 +506,32 @@
   object-fit: contain;
 }
 
+/* A tier can hold three logos (three exhibit partners), so the tiles shrink
+   rather than overflow once the row runs out of room. */
+@media (max-width: 640px) {
+  .bandLabel {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-align: center;
+  }
+
+  .bandLogo {
+    height: 3rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 0.7rem;
+  }
+
+  .bandLogo img {
+    height: 1.85rem;
+    max-width: 7rem;
+  }
+
+  .bandLogo.bandLogoDark img {
+    width: 10.5rem;
+    max-width: 10.5rem;
+  }
+}
+
 /* ============================================================= sections */
 .section {
   position: relative;

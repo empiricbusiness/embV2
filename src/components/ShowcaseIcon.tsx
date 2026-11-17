@@ -69,7 +69,15 @@ export default function ShowcaseIcon({ name, size = 20 }: { name: string; size?:
 /** Pick an icon from a label, so the data file stays plain text. */
 export function iconFor(label: string): string {
   const rules: [RegExp, string][] = [
-    // departments
+    // departments — people
+    [/talent acquisition|recruit/i, 'search'],
+    [/talent management/i, 'target'],
+    [/human resources/i, 'users'],
+    [/hr strateg|people strateg|workforce planning/i, 'network'],
+    [/employee engagement|employee experience/i, 'megaphone'],
+    [/people officer|chief people/i, 'briefcase'],
+    [/learning & development|learning and development/i, 'rocket'],
+    // departments — finance
     [/taxation|direct\/indirect/i, 'percent'],
     [/finance & accounts/i, 'calculator'],
     [/^risk management/i, 'shield'],

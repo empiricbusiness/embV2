@@ -65,7 +65,7 @@ export default function ShowcasePartners({ partners }: { partners: EventPartner[
   useEffect(() => clear, [])
 
   const enter = (i: number) => (e: React.PointerEvent) => {
-    if (e.pointerType !== 'mouse') return
+    if (e.pointerType !== 'mouse' || !partners[i].about.length) return
     clear()
     if (open?.i === i && !closing) return
     openTimer.current = setTimeout(() => show(i, 'hover'), open ? 0 : 160)
@@ -106,17 +106,21 @@ export default function ShowcasePartners({ partners }: { partners: EventPartner[
                   ))}
                 </div>
                 <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-3">
-                <button
-                  type="button"
-                  className={s.pMore}
-                  onClick={() => {
-                    clear()
-                    show(i, 'click')
-                  }}
-                >
-                  Read more
-                  <Icon name="arrow" size={15} />
-                </button>
+                {partner.about.length > 0 ? (
+                  <button
+                    type="button"
+                    className={s.pMore}
+                    onClick={() => {
+                      clear()
+                      show(i, 'click')
+                    }}
+                  >
+                    Read more
+                    <Icon name="arrow" size={15} />
+                  </button>
+                ) : (
+                  <span className="text-[0.84rem] text-white/55">Company profile to follow</span>
+                )}
                 {partner.url && (
                   <a
                     href={partner.url}

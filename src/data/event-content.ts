@@ -21,12 +21,14 @@
  *
  * Two deliberate fidelity decisions:
  *
- * 1. `speakers.heading` is "Our previous speakers" because that is the heading
- *    the live page uses. Its own sub-line says "joining our event", which
- *    contradicts it. Publishing them as confirmed for this edition would repeat
- *    the defect where the Manufacturing 8th Edition shipped the 6th Edition's
- *    line-up as its own. TODO(client): confirm which of these are booked for
- *    the 3rd Edition and we will relabel.
+ * 1. RESOLVED, 17 Nov 2026. The HR Tech 3rd Edition entry used to publish the
+ *    live page's "Our previous speakers" list, because that page's heading and
+ *    its "joining our event" sub-line contradicted each other and publishing
+ *    them as confirmed would have repeated the defect where the Manufacturing
+ *    8th Edition shipped the 6th Edition's line-up as its own. The brochure EBM
+ *    supplied on 17 Nov 2026 settles it: its own page is headed "CONFIRMED
+ *    SPEAKERS", so that line-up is published and the previous-speaker list is
+ *    gone. The 3rd Edition's other content now comes from that brochure too.
  * 2. Award winners are omitted. All 44 categories on the live page read
  *    "Winner: TBA", so there is nothing to publish.
  */
@@ -57,6 +59,8 @@ export type AgendaItem = {
   kind?: string
   /** Registration, breaks and lunch: rendered quieter than sessions. */
   pause?: boolean
+  /** A single named presenter: a keynote or a partner session. */
+  speaker?: string
   /** Panel roles, by speaker name; details come from `speakers.people`. */
   moderator?: string
   panelists?: string[]
@@ -81,6 +85,13 @@ export type ShowcaseArt = {
   logo: Img
   /** The awards shield. */
   badge: Img
+  /**
+   * Short subject tags in THIS edition's own vocabulary, for the hero's
+   * floating chips and the About card. Never another edition's: a tax tag on
+   * an HR page is the same defect as a tax speaker on one. Five are placed in
+   * the hero, the first four on the About card.
+   */
+  tags: string[]
 }
 
 export type EventContent = {
@@ -134,6 +145,15 @@ export type EventContent = {
 
 export const EVENT_CONTENT: Record<string, EventContent> = {
   'next-gen-hr-tech-summit-awards-2026': {
+    h1: 'Next-Gen HR Tech Summit & Awards 2026',
+    showcase: {
+      logo: { src: '/images/events/hrtech-2026/showcase/logo.webp', w: 1200, h: 380 },
+      badge: { src: '/images/events/hrtech-2026/showcase/award-badge.webp', w: 180, h: 205 },
+      /* Each one is a subject the brochure itself puts on the programme: the
+         AI assurance and people analytics panel, the workplace-experience
+         panel, the well-being panel, and talent acquisition in who-should-attend. */
+      tags: ['AI in HR', 'People analytics', 'Employee experience', 'Wellbeing', 'Talent acquisition'],
+    },
     about: [
       'HR leaders today are operating in an environment defined by constant disruption—AI acceleration, shifting workforce expectations, hybrid work models, rising compliance demands, and an intense focus on productivity and retention. The role of HR has evolved from operational support to a strategic driver of business resilience and growth.',
       'Beyond talent acquisition and retention, HR leaders are now tasked with navigating large-scale digital transformation, embedding data-driven decision-making, and building future-ready organizations that prioritize skills, agility, inclusion, and continuous learning. Legacy systems and fragmented processes often limit speed, visibility, and employee experience—making technology modernization a business imperative rather than a choice.',
@@ -167,6 +187,17 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
         'Talent Acquisition',
       ],
       note: 'Join us in shaping the future through innovation, excellence, and meaningful collaboration across industries.',
+      title: 'CHROs, HR heads & talent leaders',
+      /* Authored one-line scope of each function, for the tiles. General
+         descriptions of the role — not claims about the event. */
+      details: {
+        'Human Resources': 'The HR function end to end, from policy to operations',
+        'Talent Management': 'Performance, succession, mobility and capability',
+        'HR Strategists': 'Workforce strategy, org design and planning',
+        'Employee Engagement': 'Experience, culture, wellbeing and retention',
+        'People Officer': 'The people agenda at board and executive level',
+        'Talent Acquisition': 'Hiring, campus recruitment and employer brand',
+      },
     },
 
     focus: {
@@ -200,6 +231,87 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
       ],
     },
 
+    agenda: {
+      start: '08:30',
+      end: '17:30',
+      items: [
+        { time: '09:00', title: 'Registration & Breakfast', pause: true },
+        { time: '09:15', title: 'Welcome address by Empiric Business Media' },
+        {
+          time: '09:15',
+          kind: 'Opening keynote',
+          title: 'The Evolution of HR 2026: Transforming Talent with Tech',
+          speaker: 'Tulanahinaa Maity',
+        },
+        { time: '09:55', title: 'Partner Presentation 1' },
+        { time: '10:15', title: 'Partner Presentation 2', speaker: 'Ravi Vyas' },
+        {
+          time: '10:35',
+          kind: 'Panel discussion 1',
+          title: 'Balancing Better: HR’s Role in Supporting Well-Being at Work and Beyond',
+          moderator: 'Dr. Jagmohan Singh Rishi',
+          panelists: ['Namita Patwari', 'Preeti Toshniwal', 'Judith Antao', 'Mousumi Dhar'],
+        },
+        {
+          time: '11:20',
+          title: 'Enterprise Digital Transformation of HR Admin and office operations',
+          speaker: 'Gulrez Alam',
+        },
+        { time: '11:40', title: 'Networking break', pause: true },
+        {
+          time: '12:00',
+          kind: 'Panel discussion 2',
+          title: 'Workplace by Design: Enhancing Experience, Empowerment, and Engagement',
+          moderator: 'Santosh Iyer',
+          panelists: [
+            'Davis John',
+            'Harminder Bareja',
+            'Ranjini Pillai',
+            'Ameet Kakar Thakur',
+            'Dr. Ravi Hemnani',
+            'Ravi Vyas',
+            'Mousumi Dhar',
+          ],
+        },
+        { time: '12:45', title: 'Partner Presentation 4' },
+        { time: '13:05', title: 'Partner Presentation 5' },
+        { time: '13:25', title: 'Networking Lunch', pause: true },
+        {
+          time: '14:25',
+          kind: 'Panel discussion 3',
+          title: 'HR Influence Without Authority: Driving Change Beyond Hierarchies',
+          moderator: 'Sanjeeb Lahiri',
+          panelists: [
+            'Rajan B Saawant',
+            'Pawan Lalwani',
+            'Dr. Sarmistha Roychowdhury',
+            'Anirudh Gupta',
+            'Jagdeep Chauhan',
+          ],
+        },
+        {
+          time: '15:15',
+          kind: 'Panel discussion 4',
+          title: 'AI Assurance & People Analytics: Data-Driven, Human-Centric HR',
+          moderator: 'Dr. Kavindra Pant',
+          panelists: [
+            'Rajendra Lingwal',
+            'Nandini Banerjee',
+            'Shruti Shrivastava',
+            'Karan Bhatia',
+            'Dr. Ujjal Sengupta',
+            'Dr. Archana Yemeshvary Ashok Upadhyay',
+          ],
+        },
+        {
+          time: '15:55',
+          kind: 'Awards ceremony',
+          title: 'HR Excellence & Innovation Awards Ceremony 2026',
+        },
+        { time: '16:10', title: 'Closing Note & Networking', pause: true },
+      ],
+    },
+
     whyAttend: {
       heading: 'Why Attendees Love This Experience',
       items: [
@@ -219,31 +331,45 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
     },
 
     speakers: {
-      heading: 'Our previous speakers',
-      lede: 'Introducing the expert speakers joining our event',
+      heading: 'Confirmed speakers',
+      confirmed: true,
+      teaser: 'Confirmed: CHROs and HR heads from Citi, Reliance, Raymond, Zee & more',
       people: [
-        { name: 'C K (CKK) Kumaravel', title: 'Chairman and Managing Director & Co-Founder', company: 'Naturals Salon & Spa' },
-        { name: 'Ganapathi Subramanian', title: 'Chief Human Resources Officer', company: 'Sundaram Home Finance Official' },
-        { name: 'Lakshmi S', title: 'Chief Human Resources Officer', company: 'Apollo Sindoori Hotels Limited' },
-        { name: 'Dr. Mahendran Chandrasekaran', title: 'Chief Human Resources Officer', company: 'Fuso Glass India' },
-        { name: 'Anil Karthikeyan', title: 'Chief Human Resources Officer', company: 'Loyal Textile Mills Ltd.' },
-        { name: 'Priya Venkataraman', title: 'Group Chief Human Resources Officer', company: 'Bahwan CyberTek' },
-        { name: 'Prakash Ranganathan', title: 'Chief Human Resources Officer', company: 'Novac Technology Solutions (A Shriram Group Company)' },
-        { name: 'Merlin Imtha Louis', title: 'Group COO & Vice President HR', company: 'NatWest Group' },
-        { name: 'Archana Grover', title: 'Global Head – Capabilities, Transformation & Culture', company: 'Standard Chartered' },
-        { name: 'Sethumadhavan Raman', title: 'Director – People & Culture', company: 'Accor' },
-        { name: 'Laisa Jinan', title: 'Head HR – India Region', company: 'Danfoss' },
-        { name: 'Capt. Partha Samai', title: 'Head Human Resources & Vice President', company: 'Jio' },
-        { name: 'Fabian Figredo', title: 'Head of Human Resources', company: 'Shell' },
-        { name: 'Charu Sharma', title: 'Head of Talent Acquisition – India', company: 'Tecnicas Reunidas' },
-        { name: 'Ganesh Balasubramanian', title: 'Head – HR', company: 'Apollo Tyres' },
-        { name: 'Vivek Vijayan', title: 'HR Director', company: 'Cognizant' },
-        { name: 'Huma Tariq', title: 'Director – People & Culture', company: 'CohnReznick Professional' },
+        { name: 'Santosh Iyer', title: 'CHRO', company: 'KLT Automotive & Tubular Products Ltd.', photo: '/images/events/hrtech-2026/speakers/santosh-iyer.webp' },
+        { name: 'Dr. Archana Yemeshvary Ashok Upadhyay', title: 'CHRO', company: 'Hindustan Colas Pvt. Ltd. (HPCL JV)', photo: '/images/events/hrtech-2026/speakers/archana-yemeshvary-ashok-upadhyay.webp' },
+        { name: 'Dr. Sarmistha Roychowdhury', title: 'CHRO', company: 'Vform Tecnopacks Limited', photo: '/images/events/hrtech-2026/speakers/sarmistha-roychowdhury.webp' },
+        { name: 'Sanjeeb Lahiri', title: 'CHRO', company: 'GRP Ltd', photo: '/images/events/hrtech-2026/speakers/sanjeeb-lahiri.webp' },
+        { name: 'Namita Patwari', title: 'CHRO & CXO', company: 'Alembic Pharmaceuticals Ltd', photo: '/images/events/hrtech-2026/speakers/namita-patwari.webp' },
+        { name: 'Dr. Kavindra Pant', title: 'CHRO', company: 'Shapoorji Pallonji Group', photo: '/images/events/hrtech-2026/speakers/kavindra-pant.webp' },
+        { name: 'Anirudh Gupta', title: 'Global Head – Talent and Learning', company: 'Glenmark Pharmaceuticals', photo: '/images/events/hrtech-2026/speakers/anirudh-gupta.webp' },
+        { name: 'Davis John', title: 'Head – HR & Business Services', company: 'Raymond Limited', photo: '/images/events/hrtech-2026/speakers/davis-john.webp' },
+        { name: 'Ranjini Pillai', title: 'Head HR', company: 'SICK Sensor Intelligence', photo: '/images/events/hrtech-2026/speakers/ranjini-pillai.webp' },
+        { name: 'Harminder Bareja', title: 'Head – Human Resources, Water Business', company: 'Dorf Ketal', photo: '/images/events/hrtech-2026/speakers/harminder-bareja.webp' },
+        { name: 'Dr. Jagmohan Singh Rishi', title: 'Global Head – L&D and Digital Excellence; President, Bombay Management Association 2025', company: 'Wockhardt Ltd', photo: '/images/events/hrtech-2026/speakers/jagmohan-singh-rishi.webp' },
+        { name: 'Preeti Toshniwal', title: 'Senior Vice President – HR', company: 'Zee Entertainment Enterprises Ltd.', photo: '/images/events/hrtech-2026/speakers/preeti-toshniwal.webp' },
+        { name: 'Rajendra Lingwal', title: 'Senior Vice President – HR', company: 'Persistent Systems Ltd.', photo: '/images/events/hrtech-2026/speakers/rajendra-lingwal.webp' },
+        { name: 'Pawan Lalwani', title: 'Strategic HR Leader – Learning & Capability', company: 'Reliance Industries Ltd.', photo: '/images/events/hrtech-2026/speakers/pawan-lalwani.webp' },
+        { name: 'Rajan B Saawant', title: 'Vice President Corporate – Human Resources', company: 'Indoco Remedies Ltd', photo: '/images/events/hrtech-2026/speakers/rajan-b-saawant.webp' },
+        { name: 'Nandini Banerjee', title: 'Learning Business Partner, India Business', company: 'Johnson Controls', photo: '/images/events/hrtech-2026/speakers/nandini-banerjee.webp' },
+        { name: 'Judith Antao', title: 'Head – HR', company: 'Rohlig India Private Limited', photo: '/images/events/hrtech-2026/speakers/judith-antao.webp' },
+        { name: 'Ameet Kakar Thakur', title: 'VP HR', company: 'GSL Group', photo: '/images/events/hrtech-2026/speakers/ameet-kakar-thakur.webp' },
+        { name: 'Shruti Shrivastava', title: 'Senior Vice President HR', company: 'Citi', photo: '/images/events/hrtech-2026/speakers/shruti-shrivastava.webp' },
+        { name: 'Dr. Ravi Hemnani', title: 'VP – Human Resources', company: 'Nuvoco Vistas Corp', photo: '/images/events/hrtech-2026/speakers/ravi-hemnani.webp' },
+        { name: 'Ravi Vyas', title: 'Vice President', company: 'Aarvi Encon Limited', photo: '/images/events/hrtech-2026/speakers/ravi-vyas.webp' },
+        { name: 'Manohar Nimbhore', title: 'Director Learning and Development', company: 'Marriott International', photo: '/images/events/hrtech-2026/speakers/manohar-nimbhore.webp' },
+        { name: 'Mousumi Dhar', title: 'CHRO', company: 'Indospace Group', photo: '/images/events/hrtech-2026/speakers/mousumi-dhar.webp' },
+        { name: 'Dr. Ujjal Sengupta', title: 'Head Business HR', company: 'Jio', photo: '/images/events/hrtech-2026/speakers/ujjal-sengupta.webp' },
+        { name: 'Karan Bhatia', title: 'Payroll Bureau Head', company: 'RAMCO', photo: '/images/events/hrtech-2026/speakers/karan-bhatia.webp' },
+        /* Named in the agenda, not on the brochure's speaker page, so no photo. */
+        { name: 'Tulanahinaa Maity', title: 'CHRO', company: 'Anand Rathi Group' },
+        { name: 'Gulrez Alam', title: 'Founder & MD', company: 'PeopleSol' },
+        { name: 'Jagdeep Chauhan', title: 'Director Human Resources', company: 'Hinduja Hospital' },
       ],
     },
 
     awards: {
-      name: 'Excellence in HR Awards 2026',
+      name: 'HR Excellence & Innovation Awards 2026',
+      note: 'Nomination and operational charges apply.',
       groups: [
         {
           name: 'Individual Categories',
@@ -321,6 +447,158 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
       },
     ],
 
+    partners: [
+      {
+        tier: 'Gold partner',
+        name: 'Ramco Payce',
+        logo: { src: '/images/events/hrtech-2026/partners/ramco-payce.webp', w: 209, h: 120 },
+        /* The brochure reserves this block and leaves the body blank.
+           TODO(client): send the Ramco Payce company write-up. */
+        about: [],
+      },
+      {
+        tier: 'Gold partner',
+        name: 'Superset',
+        logo: { src: '/images/events/hrtech-2026/partners/superset.webp', w: 209, h: 120 },
+        url: 'https://joinsuperset.com/employer.html',
+        about: [
+          'Superset is India’s largest campus hiring platform, built to simplify and scale fresher recruitment for employers across the country. Trusted by over 12,000 employers and 600+ universities, we connect recruiting teams to verified talent across 24,000+ campuses.',
+          'We handle the full recruitment workflow: campus outreach, candidate assessments, virtual interview drives, and offer management, with everything tracked in one place. With real-time analytics and personalised candidate recommendations, recruiting teams spend less time on logistics and more time on the right hires.',
+          'Superset is where campus hiring happens at scale.',
+        ],
+      },
+      {
+        tier: 'Silver partner',
+        name: 'Aarvi Encon Limited',
+        logo: { src: '/images/events/hrtech-2026/partners/aarvi.webp', w: 320, h: 117 },
+        about: [
+          'At Aarvi Encon Limited, we help organisations build high-performing teams by connecting them with exceptional talent. Backed by over 39 years of industry experience, an ISO certification, and a CRISIL SME1 rating, we deliver strategic Permanent Placement solutions tailored to evolving business needs. We are proud recipients of the prestigious Jamnalal Bajaj Award and listed on BSE and NSE.',
+          'Our core services include Executive Search, Permanent Recruitment, Leadership Hiring, and Professional & Specialist Hiring, with a strong focus on mid-level and senior-level placements. Through a comprehensive recruitment approach encompassing talent mapping, candidate sourcing, screening, and assessment, we identify professionals who align with our clients’ business objectives and organisational culture.',
+          'Combining deep industry expertise, an extensive talent network, and a commitment to quality, we help businesses secure the right talent to strengthen their workforce, enhance performance, and drive sustainable growth.',
+          'At Aarvi Encon, we don’t just fill positions. We build the talent that drives business forward.',
+        ],
+      },
+      {
+        tier: 'HR digital transformation partner',
+        name: 'PeopleSol',
+        logo: { src: '/images/events/hrtech-2026/partners/peoplesol.webp', w: 320, h: 115 },
+        about: [
+          'PeopleSol HRMS is a world-class Human Resource Management System designed to simplify, streamline, and elevate every aspect of your organization’s HR operations. Built with powerful web and mobile interfaces, it provides a seamless digital experience that connects employees, managers, and HR teams, IT Teams and Admin teams anytime, anywhere.',
+          'From hire to retire, PeopleSol HRMS empowers organizations to manage the complete employee lifecycle with ease — covering recruitment, onboarding, payroll, performance, learning, attendance, ITSM, Office Facility management and more. Its real-time analytics and dashboards offer deep workforce insights, enabling data-driven decisions and smarter people management.',
+          'With automation at its core, PeopleSol HRMS eliminates manual processes, reduces administrative workload, and enhances accuracy and compliance. The system is fully configurable to your company’s structure, policies, and approval workflows, ensuring flexibility and scalability as your organization grows.',
+          'Whether you’re a small enterprise or a large corporation, PeopleSol HRMS helps you create a connected, efficient, and engaged workplace — boosting productivity, transparency, and employee satisfaction.',
+        ],
+      },
+      {
+        tier: 'Neuroscience learning partner',
+        name: 'Brainayan',
+        logo: { src: '/images/events/hrtech-2026/partners/brainayan.webp', w: 320, h: 115 },
+        url: 'https://www.brainayan.com/',
+        about: [
+          'Brainayan, founded in 2016 by a former L&D leader at Google and Facebook, is a people development company that blends neuroscience-based learning to create meaningful, lasting change. We specialize in customized and personalized high-impact behavioral learning experiences that go far beyond one-size-fits-all training — addressing real business challenges and empowering individuals to lead, grow, and thrive.',
+          'With 30,000+ hours of delivery and content development, Brainayan has partnered with 100+ organizations across APAC — from scaling startups to Fortune 100 giants.',
+          'Clients include Netflix, Google, Grab, Viacom18, Deloitte, Snapchat, WeWork, Sumo Logic, Uber, TikTok, Zepto, Facebook, AppDynamics, Warner Bros Discovery, Xiaomi, DE Shaw, Piramal Finance, IndiaFirst Life, Trust Mutual Fund, Caratlane, Sanctum Wealth, Ask Group, Kirloskar Group, BHTC, Baskin Robbins and Table Space.',
+        ],
+      },
+      {
+        tier: 'Exhibit partner',
+        name: 'Osource Global',
+        logo: { src: '/images/events/hrtech-2026/partners/osource-global.webp', w: 320, h: 115 },
+        about: [
+          'Osource Global is a leading business process solutions and services partner that helps global enterprises reinvent their digital core through gen-AI and human ingenuity. For over 22 years, we have acted as a strategic global partner for 1,000+ clients, delivering high-impact outcomes across 40+ countries. We combine deep industry expertise with our proprietary tech ecosystem to bridge the gap between legacy operations and digital agility.',
+          'Our capabilities are delivered through four integrated units designed for enterprise-wide transformation. AI-Driven Enterprise Platforms: home to the Onex® suite — modular AI-native assets for P2P, Recon, HRMS, BPM and more. F&A Solutions: end-to-end financial accounting orchestration including Accounts Payable/Receivable, Record-to-Report, and Asset Verification. Human Capital Management: managing the entire employee journey via Global Payroll, Lifecycle Management, and Background Verification — from hire to retire. Strategic Advisory: expert-led consulting in Cybersecurity, Risk & Regulatory Governance, Business Re-engineering, Fractional CXO and GCC Setup Advisory.',
+          'At Osource Global, we measure our success by the tangible value we create — leveraging AI, optimizing operations, accelerating growth, and building the future of autonomous enterprise operations.',
+        ],
+      },
+      {
+        tier: 'Exhibit partner',
+        name: 'Culsight',
+        logo: { src: '/images/events/hrtech-2026/partners/culsight.webp', w: 320, h: 113 },
+        about: [
+          'Culsight works between security teams and leadership to measure human cyber risk, improve governance visibility, and prepare companies for real cyber incidents. Most companies have tools and policies, and we ensure they operate effectively, and leadership can make informed security decisions.',
+          'The name Culsight comes from two ideas: Culture and Sight, because we believe security fails when people cannot see the risk clearly or when the culture does not support the right behaviour.',
+          'Culsight provides this visibility. We help organisations see how people, processes, security controls, AI systems, and privacy obligations together influence cybersecurity and privacy risk. Our work connects technical security operations with business oversight, enabling risk, compliance, internal audit, and management teams to understand and oversee cybersecurity, privacy, and AI governance meaningfully.',
+          'Our services include human cyber risk measurement, governance advisory, privacy implementation, AI governance advisory, crisis simulation exercises, and control effectiveness reviews. We support banks, financial institutions, manufacturing, pharmaceutical, technology and other enterprise and SMB firms.',
+          'We do not replace existing security teams, technologies, or compliance programs. We ensure they function cohesively, are understood by leadership, and stand up to both real incidents and audits. Our objective is simple: help organisations move from security activity to security effectiveness.',
+        ],
+      },
+      {
+        tier: 'Exhibit partner',
+        name: 'Saral (Relyon Softech Limited)',
+        logo: { src: '/images/events/hrtech-2026/partners/saral.webp', w: 320, h: 113 },
+        url: 'https://saral.pro/',
+        about: [
+          'Relyon Softech Limited is a software company based in India’s Silicon Valley, Bengaluru. Over the past 25+ years, under our brand Saral, we have been providing both desktop and cloud solutions in the domains of HR & Payroll, Taxation and Accounting to over 60,000 users; from SMEs to private & public-sector banks.',
+          'Our mission is to simplify business processes across India. We have been able to meet the unique challenges and ever-changing demands of over 30 sectors in the Indian market by tailoring solutions that cater to their business needs.',
+          'We have branches in Chennai, Hyderabad, Mumbai, Pune, Ahmedabad, Jaipur, Kolkata, and Delhi; with a robust network of 300+ partners across 450 districts.',
+        ],
+      },
+      {
+        tier: 'Media partner',
+        name: 'BharatCXO',
+        logo: { src: '/images/events/hrtech-2026/partners/bharatcxo.webp', w: 320, h: 115 },
+        /* Media partners are not given a write-up in the brochure. */
+        about: [],
+      },
+    ],
+
+    faq: [
+      {
+        q: 'When and where is the Next-Gen HR Tech Summit & Awards 2026?',
+        a: 'The 3rd Edition Next-Gen HR Tech Summit & Awards 2026 takes place on Thursday, 26 November 2026 in Mumbai, India, from 08:30 AM to 05:30 PM IST. The venue is yet to be announced.',
+      },
+      {
+        q: 'Who should attend the Next-Gen HR Tech Summit?',
+        a: 'CXOs, VPs and directors of human resources, talent management, employee engagement and talent acquisition, along with HR strategists and chief people officers.',
+      },
+      {
+        q: 'What will the 2026 summit cover?',
+        a: 'The theme is “Driving Business Growth Through Next-Gen HR Technology”. An opening keynote on the evolution of HR in 2026 is followed by four panel discussions: wellbeing at work, workplace by design, HR influence without authority, and AI assurance and people analytics.',
+      },
+      {
+        q: 'Who is speaking at the Next-Gen HR Tech Summit 2026?',
+        a: '28 HR leaders are named in the brochure, including Santosh Iyer (KLT Automotive), Shruti Shrivastava (Citi), Pawan Lalwani (Reliance Industries), Davis John (Raymond), Preeti Toshniwal (Zee Entertainment Enterprises), Dr. Kavindra Pant (Shapoorji Pallonji Group) and Rajendra Lingwal (Persistent Systems).',
+      },
+      {
+        q: 'What are the HR Excellence & Innovation Awards 2026?',
+        a: 'The awards run across 44 categories: 22 for individuals, such as HR Innovator of the Year and Digital HR Leader of the Year, and 22 for organisations, such as Best HR Tech Implementation. Nomination and operational charges apply. The awards ceremony is part of the summit day.',
+      },
+      {
+        q: 'Has EBM run this summit before?',
+        a: 'Yes. This is the 3rd edition of the Next-Gen HR Tech Summit & Awards, organised by Empiric Business Media.',
+      },
+      {
+        q: 'How do I register, speak or sponsor?',
+        a: 'Use Register interest, Apply to speak or Sponsor this edition on this page, or email info@empiricbusinessmedia.com. The EBM team will get back to you.',
+      },
+    ],
+
+    seo: {
+      description:
+        'Next-Gen HR Tech Summit & Awards 2026, 26 Nov, Mumbai: CHROs and HR heads on AI, people analytics, employee experience and HR technology, plus the awards.',
+      keywords: [
+        'Next-Gen HR Tech Summit 2026',
+        'Next-Gen HR Tech Summit & Awards 2026',
+        'HR Excellence & Innovation Awards 2026',
+        'HR tech summit Mumbai 2026',
+        'HR conference India 2026',
+        'CHRO summit Mumbai 2026',
+        'HR technology conference India',
+        'people analytics conference India',
+        'employee experience summit India',
+        'talent acquisition conference Mumbai',
+        'learning and development conference India',
+        'AI in HR conference India',
+        'HR Innovator of the Year award',
+        'Digital HR Leader of the Year award',
+        'Next-Gen HR Tech Summit 2026 speakers',
+      ],
+      image: '/og/next-gen-hr-tech-summit-awards-2026.jpg',
+      h1Tagline: 'HR Technology Summit & Awards in Mumbai',
+      intro:
+        'The Next-Gen HR Tech Summit & Awards 2026 is a one-day HR technology conference in Mumbai for CHROs, HR heads and talent leaders: an opening keynote, four panel discussions on wellbeing, workplace design, HR influence and AI-driven people analytics, and the HR Excellence & Innovation Awards.',
+    },
+
     contacts: [
       {
         role: 'Speaking opportunity / general enquiries',
@@ -347,6 +625,7 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
     showcase: {
       logo: { src: '/images/events/fintax-2026/showcase/logo.webp', w: 1200, h: 328 },
       badge: { src: '/images/events/fintax-2026/showcase/award-badge.webp', w: 180, h: 204 },
+      tags: ['GST', 'Audit-ready', 'RegTech', 'Risk & controls', 'TDS & e-invoicing'],
     },
     about: [
       'As businesses navigate an increasingly complex regulatory landscape, finance leaders are under growing pressure to balance compliance, operational efficiency, and business agility. The 5th Edition FinTax Summit & Awards brings together senior leaders from tax, finance, risk, audit, compliance, legal, and governance to explore strategies that strengthen financial resilience while keeping pace with evolving regulations.',

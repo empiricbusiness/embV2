@@ -123,6 +123,7 @@ export default function ShowcaseAgenda({
           const { a, i } = r
           const cat = catOf(a)
           const lineup = [
+            ...(a.speaker ? [{ name: a.speaker, role: 'Speaker' }] : []),
             ...(a.moderator ? [{ name: a.moderator, role: 'Moderator' }] : []),
             ...(a.panelists ?? []).map((name) => ({ name, role: 'Panellist' })),
           ]
@@ -135,7 +136,7 @@ export default function ShowcaseAgenda({
               key={a.time + a.title}
               className={`${s.tItem} ${s[`t_${cat}`] ?? ''} ${passed ? s.passed : ''} ${isCurrent ? s.current : ''}`}
               hidden={!shows(a)}
-              id={cat === 'panel' ? `session-${a.time.replace(':', '')}` : undefined}
+              id={lineup.length > 0 ? `session-${a.time.replace(':', '')}` : undefined}
               onMouseEnter={() => setHover(r.seq)}
               onClick={() => setPinned((p) => (p === r.seq ? null : r.seq))}
             >

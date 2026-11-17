@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Bebas_Neue } from 'next/font/google'
 import type { EventRecord } from '@/data/site'
-import type { EventContent, EventSpeaker, ShowcaseArt } from '@/data/event-content'
+import type { EventContent, EventPartner, EventSpeaker, ShowcaseArt } from '@/data/event-content'
 import { breadcrumbLd } from '@/lib/seo'
 import Countdown from './Countdown'
 import EventCard from './EventCard'
@@ -18,9 +18,9 @@ import s from './EventShowcase.module.css'
  * The event page for editions that ship their own identity (`EventContent.showcase`).
  *
  * Look: the event's own logo, cream accent and Bebas display type, on a page-wide
- * "audit paper" backdrop in the site's navy and gold. The hero stages the topic —
- * a moving ledger grid, a rising bar chart and a growth line, with tax and
- * compliance tags floating over it. No brochure illustrations are used.
+ * squared-paper backdrop in the site's navy and gold. The hero stages the topic —
+ * a moving grid, a rising bar chart and a growth line, with the edition's own
+ * subject tags floating over it. No brochure illustrations are used.
  *
  * Every fact comes from event-content.ts; this file only decides how it looks.
  * Agenda, speakers and the audience tabs are small client components; all of
@@ -61,19 +61,21 @@ function Pill({
   )
 }
 
-/* The hero's stage: glows, a moving ledger floor, a rising chart with a growth
-   line, and topic tags. Decorative only, so the whole thing is aria-hidden. */
+/* The hero's stage: glows, a moving grid floor, a rising chart with a growth
+   line, and the edition's subject tags. Decorative, so it is all aria-hidden. */
 const BARS = [0.34, 0.46, 0.4, 0.58, 0.66, 0.8, 1]
-// Placed above and below the glance card, clear of the headline and CTAs.
-const TAGS = [
-  { label: 'GST', style: { top: '6%', right: '30%' } },
-  { label: 'Audit-ready', style: { top: '3%', right: '4%' } },
-  { label: 'RegTech', style: { bottom: '7%', right: '37%' } },
-  { label: 'Risk & controls', style: { bottom: '2.5%', right: '20%' } },
-  { label: 'TDS & e-invoicing', style: { bottom: '8%', right: '3%' } },
+/* Where the chips sit — above and below the glance card, clear of the headline
+   and the CTAs. The LABELS are the edition's own (content.showcase.tags); only
+   the placement lives here. */
+const TAG_SPOTS = [
+  { top: '6%', right: '30%' },
+  { top: '3%', right: '4%' },
+  { bottom: '7%', right: '37%' },
+  { bottom: '2.5%', right: '20%' },
+  { bottom: '8%', right: '3%' },
 ]
 
-function HeroScene() {
+function HeroScene({ tags }: { tags: string[] }) {
   const W = 50
   const pts = BARS.map((b, i) => {
     const h = 240 * b
@@ -120,12 +122,12 @@ function HeroScene() {
         <circle className={s.pulse} cx={last.x + W / 2} cy={last.y - 16} r="7" stroke="#f5b614" strokeWidth="2" />
       </svg>
       <ul className={s.heroChips}>
-        {TAGS.map((t, i) => (
+        {tags.slice(0, TAG_SPOTS.length).map((label, i) => (
           <li
-            key={t.label}
+            key={label}
             className={s.heroChip}
-            data-label={t.label}
-            style={{ ...t.style, animationDelay: `${i * 0.9}s` }}
+            data-label={label}
+            style={{ ...TAG_SPOTS[i], animationDelay: `${i * 0.9}s` }}
           >
             <span>
               <Icon name="check" size={13} />
@@ -166,12 +168,22 @@ export default function EventShowcase({ event, content, sectorName, related, rel
   const awardCount = content.awards?.groups.reduce((n, g) => n + g.categories.length, 0) ?? 0
   const panels = agenda.filter((a) => /panel/i.test(a.kind ?? '')).length
 
+  /* The strip groups by tier: an edition with two Gold partners prints "Gold
+     partner" ONCE with both logos under it, not the label twice. A Map keeps
+     the brochure's own order, and tiers with one partner are unaffected. */
+  const partnerTiers = [
+    ...(content.partners ?? [])
+      .reduce((m, p) => m.set(p.tier, [...(m.get(p.tier) ?? []), p]), new Map<string, EventPartner[]>())
+      .entries(),
+  ].map(([tier, partners]) => ({ tier, partners }))
+
   // Speaker lookups for the agenda and the cards' back faces.
   const people: Record<string, EventSpeaker> = Object.fromEntries(speakers.map((p) => [p.name, p]))
   const roles: Record<string, SpeakerRole> = {}
   for (const a of agenda) {
     const panel = (a.kind ?? 'Panel').replace(/\s*discussion\s*/i, ' ').trim()
     const base = { panel, session: a.title, time: a.time, anchor: `session-${a.time.replace(':', '')}` }
+    if (a.speaker) roles[a.speaker] = { role: 'Speaker', ...base }
     if (a.moderator) roles[a.moderator] = { role: 'Moderator', ...base }
     for (const n of a.panelists ?? []) roles[n] = { role: 'Panellist', ...base }
   }
@@ -183,10 +195,16 @@ export default function EventShowcase({ event, content, sectorName, related, rel
   const speak = `/contact/?intent=speak&event=${event.slug}`
   const sponsor = `/sponsorship/?event=${event.slug}`
 
+  /* This layout is the upcoming-edition presentation: /events/[slug] routes a
+     past edition to the standard template instead. The guard stays as a second
+     line of defence — nothing here may invite anyone to register for or speak
+     at an edition that has already run. */
+  const isUpcoming = event.status === 'upcoming'
+
   // About: four paragraphs, each with a short design label.
   const [aboutLead, ...aboutRest] = content.about
   const ABOUT_CARDS = [
-    { label: 'The focus', icon: 'layers', tags: ['AI', 'Automation', 'RegTech', 'Data-driven decisions'] },
+    { label: 'The focus', icon: 'layers', tags: art.tags.slice(0, 4) },
     { label: 'On stage', icon: 'mic' },
     { label: 'Your takeaway', icon: 'rocket' },
   ]
@@ -197,7 +215,7 @@ export default function EventShowcase({ event, content, sectorName, related, rel
 
       {/* ============================================================ hero */}
       <section className={s.hero}>
-        <HeroScene />
+        <HeroScene tags={art.tags} />
 
         <div className="wrap relative pb-20 pt-6 lg:pb-28">
           <nav aria-label="Breadcrumb">
@@ -289,24 +307,32 @@ export default function EventShowcase({ event, content, sectorName, related, rel
               </ul>
 
               <div className="mt-10 flex flex-wrap items-center gap-3">
-                <Link href={register} className={s.btnCream}>
-                  Register interest
-                  <Icon name="arrow" size={18} />
-                </Link>
-                <Link href={speak} className={s.btnLine}>
-                  Apply to speak
-                </Link>
+                {isUpcoming ? (
+                  <>
+                    <Link href={register} className={s.btnCream}>
+                      Register interest
+                      <Icon name="arrow" size={18} />
+                    </Link>
+                    <Link href={speak} className={s.btnLine}>
+                      Apply to speak
+                    </Link>
+                  </>
+                ) : (
+                  <span className="inline-flex items-center rounded-full bg-white/15 px-3.5 py-1.5 text-[0.75rem] font-bold uppercase tracking-[0.1em] text-white/80">
+                    Past edition
+                  </span>
+                )}
                 <Link
                   href={sponsor}
                   className="px-2 text-[0.95rem] font-semibold text-white/80 underline-offset-4 hover:text-[var(--ft-cream)] hover:underline"
                 >
-                  Sponsor this edition
+                  {isUpcoming ? 'Sponsor this edition' : 'Sponsor the next edition'}
                 </Link>
               </div>
             </div>
 
             <aside className={`${s.glance} p-6 sm:p-8`} aria-label="At a glance">
-              {event.date && <Countdown iso={event.date} label="Time until doors open" />}
+              {isUpcoming && event.date && <Countdown iso={event.date} label="Time until doors open" />}
 
               <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-5">
                 {[
@@ -349,16 +375,22 @@ export default function EventShowcase({ event, content, sectorName, related, rel
       {/* ==================================================== partner strip */}
       {content.partners && (
         <section className={s.band} aria-label="Partners">
-          <div className="wrap flex flex-wrap items-end justify-center gap-x-8 gap-y-6 py-7 lg:justify-between">
-            {content.partners.map((p) => (
-              <div key={p.name} className="flex flex-col items-center gap-2 lg:items-start">
-                <span className={s.bandLabel}>{p.tier}</span>
-                <span className={s.bandLogo}>
-                  <Image src={p.logo.src} alt={p.name} width={p.logo.w} height={p.logo.h} />
+          {/* Centred wrap, not space-between: a part-filled last row would
+              otherwise push its groups to the far edges. */}
+          <div className="wrap flex flex-wrap items-end justify-center gap-x-8 gap-y-7 py-7 sm:gap-x-10">
+            {partnerTiers.map((g) => (
+              <div key={g.tier} className="flex flex-col items-center gap-2.5">
+                <span className={s.bandLabel}>{g.tier}</span>
+                <span className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+                  {g.partners.map((p) => (
+                    <span key={p.name} className={s.bandLogo}>
+                      <Image src={p.logo.src} alt={p.name} width={p.logo.w} height={p.logo.h} />
+                    </span>
+                  ))}
                 </span>
               </div>
             ))}
-            <div className="flex flex-col items-center gap-2 lg:items-start">
+            <div className="flex flex-col items-center gap-2.5">
               <span className={s.bandLabel}>Conceptualised &amp; organised by</span>
               {/* The EBM logo is white and gold on transparent, so it sits on a
                   dark tile the same size as the partner logos' white tiles. */}
@@ -442,7 +474,7 @@ export default function EventShowcase({ event, content, sectorName, related, rel
                 {
                   n: speakers.length,
                   label: content.speakers?.confirmed ? 'Confirmed speakers' : 'Speakers',
-                  sub: 'CFOs, tax heads and finance leaders',
+                  sub: content.audience?.title ?? 'Senior leaders from across the sector',
                   icon: 'mic',
                   href: '#speakers',
                 },
@@ -576,15 +608,17 @@ export default function EventShowcase({ event, content, sectorName, related, rel
               <ShowcaseAgenda date={event.date} items={agenda} people={people} />
             </div>
 
-            <div className="mt-12 flex flex-wrap gap-3">
-              <Link href={register} className={s.btnCream}>
-                Register interest
-                <Icon name="arrow" size={18} />
-              </Link>
-              <Link href={speak} className={s.btnLine}>
-                Apply to speak
-              </Link>
-            </div>
+            {isUpcoming && (
+              <div className="mt-12 flex flex-wrap gap-3">
+                <Link href={register} className={s.btnCream}>
+                  Register interest
+                  <Icon name="arrow" size={18} />
+                </Link>
+                <Link href={speak} className={s.btnLine}>
+                  Apply to speak
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -598,7 +632,8 @@ export default function EventShowcase({ event, content, sectorName, related, rel
               <p className={`${s.display} ${s.headline}`}>
                 {speakers.length}{' '}
                 <span className={s.cream}>
-                  {content.speakers.confirmed ? 'confirmed ' : ''}finance &amp; tax leaders
+                  {content.speakers.confirmed ? 'confirmed ' : ''}
+                  {content.audience?.title ?? 'industry leaders'}
                 </span>
               </p>
               <p className="mt-3 text-[0.95rem] text-white/70">Hover or tap a card to see their session.</p>
@@ -739,15 +774,19 @@ export default function EventShowcase({ event, content, sectorName, related, rel
                 {event.timeLabel ? ` · ${event.timeLabel}` : ''}
               </p>
               <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-                <Link href={register} className={s.btnCream}>
-                  Register interest
-                  <Icon name="arrow" size={18} />
-                </Link>
-                <Link href={speak} className={s.btnLine}>
-                  Apply to speak
-                </Link>
-                <Link href={sponsor} className={s.btnLine}>
-                  Sponsor this edition
+                {isUpcoming && (
+                  <>
+                    <Link href={register} className={s.btnCream}>
+                      Register interest
+                      <Icon name="arrow" size={18} />
+                    </Link>
+                    <Link href={speak} className={s.btnLine}>
+                      Apply to speak
+                    </Link>
+                  </>
+                )}
+                <Link href={sponsor} className={isUpcoming ? s.btnLine : s.btnCream}>
+                  {isUpcoming ? 'Sponsor this edition' : 'Sponsor the next edition'}
                 </Link>
               </div>
             </div>
