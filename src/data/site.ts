@@ -355,11 +355,16 @@ export type EventRecord = {
    */
   featured?: boolean
   /**
-   * Postponed, with no new date yet. The record stays here so the edition can
-   * come back by deleting this one line, but it is left out of `EVENTS` — so it
-   * appears on no page, list, count or sitemap, and its page is not built. Its
-   * URL 307-redirects (temporary) to its sector in vercel.json. No
-   * "postponed" or "cancelled" label is shown anywhere.
+   * Postponed, with no new date yet. The record stays here, but it is left out
+   * of `EVENTS` — so it appears on no page, list, count or sitemap, and its page
+   * is not built. Its URL 307-redirects (temporary) to its sector in
+   * vercel.json. No "postponed" or "cancelled" label is shown anywhere.
+   *
+   * BRINGING AN EDITION BACK IS TWO EDITS, NOT ONE. Deleting this line rebuilds
+   * the page, but the vercel.json redirect stays and then sends every visitor
+   * away from the page that was just built — the live site 307s it to the
+   * sector. Delete BOTH redirect lines for that slug at the same time.
+   * `scripts/verify.mjs` fails if a built page is still a redirect source.
    */
   postponed?: boolean
   /**

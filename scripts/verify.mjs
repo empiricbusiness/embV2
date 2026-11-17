@@ -126,6 +126,27 @@ for (const f of walkAssets('out')) {
   }
 }
 
+/* ------------------------------------------------------------------------
+   A built page must never also be a redirect source.
+
+   `postponed: true` keeps an edition out of EVENTS so its page is not built,
+   and vercel.json 307s its URL to the sector listing. Bringing the edition
+   back by deleting that one line rebuilds the page — but the redirect stays
+   unless it is deleted too, and the live site then sends every visitor away
+   from the page it just built. That shipped on the HR Tech 3rd Edition: the
+   page was live and unreachable, 307ing to /events/?sector=hr-technology.
+   ------------------------------------------------------------------------ */
+const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'))
+for (const r of vercel.redirects ?? []) {
+  // Only the clean-path redirects can collide with a built page; the old
+  // site's *.html URLs never can.
+  const src = r.source.endsWith('/') ? r.source.slice(0, -1) : r.source
+  if (!src.startsWith('/') || src.endsWith('.html')) continue
+  if (fs.existsSync(path.join('out', src.slice(1), 'index.html'))) {
+    problems.push(`vercel.json redirects "${r.source}" but that page IS built — it would be unreachable`)
+  }
+}
+
 if (problems.length === 0) console.log('NO SEO PROBLEMS FOUND')
 else {
   console.log(`${problems.length} PROBLEM(S):`)
