@@ -545,7 +545,7 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
     faq: [
       {
         q: 'When and where is the Next-Gen HR Tech Summit & Awards 2026?',
-        a: 'The 3rd Edition Next-Gen HR Tech Summit & Awards 2026 takes place on Thursday, 26 November 2026 in Mumbai, India, from 08:30 AM to 05:30 PM IST. The venue is yet to be announced.',
+        a: 'The 3rd Edition Next-Gen HR Tech Summit & Awards 2026 takes place on Thursday, 26 November 2026 at the Peninsula Brand Hotel, Andheri, Mumbai, India, from 08:30 AM to 05:30 PM IST.',
       },
       {
         q: 'Who should attend the Next-Gen HR Tech Summit?',

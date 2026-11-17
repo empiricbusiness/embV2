@@ -296,12 +296,11 @@ export default function EventShowcase({ event, content, sectorName, related, rel
                   <span className={s.factIcon}>
                     <Icon name="pin" />
                   </span>
-                  <span className="text-[0.95rem] font-semibold leading-snug">
-                    {event.venue ? `${event.venue}, ` : ''}
-                    {event.city}, India
-                    {!event.venue && (
-                      <span className="block text-[0.8rem] font-normal text-white/60">Venue to be announced</span>
-                    )}
+                  <span className="min-w-0 text-[0.95rem] font-semibold leading-snug">
+                    {event.venue ?? `${event.city}, India`}
+                    <span className="mt-0.5 block text-[0.8rem] font-normal leading-snug text-white/60">
+                      {event.venue ? `${event.city}, India` : 'Venue to be announced'}
+                    </span>
                   </span>
                 </li>
               </ul>

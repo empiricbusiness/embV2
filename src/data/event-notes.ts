@@ -50,7 +50,7 @@ export const EVENT_NOTES: Record<string, EventNote> = {
         'Award name conflict: the live microsite calls them the "Excellence in HR Awards 2026"; the brochure ceremony line says "HR Excellence & Innovation Awards Ceremony 2026". The brochure name is published. The 44 categories are identical in both.',
         'Three people are named in the agenda but are not on the brochure speaker page: Tulanahinaa Maity (opening keynote), Gulrez Alam (partner session) and Jagdeep Chauhan (panel 3). All three are published without a photograph, since that page is the only photo source.',
         'The speaker page prints "Ameet Kakar THAKUR"; the agenda prints "Ameet Kakar Thakur". Published with the agenda spelling.',
-        'No venue is named in the brochure. Published as "Venue to be announced".',
+        'No venue is named in the brochure. EBM confirmed it on 17 Nov 2026 as the Peninsula Brand Hotel, Andheri, which is therefore the only published fact on this page that the brochure does not carry. TODO(client): confirm the exact registered hotel name and the full street address for the Event structured data.',
         'City conflict, still open from the crawl: the hero says Mumbai; the contact page says Hyatt Regency, Chennai. The brochure says Mumbai, India.',
         'The live /hrtech/ page showed the CISO summit headline and counted down to the CISO date at the time of the crawl.',
         'No delegate price has ever been published for this event, so none is shown. Supply the ladder and set pricingPublished.',
