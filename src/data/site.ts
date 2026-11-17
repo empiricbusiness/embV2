@@ -455,7 +455,7 @@ export const ALL_EVENTS: EventRecord[] = [
     city: 'Mumbai',
     // Confirmed by EBM on 17 Nov 2026. The brochure prints no venue, so this
     // is the one fact on this page that does not come from it.
-    venue: 'Peninsula Brand Hotel, Andheri',
+    venue: 'Peninsula Grand Hotel, Andheri',
     sector: 'hr-technology',
     format: 'conference',
     status: 'upcoming',
@@ -485,8 +485,8 @@ export const ALL_EVENTS: EventRecord[] = [
         city: 'Mumbai',
         slug: 'mumbai',
         date: '2026-11-26',
-        venue: 'Peninsula Brand Hotel, Andheri',
-        mapUrl: 'https://www.google.com/maps/search/?api=1&query=Peninsula+Brand+Hotel+Andheri+Mumbai',
+        venue: 'Peninsula Grand Hotel, Andheri',
+        mapUrl: 'https://www.google.com/maps/search/?api=1&query=Peninsula+Grand+Hotel+Andheri+Mumbai',
       },
       {
         city: 'Bengaluru',

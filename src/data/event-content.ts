@@ -360,10 +360,14 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
         { name: 'Mousumi Dhar', title: 'CHRO', company: 'Indospace Group', photo: '/images/events/hrtech-2026/speakers/mousumi-dhar.webp' },
         { name: 'Dr. Ujjal Sengupta', title: 'Head Business HR', company: 'Jio', photo: '/images/events/hrtech-2026/speakers/ujjal-sengupta.webp' },
         { name: 'Karan Bhatia', title: 'Payroll Bureau Head', company: 'RAMCO', photo: '/images/events/hrtech-2026/speakers/karan-bhatia.webp' },
-        /* Named in the agenda, not on the brochure's speaker page, so no photo. */
-        { name: 'Tulanahinaa Maity', title: 'CHRO', company: 'Anand Rathi Group' },
-        { name: 'Gulrez Alam', title: 'Founder & MD', company: 'PeopleSol' },
-        { name: 'Jagdeep Chauhan', title: 'Director Human Resources', company: 'Hinduja Hospital' },
+        /* Named in the agenda but not on the brochure's speaker page, so their
+           portraits did not come from it. EBM supplied them separately on
+           17 Nov 2026; they are framed with the same ring as the rest of the
+           set, copied pixel for pixel from an existing image so the row cannot
+           drift. A name still without one renders as the empty gold ring. */
+        { name: 'Tulanahinaa Maity', title: 'CHRO', company: 'Anand Rathi Group', photo: '/images/events/hrtech-2026/speakers/tulanahinaa-maity.webp' },
+        { name: 'Gulrez Alam', title: 'Founder & MD', company: 'PeopleSol', photo: '/images/events/hrtech-2026/speakers/gulrez-alam.webp' },
+        { name: 'Jagdeep Chauhan', title: 'Director Human Resources', company: 'Hinduja Hospital', photo: '/images/events/hrtech-2026/speakers/jagdeep-chauhan.webp' },
       ],
     },
 
@@ -452,9 +456,19 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
         tier: 'Gold partner',
         name: 'Ramco Payce',
         logo: { src: '/images/events/hrtech-2026/partners/ramco-payce.webp', w: 209, h: 120 },
-        /* The brochure reserves this block and leaves the body blank.
-           TODO(client): send the Ramco Payce company write-up. */
-        about: [],
+        url: 'https://www.ramco.com/products/payce-payroll-software',
+        /* The brochure reserves this block and leaves the body blank, so unlike
+           every other partner here this copy does NOT come from it. It is drawn
+           from Ramco's own published material — the Payce product page, the
+           global payroll page and the 9 Feb 2024 launch press release — and
+           every claim below is one Ramco makes about itself in public. Nothing
+           is added. See event-notes.ts for the conflict this resolves. */
+        about: [
+          'Ramco Payce is a platform-based, AI-powered payroll product from Ramco Systems, built to change how enterprises manage payroll. It brings serverless in-memory computing, data analytics, artificial intelligence and machine learning together with Ramco’s two decades in the domain, so organisations process payroll faster, more easily and more accurately.',
+          'The platform is organised around four workspaces. Payroll Workspace is a single console to review inputs, bulk-upload data, resolve integration issues, process payroll, verify anomalies and download reports. BInGO is a DIY reporting and analytics tool that needs no coding. Daily HR is a modern employee self-service portal. CHIA is an AI assistant that handles everyday queries.',
+          'Implementation moves from months to weeks. A no-code rule builder lets teams express payroll logic as conditions rather than code, AI-driven compliance keeps country rules current in real time, and the engine processes over 100 million payroll records in 30 minutes using in-memory parallel computing. Certified connectors cover Workday, Oracle HCM, SAP SuccessFactors, Microsoft Dynamics, Epicor, Sage and Kronos, alongside leading time and attendance platforms.',
+          'Ramco Global Payroll has delivered payroll transformation for over 25 years, with coverage across 150+ countries and 500+ customers worldwide, including Fortune 500 enterprises such as GE, Coca-Cola and Standard Chartered. It can be deployed on cloud or taken as a managed service.',
+        ],
       },
       {
         tier: 'Gold partner',
@@ -545,7 +559,7 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
     faq: [
       {
         q: 'When and where is the Next-Gen HR Tech Summit & Awards 2026?',
-        a: 'The 3rd Edition Next-Gen HR Tech Summit & Awards 2026 takes place on Thursday, 26 November 2026 at the Peninsula Brand Hotel, Andheri, Mumbai, India, from 08:30 AM to 05:30 PM IST.',
+        a: 'The 3rd Edition Next-Gen HR Tech Summit & Awards 2026 takes place on Thursday, 26 November 2026 at the Peninsula Grand Hotel, Andheri, Mumbai, India, from 08:30 AM to 05:30 PM IST.',
       },
       {
         q: 'Who should attend the Next-Gen HR Tech Summit?',

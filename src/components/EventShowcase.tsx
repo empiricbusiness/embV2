@@ -275,9 +275,10 @@ export default function EventShowcase({ event, content, sectorName, related, rel
                 <p className="mt-5 max-w-[40rem] text-[1rem] leading-relaxed text-white/75">{content.seo.intro}</p>
               )}
 
-              {/* Date and time are short and fixed; the venue gets whatever width
-                  is left, so a real hotel name stays on one line. */}
-              <ul className="mt-9 grid gap-4 sm:grid-cols-[auto_auto_minmax(0,1fr)] sm:gap-5">
+              {/* Equal columns. A real hotel name is longer than the date or the
+                  time, so the venue wraps inside its tile rather than the row being
+                  skewed to fit it on one line — the tiles stay the same height. */}
+              <ul className="mt-9 grid gap-4 sm:grid-cols-3 sm:gap-5">
                 <li className={s.fact}>
                   <span className={s.factIcon}>
                     <Icon name="calendar" />
