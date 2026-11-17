@@ -453,7 +453,9 @@ export const ALL_EVENTS: EventRecord[] = [
     // 16:10. The cover's window is published, as on the 5th Edition FinTax page.
     timeLabel: '08:30 AM – 05:30 PM',
     city: 'Mumbai',
-    venue: null,
+    // Confirmed by EBM on 17 Nov 2026. The brochure prints no venue, so this
+    // is the one fact on this page that does not come from it.
+    venue: 'Peninsula Grand Hotel, Andheri',
     sector: 'hr-technology',
     format: 'conference',
     status: 'upcoming',
@@ -479,7 +481,13 @@ export const ALL_EVENTS: EventRecord[] = [
      * TODO(client): confirm the 2027 city list, dates and venues.
      */
     legs: [
-      { city: 'Mumbai', slug: 'mumbai', date: '2026-11-26', venue: null },
+      {
+        city: 'Mumbai',
+        slug: 'mumbai',
+        date: '2026-11-26',
+        venue: 'Peninsula Grand Hotel, Andheri',
+        mapUrl: 'https://www.google.com/maps/search/?api=1&query=Peninsula+Grand+Hotel+Andheri+Mumbai',
+      },
       {
         city: 'Bengaluru',
         slug: 'bengaluru',

@@ -275,6 +275,9 @@ export default function EventShowcase({ event, content, sectorName, related, rel
                 <p className="mt-5 max-w-[40rem] text-[1rem] leading-relaxed text-white/75">{content.seo.intro}</p>
               )}
 
+              {/* Equal columns. A real hotel name is longer than the date or the
+                  time, so the venue wraps inside its tile rather than the row being
+                  skewed to fit it on one line — the tiles stay the same height. */}
               <ul className="mt-9 grid gap-4 sm:grid-cols-3 sm:gap-5">
                 <li className={s.fact}>
                   <span className={s.factIcon}>
@@ -296,12 +299,11 @@ export default function EventShowcase({ event, content, sectorName, related, rel
                   <span className={s.factIcon}>
                     <Icon name="pin" />
                   </span>
-                  <span className="text-[0.95rem] font-semibold leading-snug">
-                    {event.venue ? `${event.venue}, ` : ''}
-                    {event.city}, India
-                    {!event.venue && (
-                      <span className="block text-[0.8rem] font-normal text-white/60">Venue to be announced</span>
-                    )}
+                  <span className="min-w-0 text-[0.95rem] font-semibold leading-snug">
+                    {event.venue ?? `${event.city}, India`}
+                    <span className="mt-0.5 block text-[0.8rem] font-normal leading-snug text-white/60">
+                      {event.venue ? `${event.city}, India` : 'Venue to be announced'}
+                    </span>
                   </span>
                 </li>
               </ul>
