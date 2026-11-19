@@ -1,14 +1,16 @@
 import Board from '@/components/Board'
+import ModeratorGate from '@/components/ModeratorGate'
 
 /**
- * TODO before a live event: put this behind authentication.
- *
- * Today the URL is the only thing protecting it, which is fine for a demo and
- * NOT fine at a real summit — anyone who guesses /moderator can hide questions.
- * The database policies already require an authenticated moderator to write
- * those flags (see supabase/schema.sql), so this needs a sign-in to match.
+ * The host's view, behind moderator sign-in. The database enforces the same
+ * rule (is_moderator() in supabase/schema.sql), so a copied URL alone can no
+ * longer hide, answer or promote anything.
  */
 export default async function ModeratorPage({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params
-  return <Board code={code.toLowerCase()} mode="moderator" />
+  return (
+    <ModeratorGate purpose="moderate this board" page>
+      <Board code={code.toLowerCase()} mode="moderator" />
+    </ModeratorGate>
+  )
 }

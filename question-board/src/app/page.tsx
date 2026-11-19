@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getStore } from '@/lib/store'
+import ModeratorGate from '@/components/ModeratorGate'
 
 /**
  * Two jobs, both urgent when they happen: let an attendee type a code because
@@ -109,7 +110,9 @@ export default function Home() {
           Running a session? Create a board
         </summary>
 
-        <form onSubmit={create} className="card mt-4">
+        <div className="mt-4">
+        <ModeratorGate purpose="create a board">
+        <form onSubmit={create} className="card">
           <label className="label" htmlFor="code">
             Board code
           </label>
@@ -178,6 +181,8 @@ export default function Home() {
             </div>
           )}
         </form>
+        </ModeratorGate>
+        </div>
       </details>
     </main>
   )
