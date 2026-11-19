@@ -26,8 +26,11 @@ export function getStore(): QuestionStore {
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  // NEXT_PUBLIC_QB_BACKEND=local forces the browser-local store even when the
+  // Supabase keys are present, for trying the whole flow on one machine.
+  const forceLocal = process.env.NEXT_PUBLIC_QB_BACKEND === 'local'
 
-  cached = url && key ? createSupabaseStore(url, key) : createLocalStore()
+  cached = url && key && !forceLocal ? createSupabaseStore(url, key) : createLocalStore()
   return cached
 }
 

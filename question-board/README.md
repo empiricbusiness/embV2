@@ -50,22 +50,49 @@ new adapter file.
 2. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in the
    Vercel project, then redeploy — `NEXT_PUBLIC_` values are baked in at build
    time.
-3. Add moderator sign-in (see below). Until then the database refuses board
-   creation and the moderator buttons. That is the security model working, not
-   a bug; boards can be created from the Supabase dashboard's table editor in the
-   meantime.
+3. Create the moderator accounts and switch off public sign-up (see "Moderator
+   sign-in" below).
 
 The anon key is safe in the browser **only because row-level security does the
 enforcement**. `supabase/schema.sql` contains those policies: anyone may read a
 board and post to an open one; nobody may edit or delete through the public key;
 only an authenticated moderator can hide, answer or promote.
 
+## Moderator sign-in
+
+The moderator page (`/ask/<code>/moderator`) and "Create a board" on the home
+page sit behind a sign-in (`src/components/ModeratorGate.tsx`). Attendee and
+room-screen pages stay open. The database enforces the same rule
+(`is_moderator()` in `supabase/schema.sql`), so a copied moderator URL is useless
+without an account.
+
+Moderators sign in with an email and a password. There is no sign-up in the app
+and no emailed login link: Supabase's built-in mailer only reaches the project's
+own team, a couple of messages an hour.
+
+**Add a moderator** (Supabase dashboard): Authentication → Users → Add user →
+Create new user → an `@empiricbusinessmedia.com` email and a password → tick
+**Auto Confirm User**. Share the password with that person directly.
+
+**Once, per project:** Authentication → Sign In / Providers → turn **off**
+"Allow new users to sign up". Only accounts an admin creates can then exist.
+
+In demo mode (no database) the gate lets everyone through — unless a demo
+account is set in `.env.local`, which makes the sign-in work locally exactly as
+it will against the database:
+
+```
+NEXT_PUBLIC_QB_BACKEND=local
+NEXT_PUBLIC_DEMO_MODERATOR_EMAIL=demo.moderator@empiricbusinessmedia.com
+NEXT_PUBLIC_DEMO_MODERATOR_PASSWORD=<anything>
+```
+
+`QB_BACKEND=local` keeps the board in the browser even when the Supabase keys
+are present. The demo account is ignored in production builds. The `fintax`
+board exists from the start in local mode.
+
 ## Before a real event — not optional
 
-- **The moderator route has no authentication.** Today the URL is the only thing
-  protecting it, which is fine for a demo and not fine at a summit. The database
-  policies already require an authenticated moderator to write those flags, so
-  the UI needs a sign-in to match.
 - **A moderator is anyone signed in with an `@empiricbusinessmedia.com` email**
   (`is_moderator()` in `supabase/schema.sql`). Keep email confirmation on in
   Supabase Auth, and tighten it to an explicit allow-list.

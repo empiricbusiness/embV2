@@ -1,4 +1,4 @@
-import type { Board, NewQuestion, Question, QuestionStore } from '@/lib/types'
+import type { Board, Moderator, NewQuestion, Question, QuestionStore } from '@/lib/types'
 
 /**
  * Browser-only store: localStorage for the data, BroadcastChannel for liveness.
@@ -49,6 +49,48 @@ function write(s: Snapshot) {
   }
 }
 
+/*
+ * Demo moderator login, for trying the sign-in flow locally without a database.
+ * The account comes from .env.local (NEXT_PUBLIC_DEMO_MODERATOR_EMAIL and
+ * NEXT_PUBLIC_DEMO_MODERATOR_PASSWORD). It is honoured only outside production
+ * builds, so a stray variable can never open a deployed board. Without it, demo
+ * mode lets everyone through, as before.
+ */
+const DEMO_EMAIL = (process.env.NEXT_PUBLIC_DEMO_MODERATOR_EMAIL ?? '').trim().toLowerCase()
+const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_MODERATOR_PASSWORD ?? ''
+const DEMO_LOGIN = process.env.NODE_ENV !== 'production' && !!DEMO_EMAIL && !!DEMO_PASSWORD
+const SESSION_KEY = 'ebm-qb-demo-session'
+const AUTH_CHANNEL = 'ebm-qb-auth'
+
+function readSession(): Moderator | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const email = window.localStorage.getItem(SESSION_KEY)
+    return email ? { email } : null
+  } catch {
+    return null
+  }
+}
+
+function writeSession(email: string | null) {
+  try {
+    if (email) window.localStorage.setItem(SESSION_KEY, email)
+    else window.localStorage.removeItem(SESSION_KEY)
+  } catch {
+    /* blocked storage: the sign-in lasts for this tab only */
+  }
+  try {
+    new BroadcastChannel(AUTH_CHANNEL).postMessage(email ?? '')
+  } catch {
+    /* other tabs pick it up from the storage event */
+  }
+}
+
+/** Boards that exist from the start in local mode. */
+const SEED_BOARDS: Record<string, { title: string; eventName: string }> = {
+  fintax: { title: 'Ask the panel', eventName: '5th Edition FinTax Summit & Awards 2026' },
+}
+
 /** Ids do not need to be unguessable, only unique within one browser. */
 let seq = 0
 const id = () => `q${Date.now().toString(36)}${(seq++).toString(36)}`
@@ -59,7 +101,12 @@ export function createLocalStore(): QuestionStore {
     ready: true,
 
     async getBoard(code) {
-      return read().boards[code] ?? null
+      const s = read()
+      if (!s.boards[code] && SEED_BOARDS[code] && typeof window !== 'undefined') {
+        s.boards[code] = { code, ...SEED_BOARDS[code], createdAt: new Date().toISOString(), open: true }
+        write(s)
+      }
+      return s.boards[code] ?? null
     },
 
     async createBoard({ code, title, eventName }) {
@@ -131,6 +178,44 @@ export function createLocalStore(): QuestionStore {
       if (i === -1) return
       s.questions[i] = { ...s.questions[i], ...flags }
       write(s)
+    },
+
+    // With a demo account configured, sign-in works as it will against the
+    // database; without one, demo mode lets everyone through.
+    needsSignIn: DEMO_LOGIN,
+    async getModerator() {
+      return DEMO_LOGIN ? readSession() : { email: 'demo@empiricbusinessmedia.com' }
+    },
+    async signIn(email, password) {
+      if (!DEMO_LOGIN) return { email }
+      // The same message Supabase gives, for a wrong email or password alike.
+      if (email.trim().toLowerCase() !== DEMO_EMAIL || password !== DEMO_PASSWORD) {
+        throw new Error('Invalid login credentials')
+      }
+      writeSession(DEMO_EMAIL)
+      return { email: DEMO_EMAIL }
+    },
+    async signOut() {
+      writeSession(null)
+    },
+    onModeratorChange(cb) {
+      if (!DEMO_LOGIN || typeof window === 'undefined') return () => {}
+      const notify = () => cb(readSession())
+      let ch: BroadcastChannel | null = null
+      try {
+        ch = new BroadcastChannel(AUTH_CHANNEL)
+        ch.onmessage = notify
+      } catch {
+        /* storage event below covers it */
+      }
+      const onStorage = (e: StorageEvent) => {
+        if (e.key === SESSION_KEY) notify()
+      }
+      window.addEventListener('storage', onStorage)
+      return () => {
+        ch?.close()
+        window.removeEventListener('storage', onStorage)
+      }
     },
 
     subscribe(_boardCode, onChange) {

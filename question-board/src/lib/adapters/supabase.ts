@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import type { Board, NewQuestion, Question, QuestionStore } from '@/lib/types'
+import type { Board, Moderator, NewQuestion, Question, QuestionStore } from '@/lib/types'
 
 /**
  * Supabase-backed store — the real, shared one.
@@ -192,6 +192,36 @@ export function createSupabaseStore(url: string, anonKey: string): QuestionStore
     async setFlags(questionId, flags) {
       const { error } = await db.from('questions').update(flags).eq('id', questionId)
       if (error) throw new Error(error.message)
+    },
+
+    // Moderators sign in with an email and password created in the Supabase
+    // dashboard (Authentication -> Users -> Add user, auto-confirmed). No
+    // sign-up here and no emailed links: Supabase's built-in mailer only
+    // reaches the project's own team, a couple of messages an hour.
+    needsSignIn: true,
+
+    async getModerator() {
+      const { data } = await db.auth.getSession()
+      const email = data.session?.user.email
+      return email ? { email } : null
+    },
+
+    async signIn(email, password) {
+      const { data, error } = await db.auth.signInWithPassword({ email: email.trim(), password })
+      if (error) throw new Error(error.message)
+      return { email: data.user?.email ?? email.trim() } satisfies Moderator
+    },
+
+    async signOut() {
+      await db.auth.signOut()
+    },
+
+    onModeratorChange(cb) {
+      const { data } = db.auth.onAuthStateChange((_event, session) => {
+        const email = session?.user.email
+        cb(email ? { email } : null)
+      })
+      return () => data.subscription.unsubscribe()
     },
 
     subscribe(boardCode, onChange) {

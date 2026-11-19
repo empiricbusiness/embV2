@@ -43,6 +43,17 @@ export type NewQuestion = {
   authorCompany: string
 }
 
+/** A signed-in moderator. */
+export type Moderator = { email: string }
+
+/**
+ * Who may moderate. Mirrors `is_moderator()` in supabase/schema.sql, which is
+ * what actually enforces it; the UI check only explains a refusal early.
+ */
+export const MODERATOR_DOMAIN = '@empiricbusinessmedia.com'
+export const canModerate = (m: Moderator | null) =>
+  !!m && m.email.toLowerCase().endsWith(MODERATOR_DOMAIN)
+
 /**
  * Every storage backend implements this. Deliberately small: the less surface
  * it has, the cheaper it is to reimplement when the database is chosen.
@@ -67,6 +78,17 @@ export interface QuestionStore {
    * The local adapter uses BroadcastChannel; Supabase uses realtime channels.
    */
   subscribe(boardCode: string, onChange: () => void): () => void
+
+  /**
+   * Moderator sign-in. False in demo mode, where everything runs in one browser
+   * and there is nothing to protect.
+   */
+  readonly needsSignIn: boolean
+  getModerator(): Promise<Moderator | null>
+  signIn(email: string, password: string): Promise<Moderator>
+  signOut(): Promise<void>
+  /** Returns an unsubscribe function. */
+  onModeratorChange(cb: (m: Moderator | null) => void): () => void
 }
 
 /** Sort used everywhere: most-voted first, newest breaking ties. */
