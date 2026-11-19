@@ -126,3 +126,15 @@ board exists from the start in local mode.
 Its own Vercel project, with **Root Directory** set to `question-board`. Do not
 add it to the marketing site's project — that one is a static export and this is
 not.
+
+Production runs on the client's Vercel team (`ebm5`), importing the same
+`empiricbusiness/embV2` repository. Set two environment variables there:
+`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Do **not** set
+`NEXT_PUBLIC_QB_BACKEND` or the demo moderator variables — those are for a laptop
+demo only, and any `NEXT_PUBLIC_` value present at build time is copied into the
+public JavaScript.
+
+**Keep-alive.** A Supabase Free project pauses after a week without activity, and
+the board then fails with "Failed to fetch". `vercel.json` schedules a daily cron
+at 03:30 UTC (09:00 IST) to `/api/keepalive`, which makes one small read. Vercel
+runs crons on production deployments only.
