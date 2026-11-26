@@ -238,77 +238,92 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
         { time: '09:00', title: 'Registration & Breakfast', pause: true },
         { time: '09:15', title: 'Welcome address by Empiric Business Media' },
         {
-          time: '09:15',
+          time: '09:30',
           kind: 'Opening keynote',
           title: 'The Evolution of HR 2026: Transforming Talent with Tech',
           speaker: 'Tulanahinaa Maity',
         },
-        { time: '09:55', title: 'Partner Presentation 1' },
-        { time: '10:15', title: 'Partner Presentation 2', speaker: 'Ravi Vyas' },
+        /* The three solo slots are partner sessions (Aarvi, PeopleSol, Ramco).
+           The brochure prints no label; without a `kind` the speaker cards
+           would fall back to "Panel" (EventShowcase). */
         {
-          time: '10:35',
-          kind: 'Panel discussion 1',
-          title: 'Balancing Better: HR’s Role in Supporting Well-Being at Work and Beyond',
-          moderator: 'Dr. Jagmohan Singh Rishi',
-          panelists: ['Namita Patwari', 'Preeti Toshniwal', 'Judith Antao', 'Mousumi Dhar'],
+          time: '09:55',
+          kind: 'Partner session',
+          title: 'Technology, Expertise & Human Touch – Transforming Recruitment',
+          speaker: 'Ravi Vyas',
         },
         {
-          time: '11:20',
+          time: '10:15',
+          kind: 'Panel discussion 1',
+          title: 'Balancing Better: HR’s Role in Supporting Well-Being at Work and Beyond',
+          moderator: 'Arup Gupta',
+          panelists: [
+            'Namita Patwari',
+            'Preeti Toshniwal',
+            'Judith Antao',
+            'Shweta Thakkar',
+            'Manohar Nimbhore',
+          ],
+        },
+        {
+          time: '11:00',
+          kind: 'Partner session',
           title: 'Enterprise Digital Transformation of HR Admin and office operations',
           speaker: 'Gulrez Alam',
         },
-        { time: '11:40', title: 'Networking break', pause: true },
+        { time: '11:15', title: 'Networking break', pause: true },
         {
-          time: '12:00',
+          time: '11:40',
+          kind: 'Partner session',
+          title: 'Compliance at the speed of change: How AI is Rewriting the Playbook',
+          speaker: 'Karan Bhatia',
+        },
+        {
+          time: '12:10',
           kind: 'Panel discussion 2',
           title: 'Workplace by Design: Enhancing Experience, Empowerment, and Engagement',
-          moderator: 'Santosh Iyer',
+          moderator: 'Dr. Subhash Mali',
           panelists: [
             'Davis John',
-            'Harminder Bareja',
-            'Ranjini Pillai',
             'Ameet Kakar Thakur',
-            'Dr. Ravi Hemnani',
-            'Ravi Vyas',
             'Mousumi Dhar',
+            'Dr. Arpita Sen',
+            'Sharon Roy Alexander',
           ],
         },
-        { time: '12:45', title: 'Partner Presentation 4' },
-        { time: '13:05', title: 'Partner Presentation 5' },
-        { time: '13:25', title: 'Networking Lunch', pause: true },
+        { time: '12:55', title: 'Networking Lunch', pause: true },
         {
-          time: '14:25',
+          time: '14:00',
           kind: 'Panel discussion 3',
           title: 'HR Influence Without Authority: Driving Change Beyond Hierarchies',
           moderator: 'Sanjeeb Lahiri',
           panelists: [
-            'Rajan B Saawant',
-            'Pawan Lalwani',
             'Dr. Sarmistha Roychowdhury',
             'Anirudh Gupta',
             'Jagdeep Chauhan',
+            'Pawan Lalwani',
+            'Rajan B Saawant',
           ],
         },
         {
-          time: '15:15',
+          time: '14:50',
           kind: 'Panel discussion 4',
           title: 'AI Assurance & People Analytics: Data-Driven, Human-Centric HR',
           moderator: 'Dr. Kavindra Pant',
           panelists: [
-            'Rajendra Lingwal',
-            'Nandini Banerjee',
-            'Shruti Shrivastava',
-            'Karan Bhatia',
-            'Dr. Ujjal Sengupta',
             'Dr. Archana Yemeshvary Ashok Upadhyay',
+            'Nandini Banerjee',
+            'Rajendra Lingwal',
+            'Shruti Shrivastava',
+            'Dr. Ujjal Sengupta',
           ],
         },
         {
-          time: '15:55',
+          time: '15:30',
           kind: 'Awards ceremony',
           title: 'HR Excellence & Innovation Awards Ceremony 2026',
         },
-        { time: '16:10', title: 'Closing Note & Networking', pause: true },
+        { time: '15:45', title: 'Closing Note & Networking', pause: true },
       ],
     },
 
@@ -335,39 +350,39 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
       confirmed: true,
       teaser: 'Confirmed: CHROs and HR heads from Citi, Reliance, Raymond, Zee & more',
       people: [
-        { name: 'Santosh Iyer', title: 'CHRO', company: 'KLT Automotive & Tubular Products Ltd.', photo: '/images/events/hrtech-2026/speakers/santosh-iyer.webp' },
-        { name: 'Dr. Archana Yemeshvary Ashok Upadhyay', title: 'CHRO', company: 'Hindustan Colas Pvt. Ltd. (HPCL JV)', photo: '/images/events/hrtech-2026/speakers/archana-yemeshvary-ashok-upadhyay.webp' },
-        { name: 'Dr. Sarmistha Roychowdhury', title: 'CHRO', company: 'Vform Tecnopacks Limited', photo: '/images/events/hrtech-2026/speakers/sarmistha-roychowdhury.webp' },
+        /* Order, names and roles follow the speaker page of the 25 Nov 2026
+           brochure. Portraits are cropped from the brochure, framed inside the
+           gold ring like the rest of the set. Tulanahinaa Maity, Jagdeep Chauhan
+           and Gulrez Alam keep the portraits EBM supplied on 17 Nov, when the
+           earlier brochure did not print them. */
+        { name: 'Tulanahinaa Maity', title: 'CHRO', company: 'Anand Rathi Group', photo: '/images/events/hrtech-2026/speakers/tulanahinaa-maity.webp' },
+        { name: 'Arup Gupta', title: 'Chief Human Resources Officer', company: 'Rosa Reliance Power Limited', photo: '/images/events/hrtech-2026/speakers/arup-gupta.webp' },
+        { name: 'Dr. Subhash Mali', title: 'Chief People Officer', company: 'H.K. Designs', photo: '/images/events/hrtech-2026/speakers/subhash-mali.webp' },
         { name: 'Sanjeeb Lahiri', title: 'CHRO', company: 'GRP Ltd', photo: '/images/events/hrtech-2026/speakers/sanjeeb-lahiri.webp' },
-        { name: 'Namita Patwari', title: 'CHRO & CXO', company: 'Alembic Pharmaceuticals Ltd', photo: '/images/events/hrtech-2026/speakers/namita-patwari.webp' },
+        { name: 'Dr. Sarmistha Roychowdhury', title: 'CHRO', company: 'Vform Tecnopacks Limited', photo: '/images/events/hrtech-2026/speakers/sarmistha-roychowdhury.webp' },
         { name: 'Dr. Kavindra Pant', title: 'CHRO', company: 'Shapoorji Pallonji Group', photo: '/images/events/hrtech-2026/speakers/kavindra-pant.webp' },
+        { name: 'Dr. Archana Yemeshvary Ashok Upadhyay', title: 'CHRO', company: 'Hindustan Colas Pvt. Ltd. (HPCL JV)', photo: '/images/events/hrtech-2026/speakers/archana-yemeshvary-ashok-upadhyay.webp' },
+        { name: 'Mousumi Dhar', title: 'CHRO', company: 'Indospace Group', photo: '/images/events/hrtech-2026/speakers/mousumi-dhar.webp' },
+        { name: 'Namita Patwari', title: 'CHRO & CXO', company: 'Alembic Pharmaceuticals Ltd', photo: '/images/events/hrtech-2026/speakers/namita-patwari.webp' },
+        { name: 'Jagdeep Chauhan', title: 'Director Human Resources', company: 'Hinduja Hospital', photo: '/images/events/hrtech-2026/speakers/jagdeep-chauhan.webp' },
+        { name: 'Dr. Ujjal Sengupta', title: 'Head Business HR', company: 'Jio', photo: '/images/events/hrtech-2026/speakers/ujjal-sengupta.webp' },
+        { name: 'Manohar Nimbhore', title: 'Director of Quality', company: 'Marriott International', photo: '/images/events/hrtech-2026/speakers/manohar-nimbhore.webp' },
         { name: 'Anirudh Gupta', title: 'Global Head – Talent and Learning', company: 'Glenmark Pharmaceuticals', photo: '/images/events/hrtech-2026/speakers/anirudh-gupta.webp' },
-        { name: 'Davis John', title: 'Head – HR & Business Services', company: 'Raymond Limited', photo: '/images/events/hrtech-2026/speakers/davis-john.webp' },
-        { name: 'Ranjini Pillai', title: 'Head HR', company: 'SICK Sensor Intelligence', photo: '/images/events/hrtech-2026/speakers/ranjini-pillai.webp' },
-        { name: 'Harminder Bareja', title: 'Head – Human Resources, Water Business', company: 'Dorf Ketal', photo: '/images/events/hrtech-2026/speakers/harminder-bareja.webp' },
-        { name: 'Dr. Jagmohan Singh Rishi', title: 'Global Head – L&D and Digital Excellence; President, Bombay Management Association 2025', company: 'Wockhardt Ltd', photo: '/images/events/hrtech-2026/speakers/jagmohan-singh-rishi.webp' },
+        { name: 'Judith Antao', title: 'Head – HR', company: 'Rohlig India Private Limited', photo: '/images/events/hrtech-2026/speakers/judith-antao.webp' },
+        { name: 'Shweta Thakkar', title: 'Head – HR', company: 'Milliken & Company', photo: '/images/events/hrtech-2026/speakers/shweta-thakkar.webp' },
+        { name: 'Davis John', title: 'Head – HR & Business Services', company: 'Raymond Realty Ltd.', photo: '/images/events/hrtech-2026/speakers/davis-john.webp' },
+        { name: 'Sharon Roy Alexander', title: 'Head Learning & Development, West Region', company: 'Prestige Group', photo: '/images/events/hrtech-2026/speakers/sharon-roy-alexander.webp' },
+        { name: 'Dr. Arpita Sen', title: 'Head People Academy', company: 'Tata Tele Business Services', photo: '/images/events/hrtech-2026/speakers/arpita-sen.webp' },
         { name: 'Preeti Toshniwal', title: 'Senior Vice President – HR', company: 'Zee Entertainment Enterprises Ltd.', photo: '/images/events/hrtech-2026/speakers/preeti-toshniwal.webp' },
         { name: 'Rajendra Lingwal', title: 'Senior Vice President – HR', company: 'Persistent Systems Ltd.', photo: '/images/events/hrtech-2026/speakers/rajendra-lingwal.webp' },
-        { name: 'Pawan Lalwani', title: 'Strategic HR Leader – Learning & Capability', company: 'Reliance Industries Ltd.', photo: '/images/events/hrtech-2026/speakers/pawan-lalwani.webp' },
-        { name: 'Rajan B Saawant', title: 'Vice President Corporate – Human Resources', company: 'Indoco Remedies Ltd', photo: '/images/events/hrtech-2026/speakers/rajan-b-saawant.webp' },
-        { name: 'Nandini Banerjee', title: 'Learning Business Partner, India Business', company: 'Johnson Controls', photo: '/images/events/hrtech-2026/speakers/nandini-banerjee.webp' },
-        { name: 'Judith Antao', title: 'Head – HR', company: 'Rohlig India Private Limited', photo: '/images/events/hrtech-2026/speakers/judith-antao.webp' },
-        { name: 'Ameet Kakar Thakur', title: 'VP HR', company: 'GSL Group', photo: '/images/events/hrtech-2026/speakers/ameet-kakar-thakur.webp' },
         { name: 'Shruti Shrivastava', title: 'Senior Vice President HR', company: 'Citi', photo: '/images/events/hrtech-2026/speakers/shruti-shrivastava.webp' },
-        { name: 'Dr. Ravi Hemnani', title: 'VP – Human Resources', company: 'Nuvoco Vistas Corp', photo: '/images/events/hrtech-2026/speakers/ravi-hemnani.webp' },
+        { name: 'Pawan Lalwani', title: 'Strategic HR Leader – Learning & Capability, DGM', company: 'Reliance Industries Ltd.', photo: '/images/events/hrtech-2026/speakers/pawan-lalwani.webp' },
         { name: 'Ravi Vyas', title: 'Vice President', company: 'Aarvi Encon Limited', photo: '/images/events/hrtech-2026/speakers/ravi-vyas.webp' },
-        { name: 'Manohar Nimbhore', title: 'Director Learning and Development', company: 'Marriott International', photo: '/images/events/hrtech-2026/speakers/manohar-nimbhore.webp' },
-        { name: 'Mousumi Dhar', title: 'CHRO', company: 'Indospace Group', photo: '/images/events/hrtech-2026/speakers/mousumi-dhar.webp' },
-        { name: 'Dr. Ujjal Sengupta', title: 'Head Business HR', company: 'Jio', photo: '/images/events/hrtech-2026/speakers/ujjal-sengupta.webp' },
+        { name: 'Rajan B Saawant', title: 'Vice President Corporate – Human Resources', company: 'Indoco Remedies Ltd', photo: '/images/events/hrtech-2026/speakers/rajan-b-saawant.webp' },
+        { name: 'Ameet Kakar Thakur', title: 'VP HR', company: 'GSL Group', photo: '/images/events/hrtech-2026/speakers/ameet-kakar-thakur.webp' },
+        { name: 'Nandini Banerjee', title: 'Learning Business Partner, India Business', company: 'Johnson Controls', photo: '/images/events/hrtech-2026/speakers/nandini-banerjee.webp' },
+        { name: 'Gulrez Alam', title: 'Founder and CEO', company: 'PeopleSol', photo: '/images/events/hrtech-2026/speakers/gulrez-alam.webp' },
         { name: 'Karan Bhatia', title: 'Payroll Bureau Head', company: 'RAMCO', photo: '/images/events/hrtech-2026/speakers/karan-bhatia.webp' },
-        /* Named in the agenda but not on the brochure's speaker page, so their
-           portraits did not come from it. EBM supplied them separately on
-           17 Nov 2026; they are framed with the same ring as the rest of the
-           set, copied pixel for pixel from an existing image so the row cannot
-           drift. A name still without one renders as the empty gold ring. */
-        { name: 'Tulanahinaa Maity', title: 'CHRO', company: 'Anand Rathi Group', photo: '/images/events/hrtech-2026/speakers/tulanahinaa-maity.webp' },
-        { name: 'Gulrez Alam', title: 'Founder & MD', company: 'PeopleSol', photo: '/images/events/hrtech-2026/speakers/gulrez-alam.webp' },
-        { name: 'Jagdeep Chauhan', title: 'Director Human Resources', company: 'Hinduja Hospital', photo: '/images/events/hrtech-2026/speakers/jagdeep-chauhan.webp' },
       ],
     },
 
@@ -457,28 +472,13 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
         name: 'Ramco Payce',
         logo: { src: '/images/events/hrtech-2026/partners/ramco-payce.webp', w: 209, h: 120 },
         url: 'https://www.ramco.com/products/payce-payroll-software',
-        /* The brochure reserves this block and leaves the body blank, so unlike
-           every other partner here this copy does NOT come from it. It is drawn
-           from Ramco's own published material — the Payce product page, the
-           global payroll page and the 9 Feb 2024 launch press release — and
-           every claim below is one Ramco makes about itself in public. Nothing
-           is added. See event-notes.ts for the conflict this resolves. */
+        /* Ramco's own write-up, sent by EBM in the client email of 26 Nov 2026
+           and published as sent (one fix: "Fortune500" → "Fortune 500"). The
+           25 Nov brochure prints a different Ramco blurb; the email is the
+           explicit instruction, so it wins. See event-notes.ts. */
         about: [
-          'Ramco Payce is a platform-based, AI-powered payroll product from Ramco Systems, built to change how enterprises manage payroll. It brings serverless in-memory computing, data analytics, artificial intelligence and machine learning together with Ramco’s two decades in the domain, so organisations process payroll faster, more easily and more accurately.',
-          'The platform is organised around four workspaces. Payroll Workspace is a single console to review inputs, bulk-upload data, resolve integration issues, process payroll, verify anomalies and download reports. BInGO is a DIY reporting and analytics tool that needs no coding. Daily HR is a modern employee self-service portal. CHIA is an AI assistant that handles everyday queries.',
-          'Implementation moves from months to weeks. A no-code rule builder lets teams express payroll logic as conditions rather than code, AI-driven compliance keeps country rules current in real time, and the engine processes over 100 million payroll records in 30 minutes using in-memory parallel computing. Certified connectors cover Workday, Oracle HCM, SAP SuccessFactors, Microsoft Dynamics, Epicor, Sage and Kronos, alongside leading time and attendance platforms.',
-          'Ramco Global Payroll has delivered payroll transformation for over 25 years, with coverage across 150+ countries and 500+ customers worldwide, including Fortune 500 enterprises such as GE, Coca-Cola and Standard Chartered. It can be deployed on cloud or taken as a managed service.',
-        ],
-      },
-      {
-        tier: 'Gold partner',
-        name: 'Superset',
-        logo: { src: '/images/events/hrtech-2026/partners/superset.webp', w: 209, h: 120 },
-        url: 'https://joinsuperset.com/employer.html',
-        about: [
-          'Superset is India’s largest campus hiring platform, built to simplify and scale fresher recruitment for employers across the country. Trusted by over 12,000 employers and 600+ universities, we connect recruiting teams to verified talent across 24,000+ campuses.',
-          'We handle the full recruitment workflow: campus outreach, candidate assessments, virtual interview drives, and offer management, with everything tracked in one place. With real-time analytics and personalised candidate recommendations, recruiting teams spend less time on logistics and more time on the right hires.',
-          'Superset is where campus hiring happens at scale.',
+          'With payroll coverage for 150 countries generating 36 million+ payslips annually for 500+ large MNCs & Fortune 500 customers, Ramco has been at the forefront of delivering global payroll transformation for more than 25 years. Ramco Payce is a comprehensive suite of seamlessly integrated payroll features & processes that promises a seamless and holistic approach to payroll, ensuring efficiency, accuracy, and a streamlined workflow for enhanced organizational performance.',
+          'It is a unified global payroll solution for payroll administrators, Implementation consultants, managers, and employees that organizations can deploy on-cloud or leverage as a managed service. Ramco Payce offers seamless integration with leading HCM providers such as Workday and Oracle. With features like lightning-fast payroll processing, AI-driven payroll compliance, no-code rule building, on-demand reporting, Payce marks the beginning of a groundbreaking shift in payroll transformation.',
         ],
       },
       {
@@ -500,18 +500,8 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
           'PeopleSol HRMS is a world-class Human Resource Management System designed to simplify, streamline, and elevate every aspect of your organization’s HR operations. Built with powerful web and mobile interfaces, it provides a seamless digital experience that connects employees, managers, and HR teams, IT Teams and Admin teams anytime, anywhere.',
           'From hire to retire, PeopleSol HRMS empowers organizations to manage the complete employee lifecycle with ease — covering recruitment, onboarding, payroll, performance, learning, attendance, ITSM, Office Facility management and more. Its real-time analytics and dashboards offer deep workforce insights, enabling data-driven decisions and smarter people management.',
           'With automation at its core, PeopleSol HRMS eliminates manual processes, reduces administrative workload, and enhances accuracy and compliance. The system is fully configurable to your company’s structure, policies, and approval workflows, ensuring flexibility and scalability as your organization grows.',
-          'Whether you’re a small enterprise or a large corporation, PeopleSol HRMS helps you create a connected, efficient, and engaged workplace — boosting productivity, transparency, and employee satisfaction.',
-        ],
-      },
-      {
-        tier: 'Neuroscience learning partner',
-        name: 'Brainayan',
-        logo: { src: '/images/events/hrtech-2026/partners/brainayan.webp', w: 320, h: 115 },
-        url: 'https://www.brainayan.com/',
-        about: [
-          'Brainayan, founded in 2016 by a former L&D leader at Google and Facebook, is a people development company that blends neuroscience-based learning to create meaningful, lasting change. We specialize in customized and personalized high-impact behavioral learning experiences that go far beyond one-size-fits-all training — addressing real business challenges and empowering individuals to lead, grow, and thrive.',
-          'With 30,000+ hours of delivery and content development, Brainayan has partnered with 100+ organizations across APAC — from scaling startups to Fortune 100 giants.',
-          'Clients include Netflix, Google, Grab, Viacom18, Deloitte, Snapchat, WeWork, Sumo Logic, Uber, TikTok, Zepto, Facebook, AppDynamics, Warner Bros Discovery, Xiaomi, DE Shaw, Piramal Finance, IndiaFirst Life, Trust Mutual Fund, Caratlane, Sanctum Wealth, Ask Group, Kirloskar Group, BHTC, Baskin Robbins and Table Space.',
+          'Whether you’re a small enterprise or a large corporation, PeopleSol HRMS helps you create a connected, efficient, and engaged workplace — boosting productivity, transparency, and employee satisfaction. Experience the digital power of PeopleSol HRMS — where innovation meets simplicity, and people come first.',
+          'Core HR (Human Resource Management System) is a complete solution that integrates and automates all aspects of human resource operations. It manages the entire employee lifecycle — from recruitment and onboarding to employee management, development, and exit processes — ensuring smooth and efficient HR operations.',
         ],
       },
       {
@@ -563,6 +553,15 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
           'BharatCXO has served as official media partner for 14+ premier industry events across India, among them CISO India Connect, the Bharat Insurance Summit & Awards, CIO Convergence and the HR+L&D Innovation Summit & Awards.',
         ],
       },
+      {
+        tier: 'Media partner',
+        name: 'siliconindia',
+        logo: { src: '/images/events/hrtech-2026/partners/siliconindia.webp', w: 320, h: 113 },
+        url: 'https://www.siliconindia.com/',
+        /* New in the 25 Nov 2026 brochure, which gives media partners no
+           write-up. Left empty, so the card is logo-only (no detail panel). */
+        about: [],
+      },
     ],
 
     faq: [
@@ -576,11 +575,11 @@ export const EVENT_CONTENT: Record<string, EventContent> = {
       },
       {
         q: 'What will the 2026 summit cover?',
-        a: 'The theme is “Driving Business Growth Through Next-Gen HR Technology”. An opening keynote on the evolution of HR in 2026 is followed by four panel discussions: wellbeing at work, workplace by design, HR influence without authority, and AI assurance and people analytics.',
+        a: 'The theme is “Driving Business Growth Through Next-Gen HR Technology”. An opening keynote on the evolution of HR in 2026 is followed by partner sessions on recruitment, digital HR operations and AI in payroll compliance, and four panel discussions: wellbeing at work, workplace by design, HR influence without authority, and AI assurance and people analytics.',
       },
       {
         q: 'Who is speaking at the Next-Gen HR Tech Summit 2026?',
-        a: '28 HR leaders are named in the brochure, including Santosh Iyer (KLT Automotive), Shruti Shrivastava (Citi), Pawan Lalwani (Reliance Industries), Davis John (Raymond), Preeti Toshniwal (Zee Entertainment Enterprises), Dr. Kavindra Pant (Shapoorji Pallonji Group) and Rajendra Lingwal (Persistent Systems).',
+        a: '28 HR leaders are named in the brochure, including Tulanahinaa Maity (Anand Rathi Group), Shruti Shrivastava (Citi), Pawan Lalwani (Reliance Industries), Davis John (Raymond Realty), Preeti Toshniwal (Zee Entertainment Enterprises), Dr. Kavindra Pant (Shapoorji Pallonji Group) and Rajendra Lingwal (Persistent Systems).',
       },
       {
         q: 'What are the HR Excellence & Innovation Awards 2026?',
