@@ -439,7 +439,8 @@ export const ALL_EVENTS: EventRecord[] = [
     // Postponed on 29 Sep 2026, then rescheduled: the 3rd Edition brochure EBM
     // supplied on 17 Nov 2026 prints Thursday 26 November 2026, Mumbai. The
     // brochure is this edition's own artwork and is the source for the date,
-    // theme, agenda, speakers, awards and partners published here.
+    // theme, agenda, speakers, awards and partners published here; its 4-page
+    // edition of 25 Nov 2026 is the source for the agenda, speakers and partners.
     edition: '3rd Edition',
     name: 'Next-Gen HR Tech Summit & Awards',
     seoName: 'Next-Gen HR Tech Summit',
@@ -450,11 +451,12 @@ export const ALL_EVENTS: EventRecord[] = [
     dateLabel: 'Thursday, 26 November 2026',
     year: 2026,
     // The cover prints 08:30 AM - 05:30 PM; the agenda inside runs 09:00 to
-    // 16:10. The cover's window is published, as on the 5th Edition FinTax page.
+    // 15:45. The cover's window is published, as on the 5th Edition FinTax page.
     timeLabel: '08:30 AM – 05:30 PM',
     city: 'Mumbai',
-    // Confirmed by EBM on 17 Nov 2026. The brochure prints no venue, so this
-    // is the one fact on this page that does not come from it.
+    // Confirmed by EBM on 17 Nov 2026, when the brochure printed no venue. The
+    // 25 Nov 2026 edition prints "Hotel Peninsula Grand, Mumbai, India" — the
+    // same hotel, so the published name is unchanged.
     venue: 'Peninsula Grand Hotel, Andheri',
     sector: 'hr-technology',
     format: 'conference',
